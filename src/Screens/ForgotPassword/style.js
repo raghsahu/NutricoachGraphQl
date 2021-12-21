@@ -41,6 +41,7 @@ export default StyleSheet.create({
     },
     textInput:{
       marginHorizontal:20,
+      height: 44,
       fontFamily:CONFIGURATION.TextRegular,
 
     },

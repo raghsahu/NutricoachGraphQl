@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image } from 'react-native'
+import { Image, View, SafeAreaView } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -72,30 +72,37 @@ function MyStack() {
 
 function HomeTab() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarInactiveTintColor: CONFIGURATION.TextDarkGray, tabBarActiveTintColor: CONFIGURATION.primaryGreen,tabBarStyle:{paddingTop:10,height:70,paddingBottom:10},tabBarLabelStyle:{fontFamily:CONFIGURATION.TextBold,marginTop: 10,} }}>
-      <Tab.Screen
-        name="Dashboard"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{height:25 ,width:25,tintColor:color}} resizeMode={"contain"} source={require("./assetss/Dasbord.png")}/>
-            )
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Message"
-        component={Messages}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{height:25 ,width:25,tintColor:color}} resizeMode={"contain"} source={require("./assetss/message.png")}/>
-            )
-          }
-        }}
-      />
-      {/* <Tab.Screen
+    <View style={{ flex: 1.0 }}>
+      <Tab.Navigator screenOptions={{
+        headerShown: false,
+        tabBarInactiveTintColor: CONFIGURATION.TextDarkGray,
+        tabBarActiveTintColor: CONFIGURATION.primaryGreen,
+        tabBarStyle: { paddingTop: 10, height: 70, paddingBottom: 10 },
+        tabBarLabelStyle: { fontFamily: CONFIGURATION.TextBold, marginTop: 10, }
+      }}>
+        <Tab.Screen
+          name="Dashboard"
+          component={Home}
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Dasbord.png")} />
+              )
+            }
+          }}
+        />
+        <Tab.Screen
+          name="Message"
+          component={Messages}
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/message.png")} />
+              )
+            }
+          }}
+        />
+        {/* <Tab.Screen
         name="Schedule"
         component={Home}
         options={{
@@ -106,29 +113,31 @@ function HomeTab() {
           }
         }}
       /> */}
-      <Tab.Screen
-        name="Clients"
-        component={Clients}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{height:25 ,width:25,tintColor:color}} resizeMode={"contain"} source={require("./assetss/Clients.png")}/>
-            )
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{height:25 ,width:25,tintColor:color}} resizeMode={"contain"} source={require("./assetss/Profile.png")}/>
-            )
-          }
-        }}
-      />
-    </Tab.Navigator>
+        <Tab.Screen
+          name="Clients"
+          component={Clients}
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Clients.png")} />
+              )
+            }
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Profile.png")} />
+              )
+            }
+          }}
+        />
+      </Tab.Navigator>
+      <SafeAreaView style={{ backgroundColor: '#fff' }} />
+    </View>
   );
 }
 

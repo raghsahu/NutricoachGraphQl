@@ -39,8 +39,8 @@ export default StyleSheet.create({
     textInput:{
       marginHorizontal:20,
       fontFamily:CONFIGURATION.TextRegular,
-      color:CONFIGURATION.TextDarkBlack
-
+      color:CONFIGURATION.TextDarkBlack,
+      height: 44,
     },
     mainView:{
       marginHorizontal:20,
