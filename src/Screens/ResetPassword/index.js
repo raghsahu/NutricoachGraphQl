@@ -36,12 +36,12 @@ const index = props => {
             const result = await resetNewPassword(newPassword)
             setLoading(false)
             console.log("resetNewPassword", result)
-            if (result.data && result.data.data.forgotPassword != null) {
-                if (result.data.data.forgotPassword == true) {
+            if (result.data && result.data.data.resetPassword != null) {
+               
                       setTimeout(() => {
                  // props.navigation.navigate("ResetPassword")
                 }, 100);
-                }
+             
               
             } else {
                 Toast.show(result.error, 2000);
