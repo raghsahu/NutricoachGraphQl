@@ -31,6 +31,8 @@ const index = props => {
             Toast.show('Please enter new password')
         } else if (!confirmPassword) {
             Toast.show('Please enter confirm password')
+        } else if (newPassword != confirmPassword) {
+            Toast.show('New password & confirm password does not match')
         }   else {
             setLoading(true)
             const result = await resetNewPassword(newPassword)

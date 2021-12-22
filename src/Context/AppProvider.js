@@ -31,7 +31,6 @@ export const APPProvider = props => {
     const graphqlQuery = {
       query: `mutation forgotPassword($email: String!) {
                 forgotPassword(email: $email)
-                
               }`,
       variables: {
         email: email,
@@ -43,16 +42,14 @@ export const APPProvider = props => {
   const resetNewPassword = async newPassword => {
     const graphqlQuery = {
       query: `mutation resetPassword($input: ResetPasswordInput!) {
-                resetPassword(input: $input)
-                 {
+                resetPassword(input: $input){
                    userRole  
-                  }
-             }`,
+                }
+            }`,
         variables: {
         input: {
-            token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMGE2NzBkOGIxOWY4NDVlZmRlOTU5ZiIsImlhdCI6MTY0MDE3NDc5MywiZXhwIjoxNjQwNzc5NTkzfQ.g94Wwk5kJkYZyI3HwxyXcuhnHTcm0NFHAgl55In3h8c",
-            newPassword: newPassword,
-               
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMGE2NzBkOGIxOWY4NDVlZmRlOTU5ZiIsImlhdCI6MTY0MDE3NDc5MywiZXhwIjoxNjQwNzc5NTkzfQ.g94Wwk5kJkYZyI3HwxyXcuhnHTcm0NFHAgl55In3h8c",
+            newPassword: newPassword,   
         },
       },
     };
