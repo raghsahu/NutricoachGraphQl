@@ -29,6 +29,31 @@ export const APPProvider = (props) => {
         return await request('post', graphqlQuery)
     }
 
+    const register = async (firstname, lastname, middleName, email, password, selectDate, gender, mobile, referalCode) => {
+        const graphqlQuery = {
+            query: `mutation createCoach($input: CreateCoachInput!) {
+                             id
+              }`,
+            variables: {
+                input: {
+                    email: email,
+                    password: password,
+                    profile: {
+                        firstName: firstname,
+                        middleName: middleName,
+                        lastName: lastname,
+                        dateOfBirth: selectDate,
+                        gender: `${gender}`,
+                        mobileNum: mobile,
+                        landlineNum: "",
+                        profileImg: "",
+                    }
+                }
+            }
+        };
+        return await request('post', graphqlQuery)
+    }
+
     const request = async (method, params) => {
         try {
             console.log("===================")
@@ -129,7 +154,8 @@ export const APPProvider = (props) => {
         <APPContext.Provider
             value={{
                 baseURL,
-                login
+                login,
+                register
             }}>
             {props.children}
         </APPContext.Provider>

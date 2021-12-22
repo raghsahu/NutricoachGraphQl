@@ -1,13 +1,18 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Platform, Alert } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
 import style from './style'
+
+import ProgressView from '../../Components/ProgressView'
 import Button from './../../Components/Button'
 const { height, width } = Dimensions.get("screen")
 import Icon from "react-native-vector-icons/AntDesign"
 import Icon2 from "react-native-vector-icons/Feather"
 import { ScrollView } from 'react-native-gesture-handler'
+
+//CONTEXT
+import { APPContext } from '../../Context/AppProvider'
 
 //PACKAGES
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -16,6 +21,9 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import Toast from "react-native-simple-toast";
 
 const index = (props) => {
+
+    const { register } = useContext(APPContext);
+
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -28,15 +36,16 @@ const index = (props) => {
     const ref_input5 = useRef();
     const ref_input6 = useRef();
     const ref_input7 = useRef();
-    const [firstname, setFirstName] = useState('')
-    const [lastname, setlastname] = useState('')
-    const [middleName, setMiddleName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [selectDate, setselectDate] = useState("")
-    const [gender, setgender] = useState("")
-    const [mobile, setMobile] = useState('')
+    const [firstname, setFirstName] = useState('Test')
+    const [lastname, setlastname] = useState('User')
+    const [middleName, setMiddleName] = useState('Test')
+    const [email, setEmail] = useState('test@gmail.com')
+    const [password, setPassword] = useState('password')
+    const [selectDate, setselectDate] = useState("22/09/1998")
+    const [gender, setgender] = useState("MALE")
+    const [mobile, setMobile] = useState('8877887788')
     const [referalCode, setReferalCode] = useState('')
+    const [isLoading, setLoading] = useState(false)
 
 
 
@@ -56,7 +65,7 @@ const index = (props) => {
         showMode('date');
     };
 
-    const onRegister = () => {
+    const onRegister = async () => {
         const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!firstname.trim()) {
             Toast.show('Please enter first name', 5000)
@@ -77,7 +86,11 @@ const index = (props) => {
         } else if (!mobile.trim()) {
             Toast.show('Please enter mobile number', 5000)
         } else {
-            Alert.alert('here')
+            setLoading(true)
+            const result = await register(firstname, lastname, middleName, email, password, selectDate, gender,mobile, referalCode)
+            setLoading(false)
+
+            Alert.alert(JSON.stringify(result))
         }
     }
 
@@ -264,13 +277,14 @@ const index = (props) => {
                     }
                 }}
             >
-                <TouchableOpacity onPress={() => { setgender("Male"); refRBSheet.current.close() }} style={{ borderRadius: 5, borderWidth: 1, borderColor: CONFIGURATION.loginInputBorder, marginHorizontal: 20, paddingHorizontal: 20, paddingVertical: 10 }}>
+                <TouchableOpacity onPress={() => { setgender("MALE"); refRBSheet.current.close() }} style={{ borderRadius: 5, borderWidth: 1, borderColor: CONFIGURATION.loginInputBorder, marginHorizontal: 20, paddingHorizontal: 20, paddingVertical: 10 }}>
                     <Text style={{ fontSize: 15, fontFamily: CONFIGURATION.TextRegular }}>Male</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => { setgender("Female"); refRBSheet.current.close() }} style={{ borderRadius: 5, borderWidth: 1, borderColor: CONFIGURATION.loginInputBorder, marginHorizontal: 20, paddingHorizontal: 20, paddingVertical: 10, marginTop: 15 }}>
+                <TouchableOpacity onPress={() => { setgender("FEMALE"); refRBSheet.current.close() }} style={{ borderRadius: 5, borderWidth: 1, borderColor: CONFIGURATION.loginInputBorder, marginHorizontal: 20, paddingHorizontal: 20, paddingVertical: 10, marginTop: 15 }}>
                     <Text style={{ fontSize: 15, fontFamily: CONFIGURATION.TextRegular }}>Female</Text>
                 </TouchableOpacity>
             </RBSheet>
+            {isLoading && <ProgressView />}
         </View>
     )
 }
