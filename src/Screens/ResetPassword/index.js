@@ -14,18 +14,18 @@ const index = (props) => {
     return (
         <View style={style.container}>
             <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
-            <ScrollView>
             <TouchableOpacity onPress={() => {
                 props.navigation.goBack()
             }} style={style.backarrView}>
                 <Image resizeMode={"contain"} source={require("./../../assetss/backArr.png")} style={style.backArr} />
             </TouchableOpacity>
-            <View style={style.imageView}>
-                <SVG/>
-            </View>
-            <Text style={style.forgottext}>Reset password</Text>
-            <Text style={style.des}>Please enter your registered email we will{`\n`}
-                sent you reset password link</Text>
+            <ScrollView>
+                <View style={style.imageView}>
+                    <SVG />
+                </View>
+                <Text style={style.forgottext}>Reset password</Text>
+                <Text style={style.des}>Please enter your registered email we will{`\n`}
+                    sent you reset password link</Text>
                 <View style={style.mainView}>
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center" }]}>
                         <TextInput
@@ -46,7 +46,7 @@ const index = (props) => {
                         {/* <Icon name="eye" size={18} color={CONFIGURATION.loginIconeye} /> */}
                     </View>
                 </View>
-                </ScrollView>
+            </ScrollView>
             <View style={style.btnView}>
                 <Button btnText={"Confirm"} />
             </View>

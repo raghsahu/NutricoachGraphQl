@@ -38,6 +38,7 @@ export default StyleSheet.create({
     InputBox:{
       borderColor:CONFIGURATION.loginInputBorder,
       borderWidth:1,
+      height: 44,
     },
     textInput:{
       marginHorizontal:20,

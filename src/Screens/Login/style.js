@@ -12,7 +12,7 @@ export default StyleSheet.create({
       width:width,
       alignItems:"center",
       justifyContent:"center",
-      marginTop:width/5,
+      marginTop: 30
     },
     Mainlogo:{
       height:width/2-50,
@@ -42,15 +42,13 @@ export default StyleSheet.create({
     },
     textInput:{
       marginHorizontal:20,
+      height: 44,
       fontFamily:CONFIGURATION.TextRegular
     },
     forgotText:{
       textAlign:"center",
       fontFamily: CONFIGURATION.TextBold,
       fontSize:15
-    },
-    btnView:{
-      marginTop:150
     },
     textregi:{
       textAlign:"center",

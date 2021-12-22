@@ -1,4 +1,4 @@
-import React, { useState,useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Platform } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
@@ -31,7 +31,6 @@ const index = (props) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
-        //console.log(moment(currentDate).format("DD-MM-YYYY"));
         setselectDate(moment(currentDate).format("DD-MM-YYYY"))
     };
 
@@ -46,17 +45,17 @@ const index = (props) => {
 
     return (
         <View style={style.container}>
+            <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginHorizontal: 20 }}>
+                <TouchableOpacity onPress={() => {
+                    props.navigation.goBack()
+                }} style={style.backarrView}>
+                    <Image resizeMode={"contain"} source={require("./../../assetss/backArr.png")} style={style.backArr} />
+                </TouchableOpacity>
+                <Text style={style.registerText}>Register</Text>
+                <View style={{ width: 25 }}></View>
+            </View>
             <ScrollView>
-                <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
-                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginHorizontal: 20 }}>
-                    <TouchableOpacity onPress={() => {
-                        props.navigation.goBack()
-                    }} style={style.backarrView}>
-                        <Image resizeMode={"contain"} source={require("./../../assetss/backArr.png")} style={style.backArr} />
-                    </TouchableOpacity>
-                    <Text style={style.registerText}>Register</Text>
-                    <View style={{ width: 25 }}></View>
-                </View>
                 <View style={style.mainView}>
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center" }]}>
                         <TextInput
@@ -102,11 +101,11 @@ const index = (props) => {
                             onSubmitEditing={() => ref_input6.current.focus()}
                             ref={ref_input5}
                         />
-                       <TouchableOpacity onPress={()=>{setshow2(!show2)}} style={{}}>
+                        <TouchableOpacity onPress={() => { setshow2(!show2) }} style={{}}>
                             {
-                                show2 ? 
-                                <Icon2 name="eye" size={18} color={CONFIGURATION.loginIconeye} />:
-                                <Icon2 name="eye-off" size={18} color={CONFIGURATION.loginIconeye} />
+                                show2 ?
+                                    <Icon2 name="eye" size={18} color={CONFIGURATION.loginIconeye} /> :
+                                    <Icon2 name="eye-off" size={18} color={CONFIGURATION.loginIconeye} />
                             }
                         </TouchableOpacity>
                     </View>
@@ -120,7 +119,7 @@ const index = (props) => {
                         />
                         <Icon name="calendar" size={18} color={CONFIGURATION.loginIconeye} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{refRBSheet.current.open()}} style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15, }]}>
+                    <TouchableOpacity onPress={() => { refRBSheet.current.open() }} style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15, }]}>
                         <TextInput
                             style={[style.textInput, { width: "81%" }]}
                             placeholder="Select Gender*"
@@ -168,7 +167,7 @@ const index = (props) => {
                 ref={refRBSheet}
                 closeOnDragDown={true}
                 closeOnPressMask={true}
-                height={height/6}
+                height={height / 6}
                 customStyles={{
                     wrapper: {
                         backgroundColor: "#00000050"
@@ -178,11 +177,11 @@ const index = (props) => {
                     }
                 }}
             >
-                <TouchableOpacity onPress={()=>{setgender("Male");refRBSheet.current.close()}} style={{borderRadius:5,borderWidth:1,borderColor:CONFIGURATION.loginInputBorder,marginHorizontal:20,paddingHorizontal:20,paddingVertical:10}}>
-                    <Text style={{fontSize:15,fontFamily:CONFIGURATION.TextRegular}}>Male</Text>
+                <TouchableOpacity onPress={() => { setgender("Male"); refRBSheet.current.close() }} style={{ borderRadius: 5, borderWidth: 1, borderColor: CONFIGURATION.loginInputBorder, marginHorizontal: 20, paddingHorizontal: 20, paddingVertical: 10 }}>
+                    <Text style={{ fontSize: 15, fontFamily: CONFIGURATION.TextRegular }}>Male</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{setgender("Female");refRBSheet.current.close()}} style={{borderRadius:5,borderWidth:1,borderColor:CONFIGURATION.loginInputBorder,marginHorizontal:20,paddingHorizontal:20,paddingVertical:10,marginTop:15}}>
-                    <Text style={{fontSize:15,fontFamily:CONFIGURATION.TextRegular}}>Female</Text>
+                <TouchableOpacity onPress={() => { setgender("Female"); refRBSheet.current.close() }} style={{ borderRadius: 5, borderWidth: 1, borderColor: CONFIGURATION.loginInputBorder, marginHorizontal: 20, paddingHorizontal: 20, paddingVertical: 10, marginTop: 15 }}>
+                    <Text style={{ fontSize: 15, fontFamily: CONFIGURATION.TextRegular }}>Female</Text>
                 </TouchableOpacity>
             </RBSheet>
         </View>

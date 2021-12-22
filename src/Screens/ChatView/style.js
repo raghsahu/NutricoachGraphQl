@@ -76,7 +76,8 @@ flex:1
   input: {
     fontFamily: CONFIGURATION.TextRegular,
     width: width / 2 + 30,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    height: 44
   },
   inputrow: {
     borderColor: CONFIGURATION.loginInputBorder,

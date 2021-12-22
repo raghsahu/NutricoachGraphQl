@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, FlatList, Animated } from 'react-native'
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, FlatList, Animated, SafeAreaView } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,6 +11,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-picker';
 import PagerView from 'react-native-pager-view';
+
 const DATA = [{},]
 
 const { height, width } = Dimensions.get("screen")
@@ -304,6 +305,7 @@ const index = (props) => {
                         </>
                 }
             </Animated.View>
+            <SafeAreaView />
         </View>
     )
 }
