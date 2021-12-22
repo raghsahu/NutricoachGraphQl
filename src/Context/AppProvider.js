@@ -32,7 +32,9 @@ export const APPProvider = (props) => {
     const register = async (firstname, lastname, middleName, email, password, selectDate, gender, mobile, referalCode) => {
         const graphqlQuery = {
             query: `mutation createCoach($input: CreateCoachInput!) {
-                             id
+                createCoach(input: $input){
+                    id                  
+                }
               }`,
             variables: {
                 input: {
