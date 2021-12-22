@@ -1,13 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
 import style from './style'
 import Icon from "react-native-vector-icons/Feather"
 import Button from '../../Components/Button'
+import { login } from '../../Api/model'
+import { APPContext } from '../../Context/AppProvider'
 const { height, width } = Dimensions.get("screen")
 
+
 const index = (porps) => {
+
+    const { LOGIN } = useContext(APPContext);
+
     const [show, setshow] = useState(false)
     return (
         <SafeAreaView style={style.container}>

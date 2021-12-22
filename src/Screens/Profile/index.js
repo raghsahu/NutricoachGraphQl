@@ -11,9 +11,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import moment, { months } from 'moment'
 import TodayAppoinment from './../../Components/TodayAppointment'
 import Calender from './../../Components/Calender'
+
+
 const index = () => {
-
-
     return (
         <View style={style.container}>
             <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
@@ -46,27 +46,27 @@ const index = () => {
                     </View>
                     <Text style={{ fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray, paddingHorizontal: 20, paddingVertical: 10 }}>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups.</Text>
                 </View>
-                <View style={{marginHorizontal:20,marginTop:170,backgroundColor:CONFIGURATION.white,elevation:2}}>
-                    <TouchableOpacity style={{flexDirection:"row",alignItems:"center",borderColor:CONFIGURATION.loginInputBorder,borderBottomWidth:1,paddingVertical:15,marginHorizontal:20,paddingHorizontal:0,justifyContent: 'space-between',}}>
-                        <View style={{height:50,width:50,borderRadius:50/2,backgroundColor:CONFIGURATION.lightGreen,alignItems: 'center',justifyContent: 'center',}}>
-                            <Image resizeMode={'contain'} style={{height:25,width:25}} source={require('./../../assetss/settings.png')} />
+                <View style={{ marginHorizontal: 20, marginTop: 170, backgroundColor: CONFIGURATION.white, elevation: 2 }}>
+                    <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", borderColor: CONFIGURATION.loginInputBorder, borderBottomWidth: 1, paddingVertical: 15, marginHorizontal: 20, paddingHorizontal: 0, justifyContent: 'space-between', }}>
+                        <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: CONFIGURATION.lightGreen, alignItems: 'center', justifyContent: 'center', }}>
+                            <Image resizeMode={'contain'} style={{ height: 25, width: 25 }} source={require('./../../assetss/settings.png')} />
                         </View>
-                        <Text style={{fontSize:16,fontFamily:CONFIGURATION.TextBold,width:"68%"}}>Personal Information</Text>
-                        <Image resizeMode={'contain'} style={{height:15,width:15}} source={require('./../../assetss/Vector.png')} />
+                        <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, width: "68%" }}>Personal Information</Text>
+                        <Image resizeMode={'contain'} style={{ height: 15, width: 15 }} source={require('./../../assetss/Vector.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flexDirection:"row",alignItems:"center",borderColor:CONFIGURATION.loginInputBorder,borderBottomWidth:1,paddingVertical:15,marginHorizontal:20,paddingHorizontal:0,justifyContent: 'space-between',}}>
-                        <View style={{height:50,width:50,borderRadius:50/2,backgroundColor:CONFIGURATION.lightGreen,alignItems: 'center',justifyContent: 'center',}}>
-                            <Image resizeMode={'contain'} style={{height:25,width:25}} source={require('./../../assetss/info.png')} />
+                    <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", borderColor: CONFIGURATION.loginInputBorder, borderBottomWidth: 1, paddingVertical: 15, marginHorizontal: 20, paddingHorizontal: 0, justifyContent: 'space-between', }}>
+                        <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: CONFIGURATION.lightGreen, alignItems: 'center', justifyContent: 'center', }}>
+                            <Image resizeMode={'contain'} style={{ height: 25, width: 25 }} source={require('./../../assetss/info.png')} />
                         </View>
-                        <Text style={{fontSize:16,fontFamily:CONFIGURATION.TextBold,width:"68%"}}>Change Password</Text>
-                        <Image resizeMode={'contain'} style={{height:15,width:15}} source={require('./../../assetss/Vector.png')} />
+                        <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, width: "68%" }}>Change Password</Text>
+                        <Image resizeMode={'contain'} style={{ height: 15, width: 15 }} source={require('./../../assetss/Vector.png')} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flexDirection:"row",alignItems:"center",borderColor:CONFIGURATION.loginInputBorder,borderBottomWidth:1,paddingVertical:15,marginHorizontal:20,paddingHorizontal:0,justifyContent: 'space-between',}}>
-                        <View style={{height:50,width:50,borderRadius:50/2,backgroundColor:CONFIGURATION.lightGreen,alignItems: 'center',justifyContent: 'center',}}>
-                            <Image resizeMode={'contain'} style={{height:25,width:25}} source={require('./../../assetss/feed.png')} />
+                    <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", borderColor: CONFIGURATION.loginInputBorder, borderBottomWidth: 1, paddingVertical: 15, marginHorizontal: 20, paddingHorizontal: 0, justifyContent: 'space-between', }}>
+                        <View style={{ height: 50, width: 50, borderRadius: 50 / 2, backgroundColor: CONFIGURATION.lightGreen, alignItems: 'center', justifyContent: 'center', }}>
+                            <Image resizeMode={'contain'} style={{ height: 25, width: 25 }} source={require('./../../assetss/feed.png')} />
                         </View>
-                        <Text style={{fontSize:16,fontFamily:CONFIGURATION.TextBold,width:"68%"}}>Send feedback</Text>
-                        <Image resizeMode={'contain'} style={{height:15,width:15}} source={require('./../../assetss/Vector.png')} />
+                        <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, width: "68%" }}>Send feedback</Text>
+                        <Image resizeMode={'contain'} style={{ height: 15, width: 15 }} source={require('./../../assetss/Vector.png')} />
                     </TouchableOpacity>
                 </View>
             </View>

@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import style from './style';
 import ClientsBox from '../../Components/ClientsBox';
 
-const DATA = [{new:"1",name:"Jaeremy gaurkau"},{new:"0",name:"Dulce Passaquindici"},{new:"0",name:"Randy Workman"},{new:"1",name:"Rayna Aminoff"},{new:"1",name:"Jaeremy gaurkau"},]
+const DATA = [{ new: "1", name: "Jaeremy gaurkau" }, { new: "0", name: "Dulce Passaquindici" }, { new: "0", name: "Randy Workman" }, { new: "1", name: "Rayna Aminoff" }, { new: "1", name: "Jaeremy gaurkau" },]
 
 const { height, width } = Dimensions.get("screen")
 
@@ -35,17 +35,17 @@ const index = () => {
                 </View>
                 <FlatList
                     data={DATA}
-                    style={{marginTop: 35,}}
-                    renderItem={({item})=>{
-                        return(
-                            <ClientsBox name={item.name} new={item.new}/>
+                    style={{ marginTop: 35, }}
+                    renderItem={({ item }) => {
+                        return (
+                            <ClientsBox name={item.name} new={item.new} />
                         )
                     }}
                     keyExtractor={item => item.id}
                 />
             </View>
-            <TouchableOpacity style={{position:"absolute",bottom:20,right:20}}>
-                <Image resizeMode={"contain"} style={{height:50,width:50}} source={require('./../../assetss/add.png')}/>
+            <TouchableOpacity style={{ position: "absolute", bottom: 20, right: 20 }}>
+                <Image resizeMode={"contain"} style={{ height: 50, width: 50 }} source={require('./../../assetss/add.png')} />
             </TouchableOpacity>
         </View>
     )
