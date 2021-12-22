@@ -16,7 +16,7 @@ const isIPhoneX = () =>
 
 const GeneralStatusBarColor = ({ backgroundColor, ...props }) => (
   <View style={[styles.statusBar, Platform.OS == 'android' ? { backgroundColor } : null]}>
-    <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    <StatusBar translucent  backgroundColor={backgroundColor} {...props} />
   </View>
 );
 
