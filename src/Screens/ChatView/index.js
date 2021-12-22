@@ -221,16 +221,16 @@ const index = (props) => {
                     setselected(e.nativeEvent.position);
                 }}>
                     <View key="1">
-                    <FlatList
-                    data={DATA}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={() => {
-                        return (
-                            <Chat />
-                        )
-                    }}
-                    keyExtractor={item => item.id}
-                />
+                        <FlatList
+                            data={DATA}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={() => {
+                                return (
+                                    <Chat />
+                                )
+                            }}
+                            keyExtractor={item => item.id}
+                        />
                     </View>
                     <View key="2">
                         <Text>Meal plan</Text>
@@ -242,7 +242,7 @@ const index = (props) => {
                         <Text>Questions</Text>
                     </View>
                 </PagerView>
-                
+
                 <View style={style.inputView}>
                     <View style={style.inputrow}>
                         <TextInput

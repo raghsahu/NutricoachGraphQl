@@ -8,7 +8,9 @@ const { height, width } = Dimensions.get("screen")
 import Icon from "react-native-vector-icons/AntDesign"
 import { ScrollView } from 'react-native-gesture-handler'
 import SVG from './../../Components/SVG/ResetPass'
+
 const index = (props) => {
+    
     return (
         <View style={style.container}>
             <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />

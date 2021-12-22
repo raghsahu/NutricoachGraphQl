@@ -1,13 +1,19 @@
-import React,{useState} from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, Dimensions, Image, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
 import style from './style'
 import Icon from "react-native-vector-icons/Feather"
 import Button from '../../Components/Button'
+import { login } from '../../Api/model'
+import { APPContext } from '../../Context/AppProvider'
 const { height, width } = Dimensions.get("screen")
 
+
 const index = (porps) => {
+
+    const { LOGIN } = useContext(APPContext);
+
     const [show, setshow] = useState(false)
     return (
         <View style={style.container}>
@@ -34,11 +40,11 @@ const index = (porps) => {
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             secureTextEntry={show}
                         />
-                        <TouchableOpacity onPress={()=>{setshow(!show)}} style={{}}>
+                        <TouchableOpacity onPress={() => { setshow(!show) }} style={{}}>
                             {
-                                show ? 
-                                <Icon name="eye" size={18} color={CONFIGURATION.loginIconeye} />:
-                                <Icon name="eye-off" size={18} color={CONFIGURATION.loginIconeye} />
+                                show ?
+                                    <Icon name="eye" size={18} color={CONFIGURATION.loginIconeye} /> :
+                                    <Icon name="eye-off" size={18} color={CONFIGURATION.loginIconeye} />
                             }
                         </TouchableOpacity>
                     </View>
@@ -49,7 +55,8 @@ const index = (porps) => {
                     <Text style={style.forgotText}>Forgot Password?</Text>
                 </TouchableOpacity>
                 <View style={style.btnView}>
-                    <Button onPress={() => { porps.navigation.navigate("Home") }} btnText={"Login"} />
+                    <Button onPress={() => { LOGIN('romillakkad219@gmail.com', '123456') }}
+                        btnText={"Login"} />
                     <TouchableOpacity onPress={() => {
                         porps.navigation.navigate("Register")
                     }} style={{ marginVertical: 20, }}>
