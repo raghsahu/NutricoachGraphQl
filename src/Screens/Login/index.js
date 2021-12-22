@@ -100,7 +100,7 @@ const index = (props) => {
                 </View>
             </View>
             <TouchableOpacity onPress={() => {
-                porps.navigation.navigate("ForgotPassword")
+                props.navigation.navigate("ForgotPassword")
             }}>
                 <Text style={style.forgotText}>Forgot Password?</Text>
             </TouchableOpacity>
@@ -108,7 +108,7 @@ const index = (props) => {
             <View style={style.btnView}>
                 <Button onPress={onPressLogin} btnText={"Login"} />
                 <TouchableOpacity onPress={() => {
-                    porps.navigation.navigate("Register")
+                    props.navigation.navigate("Register")
                 }} style={{ marginVertical: 20, }}>
                     <Text style={style.textregi}>Don’t have an account?<Text style={{ color: CONFIGURATION.yellow }}> Register</Text></Text>
                 </TouchableOpacity>
