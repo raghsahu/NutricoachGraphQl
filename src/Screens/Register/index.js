@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Platform } from 'react-native'
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Platform, Alert } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
 import style from './style'
@@ -8,16 +8,18 @@ const { height, width } = Dimensions.get("screen")
 import Icon from "react-native-vector-icons/AntDesign"
 import Icon2 from "react-native-vector-icons/Feather"
 import { ScrollView } from 'react-native-gesture-handler'
+
+//PACKAGES
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment"
 import RBSheet from "react-native-raw-bottom-sheet";
+import Toast from "react-native-simple-toast";
 
 const index = (props) => {
+
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
-    const [selectDate, setselectDate] = useState("")
-    const [gender, setgender] = useState("")
     const [show2, setshow2] = useState(true)
     const refRBSheet = useRef();
     const ref_input2 = useRef();
@@ -26,6 +28,17 @@ const index = (props) => {
     const ref_input5 = useRef();
     const ref_input6 = useRef();
     const ref_input7 = useRef();
+    const [firstname, setFirstName] = useState('')
+    const [lastname, setlastname] = useState('')
+    const [middleName, setMiddleName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [selectDate, setselectDate] = useState("")
+    const [gender, setgender] = useState("")
+    const [mobile, setMobile] = useState('')
+    const [referalCode, setReferalCode] = useState('')
+
+
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -43,9 +56,34 @@ const index = (props) => {
         showMode('date');
     };
 
+    const onRegister = () => {
+        const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!firstname.trim()) {
+            Toast.show('Please enter first name', 5000)
+        } else if (!lastname.trim()) {
+            Toast.show('Please enter last name', 5000)
+        } else if (!middleName.trim()) {
+            Toast.show('Please enter middle name', 5000)
+        } else if (!email.trim()) {
+            Toast.show('Please enter email', 5000)
+        } else if (reg.test(email) == false) {
+            Toast.show('Please enter valid email', 5000)
+        } else if (!password.trim()) {
+            Toast.show('Please enter password', 5000)
+        } else if (password.length < 6) {
+            Toast.show('Password must contains 6 or more characters', 5000)
+        } else if (!selectDate.trim()) {
+            Toast.show('Please slect date', 5000)
+        } else if (!mobile.trim()) {
+            Toast.show('Please enter mobile number', 5000)
+        } else {
+            Alert.alert('here')
+        }
+    }
+
     return (
         <View style={style.container}>
-            <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
+            <GeneralStatusBar backgroundColor={'#fff'} barStyle="dark-content" />
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginHorizontal: 20 }}>
                 <TouchableOpacity onPress={() => {
                     props.navigation.goBack()
@@ -61,45 +99,80 @@ const index = (props) => {
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="First Name*"
+                            value={firstname}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             onSubmitEditing={() => ref_input2.current.focus()}
+                            onChangeText={(text) => {
+                                if (text.length <= 30) {
+                                    var RegExpression = /^[a-zA-Z\s]*$/;
+                                    if (RegExpression.test(text)) {
+                                        setFirstName(text)
+                                    }
+                                }
+                            }}
                         />
                     </View>
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="Last Name*"
+                            value={lastname}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             onSubmitEditing={() => ref_input3.current.focus()}
                             ref={ref_input2}
+                            onChangeText={(text) => {
+                                if (text.length <= 30) {
+                                    var RegExpression = /^[a-zA-Z\s]*$/;
+                                    if (RegExpression.test(text)) {
+                                        setlastname(text)
+                                    }
+                                }
+                            }}
                         />
                     </View>
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="Middle Name*"
+                            value={middleName}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             onSubmitEditing={() => ref_input4.current.focus()}
                             ref={ref_input3}
+                            onChangeText={(text) => {
+                                if (text.length <= 30) {
+                                    var RegExpression = /^[a-zA-Z\s]*$/;
+                                    if (RegExpression.test(text)) {
+                                        setMiddleName(text)
+                                    }
+                                }
+                            }}
                         />
                     </View>
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="Email*"
+                            value={email}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             onSubmitEditing={() => ref_input5.current.focus()}
                             ref={ref_input4}
+                            onChangeText={(text) => {
+                                setEmail(text)
+                            }}
                         />
                     </View>
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15, }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="Password"
+                            value={password}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             secureTextEntry={show2}
                             onSubmitEditing={() => ref_input6.current.focus()}
                             ref={ref_input5}
+                            onChangeText={(text) => {
+                                setPassword(text)
+                            }}
                         />
                         <TouchableOpacity onPress={() => { setshow2(!show2) }} style={{}}>
                             {
@@ -137,20 +210,34 @@ const index = (props) => {
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             onSubmitEditing={() => ref_input7.current.focus()}
                             ref={ref_input6}
+                            value={mobile}
+                            onChangeText={text => {
+                                if (text.length <= 10) {
+                                    var RegExpression = /^[0-9\s]*$/;
+                                    if (RegExpression.test(text)) {
+                                        setMobile(text)
+                                    }
+                                }
+                            }}
                         />
                     </View>
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="Refferal Code"
+                            value={referalCode}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             ref={ref_input7}
+                            onChangeText={(text) => {
+                                setReferalCode(text)
+                            }}
                         />
                     </View>
                 </View>
                 <View style={style.btnView}>
-                    <Button btnText={"Register"} />
+                    <Button onPress={onRegister} btnText={"Register"} />
                 </View>
+                <View style={{ height: 50 }} />
                 {show && (
                     <DateTimePicker
                         style={{ backgroundColor: CONFIGURATION.primaryDark }}
@@ -167,7 +254,7 @@ const index = (props) => {
                 ref={refRBSheet}
                 closeOnDragDown={true}
                 closeOnPressMask={true}
-                height={height / 6}
+                height={height / 4}
                 customStyles={{
                     wrapper: {
                         backgroundColor: "#00000050"

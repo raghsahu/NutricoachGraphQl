@@ -11,7 +11,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import moment, { months } from 'moment'
 import TodayAppoinment from './../../Components/TodayAppointment'
 import Calender from './../../Components/Calender'
-const index = () => {
+import { CommonActions } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+const index = (props) => {
     const [Dates, setDates] = useState()
     const [modalVisible, setModalVisible] = useState(false);
     const [month, setmonth] = useState(moment(new Date()).format("MMMM, YYYY"))
@@ -202,7 +206,18 @@ const index = () => {
                                     <Text style={{ fontSize: 18, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack, marginTop: 15 }}>Settings</Text> */}
                                 </View>
                             </View>
-                            <TouchableOpacity style={{ paddingVertical: 30, alignItems: "center", justifyContent: "center" }}>
+                            <TouchableOpacity style={{ paddingVertical: 30, alignItems: "center", justifyContent: "center" }}
+                                onPress={() => {
+                                    AsyncStorage.clear()
+                                    props.navigation.dispatch(
+                                        CommonActions.reset({
+                                            index: 0,
+                                            routes: [
+                                                { name: 'Login' }
+                                            ],
+                                        })
+                                    );
+                                }}>
                                 <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.primaryRed }}>Logout</Text>
                             </TouchableOpacity>
                         </View>
