@@ -49,7 +49,7 @@ export default StyleSheet.create({
       marginHorizontal:20,
       marginVertical: 30,
     },
-    btnView:{
-      marginTop:150
-    }
+    // btnView:{
+    //   marginTop:150
+    // }
 });

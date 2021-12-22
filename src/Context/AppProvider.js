@@ -29,6 +29,42 @@ export const APPProvider = (props) => {
         return await request('post', graphqlQuery)
     }
 
+  const forgot = async (email) => {
+        const graphqlQuery = {
+            query: `mutation forgotPassword($email: String!) {
+                forgotPassword(email: $email)
+                
+              }`,
+            variables: {
+                email: email 
+            }
+        };
+        return await request('post', graphqlQuery)
+    }
+
+    const resetNewPassword = async (newPassword) => {
+        const graphqlQuery = {
+            query: `mutation  {
+                resetPassword(input:
+                {
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMGE2NzBkOGIxOWY4NDVlZmRlOTU5ZiIsImlhdCI6MTY0MDE3NDc5MywiZXhwIjoxNjQwNzc5NTkzfQ.g94Wwk5kJkYZyI3HwxyXcuhnHTcm0NFHAgl55In3h8c",
+                newPassword: $newPassword
+                }
+                ){
+                   userRole                 
+                }
+              }`,
+            variables: {
+                input: {
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMGE2NzBkOGIxOWY4NDVlZmRlOTU5ZiIsImlhdCI6MTY0MDE3NDc5MywiZXhwIjoxNjQwNzc5NTkzfQ.g94Wwk5kJkYZyI3HwxyXcuhnHTcm0NFHAgl55In3h8c",
+                newPassword: newPassword
+                }
+            }
+        };
+        return await request('post', graphqlQuery)
+    }
+
+
     const request = async (method, params) => {
         try {
             console.log("===================")
@@ -129,7 +165,9 @@ export const APPProvider = (props) => {
         <APPContext.Provider
             value={{
                 baseURL,
-                login
+                login,
+                forgot,
+                resetNewPassword,
             }}>
             {props.children}
         </APPContext.Provider>

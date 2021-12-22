@@ -1,26 +1,48 @@
 import React , { useState, useContext }from 'react'
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput } from 'react-native'
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, SafeAreaView } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
 import style from './style'
+import ProgressView from '../../Components/ProgressView'
 import Button from './../../Components/Button'
 import { ScrollView } from 'react-native-gesture-handler'
 const { height, width } = Dimensions.get("screen")
 import { APPContext } from '../../Context/AppProvider'
+import Toast from "react-native-simple-toast";
 
 const index = (props) => {
-    const { Forgot } = useContext(APPContext);
-    const [email, setEmail] = useState('');
+    const { forgot } = useContext(APPContext);
+    const [email, setEmail] = useState('Schuster.Adrian@yahoo.com');
+    const [loading, setLoading] = useState(false)
 
-    const onForgot = () => {
-       //const result = Forgot(email)
+    const onForgot = async () => {
+         if (!email) {
+            Toast.show('Please enter email')
+        }  else {
+            setLoading(true)
+            const result = await forgot(email)
+            setLoading(false)
+            console.log("ForgotEmail", result)
+            if (result.data && result.data.data.forgotPassword != null) {
+                if (result.data.data.forgotPassword == true) {
+                      setTimeout(() => {
+                  props.navigation.navigate("ResetPassword")
+                }, 100);
+                }
+              
+            } else {
+                Toast.show(result.error, 2000);
+            }
+
+        }
 
     };
 
     return (
-        <View style={style.container}>
+        <SafeAreaView style={style.container}>
+        <ScrollView>
             <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
-            <ScrollView>
+           
             <TouchableOpacity onPress={() => {
                 props.navigation.goBack()
             }} style={style.backarrView}>
@@ -36,6 +58,7 @@ const index = (props) => {
                 <TextInput
                     style={style.textInput}
                     placeholder="Enter Email"
+                    value={email}
                     placeholderTextColor={CONFIGURATION.loginpalceholder}
                     onChangeText={text => {
                      setEmail(text);
@@ -44,13 +67,13 @@ const index = (props) => {
             </View>
             <View style={style.btnView}>
                 <Button onPress={()=>{
-                   // props.navigation.navigate("ResetPassword")
                      onForgot();
                     }} 
                     btnText={"Proceed"} />
             </View>
-            </ScrollView>
-        </View>
+          {loading && <ProgressView />}
+          </ScrollView>
+        </SafeAreaView>
     )
 }
 
