@@ -33,7 +33,7 @@ export const APPProvider = (props) => {
         const graphqlQuery = {
             query: `mutation createCoach($input: CreateCoachInput!) {
                 createCoach(input: $input){
-                    id                  
+                    id                                                                                        
                 }
               }`,
             variables: {

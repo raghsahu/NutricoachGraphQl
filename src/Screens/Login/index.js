@@ -35,7 +35,6 @@ const index = (props) => {
             setLoading(true)
             const result = await login(email, password)
             setLoading(false)
-            console.log("AAAA", result)
             if (result.data && result.data.data.logInCoach != null) {
                 setTimeout(() => {
                     setLoggedInUser(result.data)
