@@ -7,6 +7,7 @@ import CONFIGURATION from './Components/Config';
 
 //CONTEXT
 import { APPProvider } from './Context/AppProvider';
+import { AuthProvider } from './Context/AuthProvider';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 //----------------Screens-----------------//
@@ -21,6 +22,7 @@ import ChatView from './Screens/ChatView/index'
 import ClientsDetail from './Screens/ClientsDetail/index'
 import Profile from './Screens/Profile/index'
 import CalenderView from './Screens/CalenderView/index'
+import Splash from './Screens/Splash/Splash';
 
 
 const Stack = createStackNavigator();
@@ -31,6 +33,11 @@ function MyStack() {
     <Stack.Navigator screenOptions={{
       headerShown: false
     }}>
+      <Stack.Screen
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
+        name="Splash"
+        component={Splash}
+      />
       <Stack.Screen
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
         name="Login"
@@ -146,11 +153,13 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <APPProvider>
-        <NavigationContainer>
-          <MyStack />
-        </NavigationContainer>
-      </APPProvider>
+      <AuthProvider>
+        <APPProvider>
+          <NavigationContainer>
+            <MyStack />
+          </NavigationContainer>
+        </APPProvider>
+      </AuthProvider>
     </ApolloProvider>
   );
 }
