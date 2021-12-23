@@ -56,6 +56,26 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
+   const changeNewPassword = async (email, oldPassword, newPassword) => {
+    const graphqlQuery = {
+      query: `mutation updateUserPassword($input: UpdateUserPasswordInput!) {
+                updateUserPassword(input: $input){
+                   id,
+                   email,
+                   password                    
+                }
+            }`,
+        variables: {
+        input: {
+            email: email,
+            oldPassword: oldPassword,  
+            newPassword: newPassword  
+        },
+      },
+    };
+    return await request('post', graphqlQuery);
+  };
+
   const register = async (
     firstname,
     lastname,
@@ -186,6 +206,7 @@ export const APPProvider = props => {
         forgot,
         resetNewPassword,
         register,
+        changeNewPassword,
       }}>
       {props.children}
     </APPContext.Provider>
