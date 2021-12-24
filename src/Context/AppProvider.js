@@ -1,10 +1,13 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
 import { Alert } from 'react-native';
 
-import { useQuery, gql } from '@apollo/client';
+
+//CONTEXT 
+import { AuthContext } from './AuthProvider'
 
 //PACKAGES
 import axios from 'axios'
+import { useQuery, gql } from '@apollo/client';
 
 export const APPContext = createContext();
 
@@ -12,6 +15,7 @@ export const APPProvider = (props) => {
 
     const baseURL = "https://api-nightly.nutricoach.pro/graphql"
 
+    const { authDetails } = useContext(AuthContext)
 
     const login = async (email, password) => {
         const graphqlQuery = {
@@ -64,11 +68,13 @@ export const APPProvider = (props) => {
             console.log("PARAMS: ", params)
             console.log("===================")
 
-
+            console.log('authDetails', authDetails)
+            let value = authDetails && authDetails.logInCoach && authDetails.logInCoach.token ? authDetails.logInCoach.token : ''
             if (method == 'get') {
                 const response = await axios.get(baseURL, {
                     params: params,
                     headers: {
+                        "Authorization": `bearer ${value}`,
                     },
                 });
 
@@ -77,6 +83,7 @@ export const APPProvider = (props) => {
             else if (method == 'put') {
                 const response = await axios.put(baseURL, params, {
                     headers: {
+                        "Authorization": `bearer ${value}`,
                     },
                 })
 
@@ -88,6 +95,7 @@ export const APPProvider = (props) => {
                     url: baseURL,
                     data: params,
                     headers: {
+                        "Authorization": `bearer ${value}`,
                         'Content-Type': 'application/json'
                     },
                 });
@@ -157,7 +165,7 @@ export const APPProvider = (props) => {
             value={{
                 baseURL,
                 login,
-                register
+                register,
             }}>
             {props.children}
         </APPContext.Provider>

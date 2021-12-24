@@ -1,39 +1,31 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, Dimensions, Image, TouchableOpacity, Modal, FlatList } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
-import CONFIGURATION from '../../Components/Config'
-import GeneralStatusBar from './../../Components/GeneralStatusBar'
+import React, { useState, useEffect, useContext } from 'react'
+import { View, Text, Dimensions, Image, TouchableOpacity, Modal, ScrollView } from 'react-native'
 import style from './style'
+
+//ASSETS & CONFIG
+import CONFIGURATION from '../../Components/Config'
 import Icon from 'react-native-vector-icons/Entypo'
-const { height, width } = Dimensions.get("screen")
+
+//COMPONENTS
+import TodayAppoinment from './../../Components/TodayAppointment'
+import GeneralStatusBar from './../../Components/GeneralStatusBar'
+
+//PACKAGES
 import Pie from 'react-native-pie'
 import LinearGradient from 'react-native-linear-gradient';
-import moment, { months } from 'moment'
-import TodayAppoinment from './../../Components/TodayAppointment'
-import Calender from './../../Components/Calender'
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//HELPER
+const { height, width } = Dimensions.get("screen")
+
+//CONTEXT 
+import { APPContext } from '../../Context/AppProvider'
 
 const index = (props) => {
-    const [Dates, setDates] = useState()
-    const [modalVisible, setModalVisible] = useState(false);
-    const [month, setmonth] = useState(moment(new Date()).format("MMMM, YYYY"))
-    const [addMonth, setaddMonth] = useState(0)
-    const [fixDate, setfixDate] = useState("")
-    useEffect(() => {
-        var dateObj = moment(month, "MMMM, YYYY").daysInMonth()
-        setaddMonth(dateObj)
-        var dates = []
-        for (var i = 1; i <= dateObj; i++) {
-            dates.push(i)
-        }
-        setDates(dates)
-        console.log('====================================');
-        console.log(dates);
-        console.log('====================================');
-    }, [month])
 
+    const [modalVisible, setModalVisible] = useState(false);
+   
     return (
         <View style={style.container}>
             <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
