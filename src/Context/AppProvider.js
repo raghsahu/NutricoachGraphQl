@@ -172,6 +172,35 @@ export const APPProvider = props => {
         return await request('post', graphqlQuery);
     }
 
+    async function getClients() {
+        const graphqlQuery = {
+            query: `{
+                me {
+                  ... on Coach {
+                    customers {
+                      id
+                      email
+                      profile {
+                        fullName,
+                        profileImg
+                      }
+                      lastActivity
+                      activated  
+                      plans{id,name}
+                      healthProfile {
+                        medicalCondition
+                        goals,
+                        workout{description}
+                       
+                      }
+                    }
+                  }
+                }
+              }`
+        };
+        return await request('post', graphqlQuery);
+    }
+
     const request = async (method, params) => {
         try {
             console.log('===================');
@@ -273,7 +302,8 @@ export const APPProvider = props => {
                 register,
                 changeNewPassword,
                 getUserProfile,
-                getStrugglingClients
+                getStrugglingClients,
+                getClients,
             }}>
             {props.children}
         </APPContext.Provider>
