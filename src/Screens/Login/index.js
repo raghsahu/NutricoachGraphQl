@@ -6,10 +6,12 @@ import ProgressView from '../../Components/ProgressView'
 import style from './style'
 import Icon from "react-native-vector-icons/Feather"
 import Button from '../../Components/Button'
-import { login } from '../../Api/model'
+
+const { height, width } = Dimensions.get("screen")
+
+//CONTEXT 
 import { APPContext } from '../../Context/AppProvider'
 import { AuthContext } from '../../Context/AuthProvider'
-const { height, width } = Dimensions.get("screen")
 
 // PACKAGES
 import Toast from "react-native-simple-toast";
@@ -19,12 +21,12 @@ import { CommonActions } from '@react-navigation/native';
 const index = (props) => {
 
     const { login } = useContext(APPContext);
-    const { setLoggedInUser } = useContext(AuthContext);
+    const { setLoggedInUser, setUserEmail } = useContext(AuthContext);
 
     const [show, setshow] = useState(false)
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('Schuster.Adrian@yahoo.com')
-    const [password, setPassword] = useState('password')
+    const [password, setPassword] = useState('123456')
 
     const onPressLogin = async () => {
         if (!email) {
@@ -35,9 +37,11 @@ const index = (props) => {
             setLoading(true)
             const result = await login(email, password)
             setLoading(false)
+          //  console.log("LoginUser", result)
             if (result.data && result.data.data.logInCoach != null) {
                 setTimeout(() => {
                     setLoggedInUser(result.data)
+                    setUserEmail(email)
                     props.navigation.dispatch(
                         CommonActions.reset({
                             index: 0,

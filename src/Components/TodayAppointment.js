@@ -1,9 +1,36 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, Image, Dimensions } from 'react-native'
 import CONFIGURATION from './Config/index'
 const { height, width } = Dimensions.get("screen")
 
-const TodayAppointment = () => {
+const TodayAppointment = (props) => {
+
+    const item = props.item
+
+    useEffect(() => {
+        getPlans()
+        return () => { }
+    }, [])
+
+    function getPlans() {
+        if (item && item.plans && item.plans.length > 0) {
+            const array = item.plans.map((item) => item.name)
+            return array.join(',')
+        }
+        else {
+            return ""
+        }
+    }
+
+    function getImage() {
+        if (item && item.profile) {
+            return item.profile.profileImg == '' ? null : item.profile.profileImg
+        }
+        else {
+            return null
+        }
+    }
+
     return (
         <View style={{
             width: width - 40,
@@ -22,14 +49,17 @@ const TodayAppointment = () => {
                 alignItems: "center",
                 justifyContent: "space-between"
             }}>
-                <Image resizeMode={"cover"} style={{
-                    height: 70,
-                    width: 70,
-                    borderRadius: 70 / 2
-                }} source={{ uri: "https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80" }} />
+                <Image resizeMode={"cover"}
+                    style={{
+                        height: 70,
+                        width: 70,
+                        borderRadius: 70 / 2,
+                        backgroundColor: '#f2f2f2'
+                    }}
+                    source={getImage() ? { uri: getImage() } : null} />
                 <View style={{ width: "60%" }}>
-                    <Text style={{ fontSize: 18, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>Erin George</Text>
-                    <Text style={{ fontSize: 14, fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray }}>Diabetic Diet Plan</Text>
+                    <Text style={{ fontSize: 18, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{item.profile ? item.profile.fullName : ""}</Text>
+                    <Text style={{ fontSize: 14, fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray }}>{getPlans()}</Text>
                 </View>
                 <Image style={{ height: 30, width: 30 }} source={require("./../assetss/more.png")} />
             </View>

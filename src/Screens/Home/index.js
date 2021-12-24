@@ -1,46 +1,48 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, Dimensions, Image, TouchableOpacity, Modal, FlatList, Alert } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
-import CONFIGURATION from '../../Components/Config'
-import GeneralStatusBar from './../../Components/GeneralStatusBar'
+import { View, Text, Dimensions, Image, TouchableOpacity, Modal, ScrollView, FlatList, Alert, ActivityIndicator } from 'react-native'
 import style from './style'
+
+//ASSETS & CONFIG
+import CONFIGURATION from '../../Components/Config'
 import Icon from 'react-native-vector-icons/Entypo'
-const { height, width } = Dimensions.get("screen")
+
+//COMPONENTS
+import TodayAppoinment from './../../Components/TodayAppointment'
+import GeneralStatusBar from './../../Components/GeneralStatusBar'
+
+//PACKAGES
 import Pie from 'react-native-pie'
 import LinearGradient from 'react-native-linear-gradient';
-import moment, { months } from 'moment'
-import TodayAppoinment from './../../Components/TodayAppointment'
-import Calender from './../../Components/Calender'
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// CONTEXT
-import { APPContext } from '../../Context/AppProvider'
+//HELPER
+const { height, width } = Dimensions.get("screen")
 
+//CONTEXT 
+import { APPContext } from '../../Context/AppProvider'
 
 const index = (props) => {
 
-    const { getProfile } = useContext(APPContext);
+    const { getStrugglingClients } = useContext(APPContext)
 
-
-    const [Dates, setDates] = useState()
     const [modalVisible, setModalVisible] = useState(false);
-    const [month, setmonth] = useState(moment(new Date()).format("MMMM, YYYY"))
-    const [addMonth, setaddMonth] = useState(0)
-    const [fixDate, setfixDate] = useState("")
+    const [isStrugglingClientLoading, setStrugglingClientLoading] = useState(true)
+    const [strugglingClient, setStrugglingClient] = useState([])
 
     useEffect(() => {
-        var dateObj = moment(month, "MMMM, YYYY").daysInMonth()
-        setaddMonth(dateObj)
-        var dates = []
-        for (var i = 1; i <= dateObj; i++) {
-            dates.push(i)
+        getStrugglingClientData()
+        return () => { }
+    }, [])
+
+    async function getStrugglingClientData() {
+        const result = await getStrugglingClients()
+        setStrugglingClientLoading(false)
+        console.log(result)
+        if (result && result.data && result.data.data && result.data.data.me) {
+            setStrugglingClient(result.data.data.me.strugglingClients)
         }
-        setDates(dates)
-        console.log('====================================');
-        console.log(dates);
-        console.log('====================================');
-    }, [month])
+    }
 
 
     async function fetchProfile(){
@@ -100,9 +102,7 @@ const index = (props) => {
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_1.png')} />
                             </View>
                             <Text style={style.numbetTextr}>05 <Text style={style.numbertext}>/10</Text></Text>
-                            <Text style={style.titleCardText}>New Clients this
-
-                                month</Text>
+                            <Text style={style.titleCardText}>New Clients this month</Text>
                         </View>
                         <View style={style.card}>
                             <Image resizeMode={"cover"} style={style.cardBgImage} source={require("./../../assetss/card_bg_2.png")} />
@@ -180,8 +180,26 @@ const index = (props) => {
                             </View>
                         </View> */}
                         <Text style={[style.dateText, { marginHorizontal: 20, marginTop: 10, }]}>Struggling Clients</Text>
-                        <TodayAppoinment />
-                        <TodayAppoinment />
+                        {isStrugglingClientLoading ?
+                            <View style={{ height: 100, justifyContent: 'center' }}>
+                                <ActivityIndicator style={{ alignSelf: 'center' }} />
+                            </View>
+                            :
+                            <>
+                                {strugglingClient.map((item, index) => {
+                                    
+                                })}
+                                <FlatList
+                                    data={strugglingClient}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    renderItem={({ item, index }) => {
+                                        return (
+                                            <TodayAppoinment item={item} />
+                                        )
+                                    }}>
+                                </FlatList>
+                            </>
+                        }
                     </View>
                 </ScrollView>
                 <Modal

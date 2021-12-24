@@ -21,8 +21,10 @@ import Messages from './Screens/Message/index'
 import ChatView from './Screens/ChatView/index'
 import ClientsDetail from './Screens/ClientsDetail/index'
 import Profile from './Screens/Profile/index'
+import MyProfile from './Screens/Profile/MyProfile'
 import CalenderView from './Screens/CalenderView/index'
 import Splash from './Screens/Splash/Splash';
+import ChangePassword from './Screens/ChangePassword/ChangePassword';
 
 
 const Stack = createStackNavigator();
@@ -52,6 +54,16 @@ function MyStack() {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
         name="ResetPassword"
         component={ResetPassword}
+      />
+       <Stack.Screen
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
+        name="ChangePassword"
+        component={ChangePassword}
+      />
+        <Stack.Screen
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
+        name="MyProfile"
+        component={MyProfile}
       />
       <Stack.Screen
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
@@ -84,30 +96,31 @@ function MyStack() {
 
 function HomeTab() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarInactiveTintColor: CONFIGURATION.TextDarkGray, tabBarActiveTintColor: CONFIGURATION.primaryGreen, tabBarStyle: { paddingTop: 10, height: 70, paddingBottom: 10 }, tabBarLabelStyle: { fontFamily: CONFIGURATION.TextBold, marginTop: 10, } }}>
-      <Tab.Screen
-        name="Dashboard"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Dasbord.png")} />
-            )
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Message"
-        component={Messages}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/message.png")} />
-            )
-          }
-        }}
-      />
-      {/* <Tab.Screen
+    <View style={{ flex: 1.0 }}>
+      <Tab.Navigator screenOptions={{ headerShown: false, tabBarInactiveTintColor: CONFIGURATION.TextDarkGray, tabBarActiveTintColor: CONFIGURATION.primaryGreen, tabBarStyle: { paddingTop: 10, height: 70, paddingBottom: 10 }, tabBarLabelStyle: { fontFamily: CONFIGURATION.TextBold, marginTop: 10, } }}>
+        <Tab.Screen
+          name="Dashboard"
+          component={Home}
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Dasbord.png")} />
+              )
+            }
+          }}
+        />
+        <Tab.Screen
+          name="Message"
+          component={Messages}
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/message.png")} />
+              )
+            }
+          }}
+        />
+        {/* <Tab.Screen
         name="Schedule"
         component={Home}
         options={{
@@ -118,29 +131,31 @@ function HomeTab() {
           }
         }}
       /> */}
-      <Tab.Screen
-        name="Clients"
-        component={Clients}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Clients.png")} />
-            )
-          }
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Profile.png")} />
-            )
-          }
-        }}
-      />
-    </Tab.Navigator>
+        <Tab.Screen
+          name="Clients"
+          component={Clients}
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Clients.png")} />
+              )
+            }
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <Image style={{ height: 25, width: 25, tintColor: color }} resizeMode={"contain"} source={require("./assetss/Profile.png")} />
+              )
+            }
+          }}
+        />
+      </Tab.Navigator>
+      <SafeAreaView style={{ backgroundColor: '#fff' }} />
+    </View>
   );
 }
 
