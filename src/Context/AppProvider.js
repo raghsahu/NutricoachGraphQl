@@ -128,11 +128,12 @@ export const APPProvider = props => {
                         fullName,
                         profileImg
                       }
-                      plans{id,name}
+                    plans{id,name}
                       healthProfile {
                         medicalCondition
                         goals,
                         workout{description}
+                       
                       }
                     }
                   }
