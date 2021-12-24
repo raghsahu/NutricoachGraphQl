@@ -13,17 +13,20 @@ import { ScrollView } from 'react-native-gesture-handler'
 
 //CONTEXT
 import { APPContext } from '../../Context/AppProvider'
+import { AuthContext } from '../../Context/AuthProvider'
 
 //PACKAGES
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment"
 import RBSheet from "react-native-raw-bottom-sheet";
 import Toast from "react-native-simple-toast";
+import { assertLeafType } from 'graphql'
+import { CommonActions } from '@react-navigation/native';
 
 const index = (props) => {
 
     const { register } = useContext(APPContext);
-
+    const { setLoggedInUser } = useContext(AuthContext);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -36,14 +39,14 @@ const index = (props) => {
     const ref_input5 = useRef();
     const ref_input6 = useRef();
     const ref_input7 = useRef();
-    const [firstname, setFirstName] = useState('Test')
-    const [lastname, setlastname] = useState('User')
-    const [middleName, setMiddleName] = useState('Test')
-    const [email, setEmail] = useState('test@gmail.com')
-    const [password, setPassword] = useState('password')
-    const [selectDate, setselectDate] = useState("22/09/1998")
-    const [gender, setgender] = useState("MALE")
-    const [mobile, setMobile] = useState('8877887788')
+    const [firstname, setFirstName] = useState('')
+    const [lastname, setlastname] = useState('')
+    const [middleName, setMiddleName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [selectDate, setselectDate] = useState("")
+    const [gender, setgender] = useState("")
+    const [mobile, setMobile] = useState('')
     const [referalCode, setReferalCode] = useState('')
     const [isLoading, setLoading] = useState(false)
 
@@ -87,10 +90,34 @@ const index = (props) => {
             Toast.show('Please enter mobile number', 5000)
         } else {
             setLoading(true)
-            const result = await register(firstname, lastname, middleName, email, password, selectDate, gender,mobile, referalCode)
+            const result = await register(firstname, lastname, middleName, email, password, selectDate, gender, mobile, referalCode)
             setLoading(false)
+            console.log("RESULRvccsdcds", JSON.stringify(result))
+            if (result.data.data && result.data.data.createCoach != null) {
+                Alert.alert(
+                    '',
+                    'Thanks for you registration, log in here',
+                    [
+                        {
+                            text: 'OK', onPress: () => props.navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 0,
+                                    routes: [
+                                        { name: 'Login' }
+                                    ],
+                                })
+                            )
+                        },
+                    ]
+                );
+            } else {
+                if (result.data.errors.length > 0) {
+                    Toast.show(result.data.errors[0].message)
+                } else {
+                    Toast.show('Somthing went wrong')
+                }
+            }
 
-            Alert.alert(JSON.stringify(result))
         }
     }
 

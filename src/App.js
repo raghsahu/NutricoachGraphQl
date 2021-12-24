@@ -23,6 +23,7 @@ import ClientsDetail from './Screens/ClientsDetail/index'
 import Profile from './Screens/Profile/index'
 import CalenderView from './Screens/CalenderView/index'
 import Splash from './Screens/Splash/Splash';
+import ChangePassword from './Screens/ChangePassword/ChangePassword';
 
 
 const Stack = createStackNavigator();
@@ -52,6 +53,11 @@ function MyStack() {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
         name="ResetPassword"
         component={ResetPassword}
+      />
+       <Stack.Screen
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
+        name="ChangePassword"
+        component={ChangePassword}
       />
       <Stack.Screen
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}

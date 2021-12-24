@@ -21,12 +21,12 @@ import { CommonActions } from '@react-navigation/native';
 const index = (props) => {
 
     const { login } = useContext(APPContext);
-    const { setLoggedInUser } = useContext(AuthContext);
+    const { setLoggedInUser, setUserEmail } = useContext(AuthContext);
 
     const [show, setshow] = useState(false)
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState('Schuster.Adrian@yahoo.com')
-    const [password, setPassword] = useState('password')
+    const [password, setPassword] = useState('123456')
 
     const onPressLogin = async () => {
         if (!email) {
@@ -37,10 +37,11 @@ const index = (props) => {
             setLoading(true)
             const result = await login(email, password)
             setLoading(false)
-            console.log("AAAA", result)
+          //  console.log("LoginUser", result)
             if (result.data && result.data.data.logInCoach != null) {
                 setTimeout(() => {
                     setLoggedInUser(result.data)
+                    setUserEmail(email)
                     props.navigation.dispatch(
                         CommonActions.reset({
                             index: 0,
