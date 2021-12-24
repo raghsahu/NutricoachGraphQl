@@ -6,10 +6,12 @@ import ProgressView from '../../Components/ProgressView'
 import style from './style'
 import Icon from "react-native-vector-icons/Feather"
 import Button from '../../Components/Button'
-import { login } from '../../Api/model'
+
+const { height, width } = Dimensions.get("screen")
+
+//CONTEXT 
 import { APPContext } from '../../Context/AppProvider'
 import { AuthContext } from '../../Context/AuthProvider'
-const { height, width } = Dimensions.get("screen")
 
 // PACKAGES
 import Toast from "react-native-simple-toast";
