@@ -21,6 +21,7 @@ import Messages from './Screens/Message/index'
 import ChatView from './Screens/ChatView/index'
 import ClientsDetail from './Screens/ClientsDetail/index'
 import Profile from './Screens/Profile/index'
+import MyProfile from './Screens/Profile/MyProfile'
 import CalenderView from './Screens/CalenderView/index'
 import Splash from './Screens/Splash/Splash';
 import ChangePassword from './Screens/ChangePassword/ChangePassword';
@@ -58,6 +59,11 @@ function MyStack() {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
         name="ChangePassword"
         component={ChangePassword}
+      />
+        <Stack.Screen
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
+        name="MyProfile"
+        component={MyProfile}
       />
       <Stack.Screen
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}

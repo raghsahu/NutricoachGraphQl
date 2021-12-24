@@ -113,6 +113,35 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
+   const getUserProfile = async (id) => {
+    const graphqlQuery = {
+      query: `user($id: ID) {
+                user(id: $id){
+                   id,
+                   email,
+                   profile {
+                    name{
+                    firstName,
+                    middleName,
+                    lastName,
+                    }
+                  fullName,
+                  dateOfBirth,
+                  gender,
+                  mobileNum,
+                  profileImg,
+                  joinedDate,
+                  }                    
+                }
+            }`,
+        variables: {
+            id: id,
+      },
+    };
+    return await request('post', graphqlQuery);
+  };
+
+
   const request = async (method, params) => {
     try {
       console.log('===================');
@@ -207,6 +236,7 @@ export const APPProvider = props => {
         resetNewPassword,
         register,
         changeNewPassword,
+        getUserProfile,
       }}>
       {props.children}
     </APPContext.Provider>

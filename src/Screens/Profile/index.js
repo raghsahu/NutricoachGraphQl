@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -13,16 +13,55 @@ import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
 import style from './style';
 import Icon from 'react-native-vector-icons/Entypo';
+import ProgressView from '../../Components/ProgressView';
 const {height, width} = Dimensions.get('screen');
 import Pie from 'react-native-pie';
 import LinearGradient from 'react-native-linear-gradient';
 import moment, {months} from 'moment';
 import TodayAppoinment from './../../Components/TodayAppointment';
 import Calender from './../../Components/Calender';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {APPContext} from '../../Context/AppProvider';
 
 const index = (props) => {
+    const [fullName, setFullName] = useState('')
+    const [mobile, setMobile] = useState('+21 92505 32010')
+   // const [loading, setLoading] = useState(false);
+    const {getUserProfile} = useContext(APPContext);
 
+    useEffect(() => {
+         AsyncStorage.getItem('login_user_details', (err, result) => {
+            if (result) {
+                let obj = JSON.parse(result)
+             //id  610a670d8b19f845efde959f
+            } else {
+            }
+        })
+
+        getProfile();
+
+    })
+
+
+ const getProfile = async () => {
+
+     // setLoading(true);
+      const result = await getUserProfile("610a670d8b19f845efde959f");
+     // setLoading(false);
+      //console.log('changeNewPassword', result);
+      if (result.data && result.data.data.user != null) {
+        setTimeout(() => {
+          
+
+        }, 100);
+      } else {
+        
+       // Toast.show('Old password is incorrect.', 2000);
+      }
     
+  };
+
+
   return (
     <View style={style.container}>
       <GeneralStatusBar
@@ -57,7 +96,7 @@ const index = (props) => {
             />
             <View>
               <Text style={{fontFamily: CONFIGURATION.TextBold, fontSize: 18}}>
-                Haylie Schleifer
+                   {fullName}
               </Text>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Image
@@ -70,7 +109,7 @@ const index = (props) => {
                     fontSize: 14,
                     color: CONFIGURATION.TextDarkGray,
                   }}>
-                  +21 92505 32010
+                  {mobile}
                 </Text>
               </View>
             </View>
@@ -127,7 +166,9 @@ const index = (props) => {
               marginHorizontal: 20,
               paddingHorizontal: 0,
               justifyContent: 'space-between',
-            }}>
+            }}
+            onPress={() => {props.navigation.navigate("MyProfile")}}
+            >
             <View
               style={{
                 height: 50,
@@ -241,6 +282,7 @@ const index = (props) => {
           </TouchableOpacity>
         </View>
       </View>
+      {/* {loading && <ProgressView />} */}
     </View>
   );
 };
