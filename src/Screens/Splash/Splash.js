@@ -1,10 +1,13 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { View, StyleSheet, Image, SafeAreaView, FlatList, TouchableOpacity, Modal, TextInput, StatusBar, Dimensions } from 'react-native'
+import React, { useContext, useEffect } from 'react'
+import { View, StyleSheet, Image, StatusBar, Dimensions } from 'react-native'
+
+//HELPER
 const { height, width } = Dimensions.get("screen")
 
+//CONTEXT
 import { AuthContext } from '../../Context/AuthProvider'
 
-
+//PACKAGES
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -40,7 +43,6 @@ function Splash(props) {
                 );
             }
         })
-
     }, [])
 
     return (

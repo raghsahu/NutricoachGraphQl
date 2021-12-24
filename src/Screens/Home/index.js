@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, Dimensions, Image, TouchableOpacity, Modal, ScrollView } from 'react-native'
+import { View, Text, Dimensions, Image, TouchableOpacity, Modal, ScrollView, FlatList, Alert, ActivityIndicator } from 'react-native'
 import style from './style'
 
 //ASSETS & CONFIG
@@ -24,8 +24,26 @@ import { APPContext } from '../../Context/AppProvider'
 
 const index = (props) => {
 
+    const { getStrugglingClients } = useContext(APPContext)
+
     const [modalVisible, setModalVisible] = useState(false);
-   
+    const [isStrugglingClientLoading, setStrugglingClientLoading] = useState(true)
+    const [strugglingClient, setStrugglingClient] = useState([])
+
+    useEffect(() => {
+        getStrugglingClientData()
+        return () => { }
+    }, [])
+
+    async function getStrugglingClientData() {
+        const result = await getStrugglingClients()
+        setStrugglingClientLoading(false)
+        console.log(result)
+        if (result && result.data && result.data.data && result.data.data.me) {
+            setStrugglingClient(result.data.data.me.strugglingClients)
+        }
+    }
+
     return (
         <View style={style.container}>
             <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
@@ -74,9 +92,7 @@ const index = (props) => {
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_1.png')} />
                             </View>
                             <Text style={style.numbetTextr}>05 <Text style={style.numbertext}>/10</Text></Text>
-                            <Text style={style.titleCardText}>New Clients this
-
-                                month</Text>
+                            <Text style={style.titleCardText}>New Clients this month</Text>
                         </View>
                         <View style={style.card}>
                             <Image resizeMode={"cover"} style={style.cardBgImage} source={require("./../../assetss/card_bg_2.png")} />
@@ -155,8 +171,26 @@ const index = (props) => {
                             </View>
                         </View> */}
                         <Text style={[style.dateText, { marginHorizontal: 20, marginTop: 10, }]}>Struggling Clients</Text>
-                        <TodayAppoinment />
-                        <TodayAppoinment />
+                        {isStrugglingClientLoading ?
+                            <View style={{ height: 100, justifyContent: 'center' }}>
+                                <ActivityIndicator style={{ alignSelf: 'center' }} />
+                            </View>
+                            :
+                            <>
+                                {strugglingClient.map((item, index) => {
+                                    
+                                })}
+                                <FlatList
+                                    data={strugglingClient}
+                                    keyExtractor={(item, index) => index.toString()}
+                                    renderItem={({ item, index }) => {
+                                        return (
+                                            <TodayAppoinment item={item} />
+                                        )
+                                    }}>
+                                </FlatList>
+                            </>
+                        }
                     </View>
                 </ScrollView>
                 <Modal

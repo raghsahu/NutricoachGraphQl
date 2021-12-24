@@ -16,9 +16,8 @@ export const AuthProvider = (props) => {
 
     async function setUserEmail(email) {
         AsyncStorage.setItem('login_user_email', email)
-        
     }
-
+    
     return (
         <AuthContext.Provider
             value={{

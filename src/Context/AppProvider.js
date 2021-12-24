@@ -1,6 +1,4 @@
-import React, { createContext, useEffect, useState, useContext } from 'react';
-import { Alert } from 'react-native';
-
+import React, { createContext, useContext } from 'react';
 
 //CONTEXT 
 import { AuthContext } from './AuthProvider'
@@ -118,6 +116,32 @@ export const APPProvider = props => {
         return await request('post', graphqlQuery);
     };
 
+    async function getStrugglingClients() {
+        const graphqlQuery = {
+            query: `{
+                me {
+                  ... on Coach {
+                    strugglingClients {
+                      id
+                      email
+                      profile {
+                        fullName,
+                        profileImg
+                      }
+                      plans{id,name}
+                      healthProfile {
+                        medicalCondition
+                        goals,
+                        workout{description}
+                      }
+                    }
+                  }
+                }
+              }`
+        };
+        return await request('post', graphqlQuery);
+    }
+
     const request = async (method, params) => {
         try {
             console.log('===================');
@@ -126,16 +150,21 @@ export const APPProvider = props => {
             console.log('PARAMS: ', params);
             console.log('===================');
 
+            let value = authDetails && authDetails.data && authDetails.data.logInCoach && authDetails.data.logInCoach.token ? authDetails.data.logInCoach.token : ''
             if (method == 'get') {
                 const response = await axios.get(baseURL, {
                     params: params,
-                    headers: {},
+                    headers: {
+                        "Authorization": `bearer ${value}`
+                    },
                 });
 
                 return getResponse(response);
             } else if (method == 'put') {
                 const response = await axios.put(baseURL, params, {
-                    headers: {},
+                    headers: {
+                        "Authorization": `bearer ${value}`
+                    },
                 });
 
                 return getResponse(response);
@@ -145,6 +174,7 @@ export const APPProvider = props => {
                     url: baseURL,
                     data: params,
                     headers: {
+                        "Authorization": `bearer ${value}`,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -155,24 +185,24 @@ export const APPProvider = props => {
             console.log(e);
             return getError(e);
         }
-  };
+    };
 
-  const getResponse = response => {
-    console.log(JSON.stringify(response.data));
-    if (response.data) {
-      let result = {
-        status: true,
-        data: response.data,
-        error: null,
-      };
-      return result;
-    } else {
-      let result = {
-        status: false,
-        data: {},
-        error: null,
-      };
-      return result;
+    const getResponse = response => {
+        console.log(JSON.stringify(response.data));
+        if (response.data) {
+            let result = {
+                status: true,
+                data: response.data,
+                error: null,
+            };
+            return result;
+        } else {
+            let result = {
+                status: false,
+                data: {},
+                error: null,
+            };
+            return result;
         }
     };
 
@@ -195,25 +225,26 @@ export const APPProvider = props => {
             message = error.message;
         }
 
-    let data = {
-      status: false,
-      result: null,
-      error: message,
+        let data = {
+            status: false,
+            result: null,
+            error: message,
+        };
+        return data;
     };
-    return data;
-  };
 
-  return (
-    <APPContext.Provider
-      value={{
-        baseURL,
-        login,
-        forgot,
-        resetNewPassword,
-        register,
-        changeNewPassword,
-      }}>
-      {props.children}
-    </APPContext.Provider>
-  );
+    return (
+        <APPContext.Provider
+            value={{
+                baseURL,
+                login,
+                forgot,
+                resetNewPassword,
+                register,
+                changeNewPassword,
+                getStrugglingClients
+            }}>
+            {props.children}
+        </APPContext.Provider>
+    );
 };
