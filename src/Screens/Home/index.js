@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, Dimensions, Image, TouchableOpacity, Modal, FlatList } from 'react-native'
+import React, { useState, useEffect, useContext } from 'react'
+import { View, Text, Dimensions, Image, TouchableOpacity, Modal, FlatList, Alert } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
@@ -14,13 +14,21 @@ import Calender from './../../Components/Calender'
 import { CommonActions } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// CONTEXT
+import { APPContext } from '../../Context/AppProvider'
+
 
 const index = (props) => {
+
+    const { getProfile } = useContext(APPContext);
+
+
     const [Dates, setDates] = useState()
     const [modalVisible, setModalVisible] = useState(false);
     const [month, setmonth] = useState(moment(new Date()).format("MMMM, YYYY"))
     const [addMonth, setaddMonth] = useState(0)
     const [fixDate, setfixDate] = useState("")
+
     useEffect(() => {
         var dateObj = moment(month, "MMMM, YYYY").daysInMonth()
         setaddMonth(dateObj)
@@ -34,12 +42,22 @@ const index = (props) => {
         console.log('====================================');
     }, [month])
 
+
+    async function fetchProfile(){
+        const result = await getProfile('61c2fefa98ffd41c1d6090fd')
+    }
+
     return (
         <View style={style.container}>
             <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
             <LinearGradient colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]} style={style.yellowView}>
                 <View style={style.menuView}>
-                    <TouchableOpacity onPress={() => { setModalVisible(!modalVisible); }}>
+                    <TouchableOpacity onPress={() => {
+                        // setModalVisible(!modalVisible);
+
+                        fetchProfile()
+                        
+                    }}>
                         <Image resizeMode={"contain"} style={style.menuIcon} source={require('./../../assetss/menu.png')} />
                     </TouchableOpacity>
                     <Text style={style.titleText}>Dashboard</Text>
@@ -102,8 +120,7 @@ const index = (props) => {
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_3.png')} />
                             </View>
                             <Text style={style.numbetTextr}>20</Text>
-                            <Text style={style.titleCardText}>Ending Clients this
-                                month</Text>
+                            <Text style={style.titleCardText}>Ending Clients this month</Text>
                         </View>
                         <View style={style.card}>
                             <Image resizeMode={"cover"} style={style.cardBgImage} source={require("./../../assetss/card_bg_4.png")} />

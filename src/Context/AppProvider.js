@@ -1,7 +1,7 @@
-import React, {createContext, useEffect, useState, useContext} from 'react';
-import {Alert} from 'react-native';
+import React, { createContext, useEffect, useState, useContext } from 'react';
+import { Alert } from 'react-native';
 
-import {useQuery, gql} from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 
 //PACKAGES
 import axios from 'axios';
@@ -9,6 +9,7 @@ import axios from 'axios';
 export const APPContext = createContext();
 
 export const APPProvider = props => {
+
   const baseURL = 'https://api-nightly.nutricoach.pro/graphql';
 
   const login = async (email, password) => {
@@ -27,11 +28,24 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
-  const forgot = async email => {
+  const getProfile = async (id) => {
+    const graphqlQuery = {
+      query: `user($id: String!) {
+                user(id: $id){
+                  id
+                }
+              }`,
+      variables: {
+        id: '61c2fefa98ffd41c1d6090fd'
+      },
+    };
+    return await request('get', graphqlQuery);
+  };
+
+  const forgot = async (email) => {
     const graphqlQuery = {
       query: `mutation forgotPassword($email: String!) {
-                forgotPassword(email: $email)
-                
+                forgotPassword(email: $email)                
               }`,
       variables: {
         email: email,
@@ -40,7 +54,7 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
-  const resetNewPassword = async newPassword => {
+  const resetNewPassword = async (newPassword) => {
     const graphqlQuery = {
       query: `mutation resetPassword($input: ResetPasswordInput!) {
                 resetPassword(input: $input)
@@ -48,28 +62,17 @@ export const APPProvider = props => {
                    userRole  
                   }
              }`,
-        variables: {
+      variables: {
         input: {
-            token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMGE2NzBkOGIxOWY4NDVlZmRlOTU5ZiIsImlhdCI6MTY0MDE3NDc5MywiZXhwIjoxNjQwNzc5NTkzfQ.g94Wwk5kJkYZyI3HwxyXcuhnHTcm0NFHAgl55In3h8c",
-            newPassword: newPassword,
-               
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMGE2NzBkOGIxOWY4NDVlZmRlOTU5ZiIsImlhdCI6MTY0MDE3NDc5MywiZXhwIjoxNjQwNzc5NTkzfQ.g94Wwk5kJkYZyI3HwxyXcuhnHTcm0NFHAgl55In3h8c",
+          newPassword: newPassword,
         },
       },
     };
     return await request('post', graphqlQuery);
   };
 
-  const register = async (
-    firstname,
-    lastname,
-    middleName,
-    email,
-    password,
-    selectDate,
-    gender,
-    mobile,
-    referalCode,
-  ) => {
+  const register = async (firstname, lastname, middleName, email, password, selectDate, gender, mobile, referalCode,) => {
     const graphqlQuery = {
       query: `mutation createCoach($input: CreateCoachInput!) {
                 createCoach(input: $input){
@@ -189,6 +192,7 @@ export const APPProvider = props => {
         forgot,
         resetNewPassword,
         register,
+        getProfile
       }}>
       {props.children}
     </APPContext.Provider>
