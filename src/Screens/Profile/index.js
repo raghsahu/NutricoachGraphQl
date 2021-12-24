@@ -26,6 +26,7 @@ import {APPContext} from '../../Context/AppProvider';
 const index = (props) => {
     const [fullName, setFullName] = useState('')
     const [mobile, setMobile] = useState('+21 ***** *****')
+    const [image, setImage] = useState(null)
     const [loading, setLoading] = useState(false);
     const {getUserProfile} = useContext(APPContext);
     const [id, setId] = useState('')
@@ -57,10 +58,12 @@ const index = (props) => {
           let full_name = result.data.data.user.profile.fullName;
           setFullName(full_name)
 
-           let mobile_num = result.data.data.user.profile.mobileNum;
+          let mobile_num = result.data.data.user.profile.mobileNum;
           if(mobile_num != null){
           setMobile(mobile_num)
           }
+
+          setImage(result.data.data.user.profile.profileImg)
           
         }, 100);
       } else {
@@ -98,10 +101,12 @@ const index = (props) => {
               justifyContent: 'space-between',
               width: '91%',
             }}>
-            <Image
-              style={{height: 70, width: 70}}
-              source={require('./../../assetss/menss.png')}
-            />
+          {image ?
+           <Image source={{uri: image}} style={{width: 70, height:70}}/>
+            : 
+           <Image source={require('./../../assetss/menss.png')} style={{width: 70, height:70}}/>
+          }
+
             <View>
               <Text style={{fontFamily: CONFIGURATION.TextBold, fontSize: 18}}>
                    {fullName}
