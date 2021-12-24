@@ -25,37 +25,45 @@ import {APPContext} from '../../Context/AppProvider';
 
 const index = (props) => {
     const [fullName, setFullName] = useState('')
-    const [mobile, setMobile] = useState('+21 92505 32010')
-   // const [loading, setLoading] = useState(false);
+    const [mobile, setMobile] = useState('+21 ***** *****')
+    const [loading, setLoading] = useState(false);
     const {getUserProfile} = useContext(APPContext);
+    const [id, setId] = useState('')
 
     useEffect(() => {
          AsyncStorage.getItem('login_user_details', (err, result) => {
             if (result) {
                 let obj = JSON.parse(result)
              //id  610a670d8b19f845efde959f
+              let id = obj.data.logInCoach.id;
+              if(id!=null){
+                 setId(id)   
+              }
             } else {
             }
         })
-
-        getProfile();
+       getProfile();
 
     })
 
 
  const getProfile = async () => {
-
      // setLoading(true);
-      const result = await getUserProfile("610a670d8b19f845efde959f");
+      const result = await getUserProfile(id);
      // setLoading(false);
-      //console.log('changeNewPassword', result);
+
       if (result.data && result.data.data.user != null) {
         setTimeout(() => {
-          
+          let full_name = result.data.data.user.profile.fullName;
+          setFullName(full_name)
 
+           let mobile_num = result.data.data.user.profile.mobileNum;
+          if(mobile_num != null){
+          setMobile(mobile_num)
+          }
+          
         }, 100);
       } else {
-        
        // Toast.show('Old password is incorrect.', 2000);
       }
     

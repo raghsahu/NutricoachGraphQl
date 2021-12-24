@@ -121,7 +121,7 @@ export const APPProvider = props => {
 
    const getUserProfile = async (id) => {
     const graphqlQuery = {
-      query: `user($id: ID) {
+      query: `query user($id: ID) {
                 user(id: $id){
                    id,
                    email,
