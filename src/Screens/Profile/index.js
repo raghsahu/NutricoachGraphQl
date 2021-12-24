@@ -26,7 +26,7 @@ import {APPContext} from '../../Context/AppProvider';
 const index = (props) => {
     const [fullName, setFullName] = useState('')
     const [mobile, setMobile] = useState('+21 ***** *****')
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState('')
     const [loading, setLoading] = useState(false);
     const {getUserProfile} = useContext(APPContext);
     const [id, setId] = useState('')
@@ -34,17 +34,15 @@ const index = (props) => {
     useEffect(() => {
          AsyncStorage.getItem('login_user_details', (err, result) => {
             if (result) {
-                let obj = JSON.parse(result)
-             //id  610a670d8b19f845efde959f
+              let obj = JSON.parse(result)
               let id = obj.data.logInCoach.id;
               if(id!=null){
                  setId(id)   
+                 getProfile();
               }
             } else {
             }
         })
-       getProfile();
-
     })
 
 
