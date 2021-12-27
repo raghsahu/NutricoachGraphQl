@@ -259,7 +259,7 @@ export const APPProvider = props => {
             let result = {
                 status: false,
                 data: {},
-                error: null,
+                error: 'Something went wrong',
             };
             return result;
         }
