@@ -116,6 +116,35 @@ export const APPProvider = props => {
         return await request('post', graphqlQuery);
     };
 
+   const getUserProfile = async (id) => {
+    const graphqlQuery = {
+      query: `query user($id: ID) {
+                user(id: $id){
+                   id,
+                   email,
+                   profile {
+                    name{
+                    firstName,
+                    middleName,
+                    lastName,
+                    }
+                  fullName,
+                  dateOfBirth,
+                  gender,
+                  mobileNum,
+                  profileImg,
+                  joinedDate,
+                  }                    
+                }
+            }`,
+        variables: {
+            id: id,
+      },
+    };
+    return await request('post', graphqlQuery);
+  };
+
+
     async function getStrugglingClients() {
         const graphqlQuery = {
             query: `{
@@ -129,6 +158,35 @@ export const APPProvider = props => {
                         profileImg
                       }
                     plans{id,name}
+                      healthProfile {
+                        medicalCondition
+                        goals,
+                        workout{description}
+                       
+                      }
+                    }
+                  }
+                }
+              }`
+        };
+        return await request('post', graphqlQuery);
+    }
+
+    async function getClients() {
+        const graphqlQuery = {
+            query: `{
+                me {
+                  ... on Coach {
+                    customers {
+                      id
+                      email
+                      profile {
+                        fullName,
+                        profileImg
+                      }
+                      lastActivity
+                      activated  
+                      plans{id,name}
                       healthProfile {
                         medicalCondition
                         goals,
@@ -243,7 +301,9 @@ export const APPProvider = props => {
                 resetNewPassword,
                 register,
                 changeNewPassword,
-                getStrugglingClients
+                getUserProfile,
+                getStrugglingClients,
+                getClients,
             }}>
             {props.children}
         </APPContext.Provider>

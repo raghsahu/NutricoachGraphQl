@@ -44,12 +44,22 @@ const index = (props) => {
         }
     }
 
+
+    async function fetchProfile(){
+        const result = await getProfile('61c2fefa98ffd41c1d6090fd')
+    }
+
     return (
         <View style={style.container}>
             <GeneralStatusBar backgroundColor={CONFIGURATION.statusbarColor} barStyle="light-content" />
             <LinearGradient colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]} style={style.yellowView}>
                 <View style={style.menuView}>
-                    <TouchableOpacity onPress={() => { setModalVisible(!modalVisible); }}>
+                    <TouchableOpacity onPress={() => {
+                        // setModalVisible(!modalVisible);
+
+                        fetchProfile()
+                        
+                    }}>
                         <Image resizeMode={"contain"} style={style.menuIcon} source={require('./../../assetss/menu.png')} />
                     </TouchableOpacity>
                     <Text style={style.titleText}>Dashboard</Text>
@@ -110,8 +120,7 @@ const index = (props) => {
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_3.png')} />
                             </View>
                             <Text style={style.numbetTextr}>20</Text>
-                            <Text style={style.titleCardText}>Ending Clients this
-                                month</Text>
+                            <Text style={style.titleCardText}>Ending Clients this month</Text>
                         </View>
                         <View style={style.card}>
                             <Image resizeMode={"cover"} style={style.cardBgImage} source={require("./../../assetss/card_bg_4.png")} />

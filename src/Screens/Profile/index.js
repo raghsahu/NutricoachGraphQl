@@ -72,7 +72,8 @@ const index = (props) => {
 
 
   return (
-    <View style={style.container}>
+    // <ScrollView >
+      <View style={style.container}>
       <GeneralStatusBar
         backgroundColor={CONFIGURATION.statusbarColor}
         barStyle="light-content"
@@ -294,7 +295,8 @@ const index = (props) => {
         </View>
       </View>
       {/* {loading && <ProgressView />} */}
-    </View>
+      </View>
+    // </ScrollView>
   );
 };
 
