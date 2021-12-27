@@ -15,6 +15,25 @@ const MessageBox = props => {
         }
     }
 
+       function getUnreadCount() {
+        if (item && item.unreadMessages && item.unreadMessages.length > 0) {
+            return item.unreadMessages.length
+        }
+        else {
+            return ""
+        }
+    }
+
+      function getLastMessage() {
+        if (item && item.unreadMessages && item.unreadMessages.length > 0) {
+            const array = item.unreadMessages.map((item) => item.body)
+            return array
+        }
+        else {
+            return ""
+        }
+    }
+
 
   return (
     <TouchableOpacity
@@ -44,7 +63,8 @@ const MessageBox = props => {
             uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
           }}
         /> */}
-         <Image resizeMode={"cover"}
+         <Image
+          resizeMode={"cover"}
           style={{
                     height: 50,
                     width: 50,
@@ -68,7 +88,7 @@ const MessageBox = props => {
               fontFamily: CONFIGURATION.TextRegular,
               color: CONFIGURATION.TextDarkGray,
             }}>
-            {props.mess}
+            {getLastMessage()}
           </Text>
         </View>
         <View
@@ -77,7 +97,8 @@ const MessageBox = props => {
             borderRadius: 10,
             width: '30%',
             alignItems: 'flex-end',
-          }}>
+          }}
+          >
           <Text
             style={{
               fontSize: 12,
@@ -86,13 +107,13 @@ const MessageBox = props => {
             }}>
             12:00 pm
           </Text>
-          <View
+      
+        <View
             style={{
               height: 20,
               width: 20,
               borderRadius: 20 / 2,
-              backgroundColor:
-                props.new == '' ? null : CONFIGURATION.primaryGreen,
+              backgroundColor: getUnreadCount() == '' ? null : CONFIGURATION.primaryGreen,
               alignItems: 'center',
               justifyContent: 'center',
               marginTop: 5,
@@ -102,7 +123,7 @@ const MessageBox = props => {
                 fontFamily: CONFIGURATION.TextBold,
                 color: CONFIGURATION.white,
               }}>
-              {props.new}
+              {getUnreadCount()}
             </Text>
           </View>
         </View>

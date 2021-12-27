@@ -191,8 +191,15 @@ export const APPProvider = props => {
                         medicalCondition
                         goals,
                         workout{description}
-                       
                       }
+                     unreadMessages(
+					 channel: APPOINTMENTS
+                     ){
+                        id,
+                        body,
+          		        createdAt
+                     }
+                     messagesWithCoach{id, body, createdAt}
                     }
                   }
                 }
