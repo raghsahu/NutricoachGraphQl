@@ -208,6 +208,38 @@ export const APPProvider = props => {
         return await request('post', graphqlQuery);
     }
 
+    const sendMessage = async (
+        id,
+        from,
+        to,
+        message,
+        attachments,
+        channel,
+        notifyViaEmail,
+    ) => {
+        const graphqlQuery = {
+            query: `mutation sendMessage($input: SendMessageInput!) {
+                sendMessage(input: $input){
+                    id
+                    body                                                                                     
+                }
+              }`,
+            variables: {
+                input: {
+                id: id
+				from: from
+				to: to
+				message: message
+				attachments: attachments
+				channel: channel
+				notifyViaEmail: notifyViaEmail
+				},
+            },
+        };
+        return await request('post', graphqlQuery);
+    };
+
+
     const request = async (method, params) => {
         try {
             console.log('===================');
@@ -311,6 +343,7 @@ export const APPProvider = props => {
                 getUserProfile,
                 getStrugglingClients,
                 getClients,
+                sendMessage,
             }}>
             {props.children}
         </APPContext.Provider>
