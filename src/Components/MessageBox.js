@@ -30,7 +30,7 @@ const MessageBox = props => {
             return array
         }
         else {
-            return ""
+            return "Start sending messages"
         }
     }
 
