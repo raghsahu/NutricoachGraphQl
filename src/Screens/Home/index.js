@@ -177,18 +177,11 @@ const index = (props) => {
                             </View>
                             :
                             <>
-                                {strugglingClient.map((item, index) => {
-                                    
+                                {strugglingClient.map((data, index) => {
+                                    return (
+                                        <TodayAppoinment key={index} item={data} />
+                                    )
                                 })}
-                                <FlatList
-                                    data={strugglingClient}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item, index }) => {
-                                        return (
-                                            <TodayAppoinment item={item} />
-                                        )
-                                    }}>
-                                </FlatList>
                             </>
                         }
                     </View>

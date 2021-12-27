@@ -25,8 +25,6 @@ export const AuthProvider = (props) => {
                 setAuthDetails,
                 setLoggedInUser,
                 setUserEmail,
-            
-                
             }}>
             {props.children}
         </AuthContext.Provider>
