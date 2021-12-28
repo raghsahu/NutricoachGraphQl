@@ -210,8 +210,8 @@ export const APPProvider = props => {
 
     const sendMessage = async (
         id,
-        from,
-        to,
+        fromUser,
+        toUser,
         message,
         attachments,
         channel,
@@ -226,13 +226,13 @@ export const APPProvider = props => {
               }`,
             variables: {
                 input: {
-                id: id
-				from: from
-				to: to
-				message: message
-				attachments: attachments
-				channel: channel
-				notifyViaEmail: notifyViaEmail
+                id: id,
+				from: fromUser,
+				to: toUser,
+				message: message,
+				attachments: attachments,
+				channel: channel,
+				notifyViaEmail: notifyViaEmail,
 				},
             },
         };

@@ -100,7 +100,7 @@ const index = props => {
             return (
               <MassageBox
                 click={() => {
-                  props.navigation.navigate('ChatView');
+                  props.navigation.navigate('ChatView', { toUser: item.id});
                 }}
                 item={item}
                 mess={"this is text message"}

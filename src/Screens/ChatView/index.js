@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,6 @@ import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
 import LinearGradient from 'react-native-linear-gradient';
 import style from './style';
-import ClientsBox from '../../Components/ClientsBox';
 import Chat from '../../Components/Chat';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -22,24 +21,44 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-picker';
 import PagerView from 'react-native-pager-view';
 import { APPContext } from '../../Context/AppProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DATA = [{}];
 
 const {height, width} = Dimensions.get('screen');
 
-const index = props => {
+const index = (props) => {
+  const  toUser  = props.route.params.toUser
   const { sendMessage } = useContext(APPContext);
 
   const [selected, setselected] = useState(0);
+  const [selectedChannel, setselectedChannel] = useState("APPOINTMENTS");
   const [animation, setanimation] = useState(new Animated.Value(0));
   const [startend, setstartend] = useState(false);
   const [fileData, setfileData] = useState('');
   const [userdata, setuserdata] = useState({document: {}});
+  const [message, setMessage] = useState('');
+  const [loginId, setId] = useState('')
   //const [filePath, setFilePath] = useState({});
   //const [toptab,settoptab] = useState('0')
   console.log('===============sdgdfggdf=====================');
   console.log(userdata);
   console.log('====================================');
+
+  useEffect(() => {
+    AsyncStorage.getItem('login_user_details', (err, result) => {
+      if (result) {
+        let obj = JSON.parse(result)
+        let id = obj.data.logInCoach.id;
+        if (id != null) {
+          setId(id)
+        
+        }
+      } else {
+      }
+    })
+  })
+
   useEffect(() => {
     if (startend) {
       startAnimation();
@@ -176,7 +195,7 @@ const index = props => {
   };
 
    const sendMessages = async () => {
-    const result = await sendMessage(id, "", "","", "", "", false);
+    const result = await sendMessage("", loginId, toUser, message, fileData, selectedChannel, false);
 
   };
 
@@ -256,6 +275,7 @@ const index = props => {
           <TouchableOpacity
             onPress={() => {
               setselected(0);
+              setselectedChannel("APPOINTMENTS");
             }}
             style={{alignItems: 'center'}}>
             <Text
@@ -280,6 +300,7 @@ const index = props => {
           <TouchableOpacity
             onPress={() => {
               setselected(1);
+               setselectedChannel("MEAL_PLAN");
             }}
             style={{alignItems: 'center'}}>
             <Text
@@ -304,6 +325,7 @@ const index = props => {
           <TouchableOpacity
             onPress={() => {
               setselected(2);
+              setselectedChannel("PROGRESS");
             }}
             style={{alignItems: 'center'}}>
             <Text
@@ -328,6 +350,7 @@ const index = props => {
           <TouchableOpacity
             onPress={() => {
               setselected(3);
+               setselectedChannel("QUESTIONS");
             }}
             style={{alignItems: 'center'}}>
             <Text
@@ -383,7 +406,12 @@ const index = props => {
 
         <View style={style.inputView}>
           <View style={style.inputrow}>
-            <TextInput style={style.input} placeholder="Send message" />
+            <TextInput style={style.input}
+             placeholder="Send message"
+             onChangeText={(text) => {
+                            setMessage(text)
+                        }}
+              />
             <TouchableOpacity
               onPress={() => {
                 setstartend(!startend);
