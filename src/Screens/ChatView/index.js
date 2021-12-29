@@ -24,12 +24,13 @@ import { APPContext } from '../../Context/AppProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DATA = [{}];
-
 const {height, width} = Dimensions.get('screen');
 
 const index = (props) => {
   const  toUser  = props.route.params.toUser
-  const { sendMessage } = useContext(APPContext);
+  const  toFullName  = props.route.params.fullName
+  const  profileImage  = props.route.params.profileImage
+  const { sendMessage, readMessages } = useContext(APPContext);
 
   const [selected, setselected] = useState(0);
   const [selectedChannel, setselectedChannel] = useState("APPOINTMENTS");
@@ -60,12 +61,18 @@ const index = (props) => {
   })
 
   useEffect(() => {
+    //read messages
+    readMessage();
+  })
+
+  useEffect(() => {
     if (startend) {
       startAnimation();
     } else {
       EndAnimation();
     }
   }, [startend]);
+
   const startAnimation = () => {
     Animated.timing(animation, {
       toValue: 70,
@@ -194,10 +201,23 @@ const index = (props) => {
     }
   };
 
-   const sendMessages = async () => {
-    const result = await sendMessage("", loginId, toUser, message, fileData, selectedChannel, false);
+  const readMessage = async () => {
+     const result = await readMessages(toUser, "2021-12-28T10:15:30Z",  selectedChannel);
 
   };
+
+   const sendMessages = async () => {
+    const result = await sendMessage("123654", loginId, toUser, message, fileData, selectedChannel, false);
+  };
+
+  function getImage() {
+        if (profileImage) {
+            return profileImage == '' ? null : profileImage
+        }
+        else {
+            return null
+        }
+    }
 
   return (
     <View style={style.container}>
@@ -236,9 +256,11 @@ const index = (props) => {
               borderColor: CONFIGURATION.white,
               borderWidth: 2,
             }}
-            source={{
-              uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
-            }}
+            source=
+            //{{
+              {getImage() ? { uri: getImage() } : null} 
+              //uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
+           // }}
           />
           <TouchableOpacity
             onPress={() => {
@@ -251,7 +273,7 @@ const index = (props) => {
                 fontFamily: CONFIGURATION.TextBold,
                 color: CONFIGURATION.white,
               }}>
-              Erin George
+              {toFullName}
             </Text>
             <Text
               style={{

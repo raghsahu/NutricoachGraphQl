@@ -144,7 +144,6 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
-
     async function getStrugglingClients() {
         const graphqlQuery = {
             query: `{
@@ -233,6 +232,33 @@ export const APPProvider = props => {
 				attachments: attachments,
 				channel: channel,
 				notifyViaEmail: notifyViaEmail,
+				},
+            },
+        };
+        return await request('post', graphqlQuery);
+    };
+
+     const readMessages = async (
+        otherMember,
+        dateSeen,
+        channel,
+    ) => {
+        const graphqlQuery = {
+            query: `mutation readMessages($input: ReadMessagesInput!) {
+                readMessages(input: $input){
+                     id
+                     body
+                     attachments
+                     channel
+                     seenAt
+                     createdAt                                                                                    
+                }
+              }`,
+            variables: {
+                input: {
+                otherMember: otherMember,
+				dateSeen: dateSeen,
+				channel: channel,
 				},
             },
         };
@@ -344,6 +370,7 @@ export const APPProvider = props => {
                 getStrugglingClients,
                 getClients,
                 sendMessage,
+                readMessages,
             }}>
             {props.children}
         </APPContext.Provider>

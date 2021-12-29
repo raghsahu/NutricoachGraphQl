@@ -100,7 +100,13 @@ const index = props => {
             return (
               <MassageBox
                 click={() => {
-                  props.navigation.navigate('ChatView', { toUser: item.id});
+                  props.navigation.navigate('ChatView',
+                   { 
+                    toUser: item.id, 
+                    fullName: item.profile.fullName, 
+                    profileImage: item.profile.profileImg, 
+                    item: item
+                    });
                 }}
                 item={item}
                 mess={"this is text message"}
