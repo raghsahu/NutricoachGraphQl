@@ -191,8 +191,15 @@ export const APPProvider = props => {
                         medicalCondition
                         goals,
                         workout{description}
-                       
                       }
+                     unreadMessages(
+					 channel: APPOINTMENTS
+                     ){
+                        id,
+                        body,
+          		        createdAt
+                     }
+                     messagesWithCoach{id, body, createdAt}
                     }
                   }
                 }
@@ -200,6 +207,38 @@ export const APPProvider = props => {
         };
         return await request('post', graphqlQuery);
     }
+
+    const sendMessage = async (
+        id,
+        fromUser,
+        toUser,
+        message,
+        attachments,
+        channel,
+        notifyViaEmail,
+    ) => {
+        const graphqlQuery = {
+            query: `mutation sendMessage($input: SendMessageInput!) {
+                sendMessage(input: $input){
+                    id
+                    body                                                                                     
+                }
+              }`,
+            variables: {
+                input: {
+                id: id,
+				from: fromUser,
+				to: toUser,
+				message: message,
+				attachments: attachments,
+				channel: channel,
+				notifyViaEmail: notifyViaEmail,
+				},
+            },
+        };
+        return await request('post', graphqlQuery);
+    };
+
 
     const request = async (method, params) => {
         try {
@@ -259,7 +298,7 @@ export const APPProvider = props => {
             let result = {
                 status: false,
                 data: {},
-                error: null,
+                error: 'Something went wrong',
             };
             return result;
         }
@@ -304,6 +343,7 @@ export const APPProvider = props => {
                 getUserProfile,
                 getStrugglingClients,
                 getClients,
+                sendMessage,
             }}>
             {props.children}
         </APPContext.Provider>

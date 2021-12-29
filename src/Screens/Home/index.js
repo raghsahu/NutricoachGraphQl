@@ -24,21 +24,35 @@ import { APPContext } from '../../Context/AppProvider'
 
 const index = (props) => {
 
-    const { getStrugglingClients } = useContext(APPContext)
+    const { getStrugglingClients, getUserProfile } = useContext(APPContext)
 
     const [modalVisible, setModalVisible] = useState(false);
     const [isStrugglingClientLoading, setStrugglingClientLoading] = useState(true)
     const [strugglingClient, setStrugglingClient] = useState([])
+    const [id, setId] = useState('')
 
     useEffect(() => {
         getStrugglingClientData()
         return () => { }
     }, [])
 
+    useEffect(() => {
+    AsyncStorage.getItem('login_user_details', (err, result) => {
+      if (result) {
+        let obj = JSON.parse(result)
+        let id = obj.data.logInCoach.id;
+        if (id != null) {
+          setId(id)
+        
+        }
+      } else {
+      }
+    })
+  })
+
     async function getStrugglingClientData() {
         const result = await getStrugglingClients()
         setStrugglingClientLoading(false)
-        console.log(result)
         if (result && result.data && result.data.data && result.data.data.me) {
             setStrugglingClient(result.data.data.me.strugglingClients)
         }
@@ -46,7 +60,7 @@ const index = (props) => {
 
 
     async function fetchProfile(){
-        const result = await getProfile('61c2fefa98ffd41c1d6090fd')
+        const result = await getUserProfile(id)
     }
 
     return (
@@ -186,18 +200,11 @@ const index = (props) => {
                             </View>
                             :
                             <>
-                                {strugglingClient.map((item, index) => {
-                                    
+                                {strugglingClient.map((data, index) => {
+                                    return (
+                                        <TodayAppoinment key={index} item={data} />
+                                    )
                                 })}
-                                <FlatList
-                                    data={strugglingClient}
-                                    keyExtractor={(item, index) => index.toString()}
-                                    renderItem={({ item, index }) => {
-                                        return (
-                                            <TodayAppoinment item={item} />
-                                        )
-                                    }}>
-                                </FlatList>
                             </>
                         }
                     </View>
