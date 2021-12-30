@@ -207,7 +207,7 @@ const index = (props) => {
   };
 
    const sendMessages = async () => {
-    const result = await sendMessage("123654", loginId, toUser, message, fileData, selectedChannel, false);
+    const result = await sendMessage( loginId, toUser, message, fileData, selectedChannel, false);
   };
 
   function getImage() {

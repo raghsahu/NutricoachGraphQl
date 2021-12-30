@@ -34,6 +34,8 @@ const index = (props) => {
     AsyncStorage.getItem('login_user_details', (err, result) => {
       if (result) {
         let obj = JSON.parse(result)
+        console.log("auth_token "+ obj.data.logInCoach.token);
+
         let id = obj.data.logInCoach.id;
         if (id != null) {
           setId(id)

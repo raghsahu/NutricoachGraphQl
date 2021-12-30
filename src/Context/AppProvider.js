@@ -208,7 +208,6 @@ export const APPProvider = props => {
     }
 
     const sendMessage = async (
-        id,
         fromUser,
         toUser,
         message,
@@ -225,7 +224,6 @@ export const APPProvider = props => {
               }`,
             variables: {
                 input: {
-                id: id,
 				from: fromUser,
 				to: toUser,
 				message: message,
