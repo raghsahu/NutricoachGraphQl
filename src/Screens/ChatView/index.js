@@ -108,8 +108,8 @@ const index = props => {
           uri: response.assets[0].uri,
           type: '*/*',
         };
-        setfileData(response.uri);
-        // Setimage(image)
+        setfileData(imageurl);
+         //Setimage(image)
         setuserdata(imageurl);
       }
     });
@@ -136,7 +136,7 @@ const index = props => {
           uri: response.assets[0].uri,
           type: '*/*',
         };
-        setfileData(response.uri);
+        setfileData(imageurl);
         // Setimage(image)
         setuserdata(imageurl);
       }
@@ -164,7 +164,7 @@ const index = props => {
           uri: response.assets[0].uri,
           type: '*/*',
         };
-        setfileData(response.uri);
+        setfileData(imageurl);
         // Setimage(image)
         setuserdata(imageurl);
       }
