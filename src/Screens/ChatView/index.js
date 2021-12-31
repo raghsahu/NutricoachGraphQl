@@ -20,26 +20,28 @@ import RNFetchBlob from 'rn-fetch-blob';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-picker';
 import PagerView from 'react-native-pager-view';
-import { APPContext } from '../../Context/AppProvider';
+import {APPContext} from '../../Context/AppProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// PACKAGES
+import Toast from "react-native-simple-toast";
 
 const DATA = [{}];
 const {height, width} = Dimensions.get('screen');
 
-const index = (props) => {
-  const  toUser  = props.route.params.toUser
-  const  toFullName  = props.route.params.fullName
-  const  profileImage  = props.route.params.profileImage
-  const { sendMessage, readMessages } = useContext(APPContext);
+const index = props => {
+  const toUser = props.route.params.toUser;
+  const toFullName = props.route.params.fullName;
+  const profileImage = props.route.params.profileImage;
+  const {sendMessage, readMessages} = useContext(APPContext);
 
   const [selected, setselected] = useState(0);
-  const [selectedChannel, setselectedChannel] = useState("APPOINTMENTS");
+  const [selectedChannel, setselectedChannel] = useState('APPOINTMENTS');
   const [animation, setanimation] = useState(new Animated.Value(0));
   const [startend, setstartend] = useState(false);
   const [fileData, setfileData] = useState('');
   const [userdata, setuserdata] = useState({document: {}});
   const [message, setMessage] = useState('');
-  const [loginId, setId] = useState('')
+  const [loginId, setId] = useState('');
   //const [filePath, setFilePath] = useState({});
   //const [toptab,settoptab] = useState('0')
   console.log('===============sdgdfggdf=====================');
@@ -49,21 +51,20 @@ const index = (props) => {
   useEffect(() => {
     AsyncStorage.getItem('login_user_details', (err, result) => {
       if (result) {
-        let obj = JSON.parse(result)
+        let obj = JSON.parse(result);
         let id = obj.data.logInCoach.id;
         if (id != null) {
-          setId(id)
-        
+          setId(id);
         }
       } else {
       }
-    })
-  })
+    });
+  });
 
   useEffect(() => {
     //read messages
     readMessage();
-  })
+  });
 
   useEffect(() => {
     if (startend) {
@@ -202,22 +203,46 @@ const index = (props) => {
   };
 
   const readMessage = async () => {
-     const result = await readMessages(toUser, "2021-12-28T10:15:30Z",  selectedChannel);
-
+    const result = await readMessages(
+      toUser,
+      '2021-12-31T10:15:30Z',
+      selectedChannel,
+    );
   };
 
-   const sendMessages = async () => {
-    const result = await sendMessage( loginId, toUser, message, fileData, selectedChannel, false);
+  const sendMessages = async () => {
+    if (!message && !fileData) {
+      Toast.show('Please enter message or select file');
+    } else {
+      const result = await sendMessage(
+        loginId,
+        toUser,
+        message,
+        fileData,
+        selectedChannel,
+        false,
+      );
+
+  if (result.data && result.data.data.sendMessage != null) {
+                setTimeout(() => {
+                    setMessage('')
+                    setfileData('')
+                  
+                }, 100);
+            } else {
+                Toast.show('Something went wrong', 2000);
+            }
+
+    }
   };
 
   function getImage() {
-        if (profileImage) {
-            return profileImage == '' ? null : profileImage
-        }
-        else {
-            return null
-        }
+    if (profileImage) {
+      return profileImage == '' ? null : profileImage;
+    } else {
+      return null;
     }
+  }
 
   return (
     <View style={style.container}>
@@ -256,11 +281,10 @@ const index = (props) => {
               borderColor: CONFIGURATION.white,
               borderWidth: 2,
             }}
-            source=
-            //{{
-              {getImage() ? { uri: getImage() } : null} 
-              //uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
-           // }}
+            source=//{{
+            {getImage() ? {uri: getImage()} : null}
+            //uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
+            // }}
           />
           <TouchableOpacity
             onPress={() => {
@@ -297,7 +321,7 @@ const index = (props) => {
           <TouchableOpacity
             onPress={() => {
               setselected(0);
-              setselectedChannel("APPOINTMENTS");
+              setselectedChannel('APPOINTMENTS');
             }}
             style={{alignItems: 'center'}}>
             <Text
@@ -322,7 +346,7 @@ const index = (props) => {
           <TouchableOpacity
             onPress={() => {
               setselected(1);
-               setselectedChannel("MEAL_PLAN");
+              setselectedChannel('MEAL_PLAN');
             }}
             style={{alignItems: 'center'}}>
             <Text
@@ -347,7 +371,7 @@ const index = (props) => {
           <TouchableOpacity
             onPress={() => {
               setselected(2);
-              setselectedChannel("PROGRESS");
+              setselectedChannel('PROGRESS');
             }}
             style={{alignItems: 'center'}}>
             <Text
@@ -372,7 +396,7 @@ const index = (props) => {
           <TouchableOpacity
             onPress={() => {
               setselected(3);
-               setselectedChannel("QUESTIONS");
+              setselectedChannel('QUESTIONS');
             }}
             style={{alignItems: 'center'}}>
             <Text
@@ -428,12 +452,14 @@ const index = (props) => {
 
         <View style={style.inputView}>
           <View style={style.inputrow}>
-            <TextInput style={style.input}
-             placeholder="Send message"
-             onChangeText={(text) => {
-                            setMessage(text)
-                        }}
-              />
+            <TextInput
+              style={style.input}
+              value= {message}
+              placeholder="Send message"
+              onChangeText={text => {
+                setMessage(text);
+              }}
+            />
             <TouchableOpacity
               onPress={() => {
                 setstartend(!startend);
@@ -455,17 +481,17 @@ const index = (props) => {
               borderRadius: 50,
             }}>
             <TouchableOpacity
-            onPress={() => {
+              onPress={() => {
                 sendMessages();
               }}
-               style={{}}>
-            <Text
-              style={{
-                fontFamily: CONFIGURATION.TextBold,
-                color: CONFIGURATION.white,
-              }}>
-              Send
-            </Text>
+              style={{}}>
+              <Text
+                style={{
+                  fontFamily: CONFIGURATION.TextBold,
+                  color: CONFIGURATION.white,
+                }}>
+                Send
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

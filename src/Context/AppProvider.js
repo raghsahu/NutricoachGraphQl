@@ -227,7 +227,7 @@ export const APPProvider = props => {
 				from: fromUser,
 				to: toUser,
 				message: message,
-				attachments: attachments,
+				attachments: [],
 				channel: channel,
 				notifyViaEmail: notifyViaEmail,
 				},
@@ -244,7 +244,6 @@ export const APPProvider = props => {
         const graphqlQuery = {
             query: `mutation readMessages($input: ReadMessagesInput!) {
                 readMessages(input: $input){
-                     id
                      body
                      attachments
                      channel

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, Dimensions, Image, TouchableOpacity} from 'react-native';
 import CONFIGURATION from './Config';
 const {height, width} = Dimensions.get('screen');
+import Moment from 'moment';
 
 const MessageBox = props => {
       const item = props.item
@@ -27,10 +28,24 @@ const MessageBox = props => {
       function getLastMessage() {
         if (item && item.unreadMessages && item.unreadMessages.length > 0) {
             const array = item.unreadMessages.map((item) => item.body)
-            return array
+            return array[0] //get latest unread message
         }
         else {
-            return "Start sending messages"
+            return "No message"
+        }
+    }
+
+      function getLastMessageTime() {
+        Moment.locale('en');
+        if (item && item.unreadMessages && item.unreadMessages.length > 0) {
+            const array = item.unreadMessages.map((item) => item.createdAt)
+            var localDate = new Date(array[0]);//get latest unread message time
+            //console.log("utctime- "+ localDate );
+         
+            return  Moment(localDate).format('hh:mm a')
+        }
+        else {
+            return ""
         }
     }
 
@@ -105,7 +120,7 @@ const MessageBox = props => {
               fontFamily: CONFIGURATION.TextRegular,
               color: CONFIGURATION.TextDarkGray,
             }}>
-            12:00 pm
+            {getLastMessageTime()}
           </Text>
       
         <View
