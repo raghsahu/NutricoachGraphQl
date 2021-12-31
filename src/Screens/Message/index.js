@@ -16,29 +16,14 @@ import MassageBox from '../../Components/MessageBox';
 //CONTEXT 
 import { APPContext } from '../../Context/AppProvider'
 
-const DATA = [
-  {
-    new: '5',
-    name: 'Jaeremy gaurkau',
-    mess: 'Please take a look at the powepoint',
-  },
-  {new: '2', name: 'Dulce Passaquindici', mess: 'How are you ?'},
-  {new: '4', name: 'Randy Workman', mess: 'Does anyone know where i can find'},
-  {new: '', name: 'Rayna Aminoff', mess: 'Please take a look at the powepoint'},
-  {new: '', name: 'Jaeremy gaurkau', mess: 'Hiii...'},
-  {
-    new: '5',
-    name: 'Jaeremy gaurkau',
-    mess: 'Please take a look at the powepoint',
-  },
-];
-
 const {height, width} = Dimensions.get('screen');
 
 const index = props => {
     const { getClients } = useContext(APPContext)
     const [isLoading, setLoading] = useState(true)
     const [client, setClient] = useState([])
+    const [filterData, setFilterData] = useState([])
+    const [searchText, setSearchText] = useState('')
 
  useEffect(() => {
         getClientData()
@@ -53,6 +38,16 @@ const index = props => {
             setClient(result.data.data.me.customers)
         }
     }
+
+  const search = (searchText) => {
+   setSearchText(searchText)
+   let filteredData = client.filter(item => {
+    if(item.profile.fullName.toLowerCase().match(searchText.toLowerCase())) {
+      return item
+    }
+  })
+  setFilterData(filteredData)
+};
 
   return (
     <View style={style.container}>
@@ -90,10 +85,17 @@ const index = props => {
             style={{width: '90%', fontFamily: CONFIGURATION.TextRegular}}
             placeholder="Search Client"
             placeholderTextColor={CONFIGURATION.loginpalceholder}
+            round={true}
+            autoCapitalize='none'
+            autoCorrect={false}
+             onChangeText={text => {
+                search(text);
+              }}
+            value={searchText}
           />
         </View>
         <FlatList
-          data={client}
+          data={filterData && filterData.length > 0 ? filterData : client}
           style={{marginTop: 35}}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item, index }) => {
@@ -109,9 +111,7 @@ const index = props => {
                     });
                 }}
                 item={item}
-                mess={"this is text message"}
                 name={item.profile.fullName}
-                new={"4"}
               />
             );
           }}
