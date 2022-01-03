@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,44 +9,54 @@ import {
   FlatList,
   Animated,
   SafeAreaView,
+  Modal
 } from 'react-native';
+import style from './style';
+
+//CONFIG & COMPONENTS
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
-import LinearGradient from 'react-native-linear-gradient';
-import style from './style';
 import Chat from '../../Components/Chat';
-import DocumentPicker from 'react-native-document-picker';
-import RNFetchBlob from 'rn-fetch-blob';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import ImagePicker from 'react-native-image-picker';
-import PagerView from 'react-native-pager-view';
-import {APPContext} from '../../Context/AppProvider';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//CONTEXT
+import { APPContext } from '../../Context/AppProvider';
+
 // PACKAGES
 import Toast from "react-native-simple-toast";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import PagerView from 'react-native-pager-view';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import RNFetchBlob from 'rn-fetch-blob';
+import DocumentPicker from 'react-native-document-picker';
+import LinearGradient from 'react-native-linear-gradient';
+import { ReactNativeFile, createUploadLink } from 'apollo-upload-client'
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  useMutation,
+  UPLOAD_IMAGE,
+  gql
+} from "@apollo/client";
+
 
 const DATA = [{}];
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
 
 const index = props => {
+
   const toUser = props.route.params.toUser;
   const toFullName = props.route.params.fullName;
   const profileImage = props.route.params.profileImage;
-  const {sendMessage, readMessages} = useContext(APPContext);
+
+  const { sendMessage, readMessages, sendMessageWithFile } = useContext(APPContext);
 
   const [selected, setselected] = useState(0);
   const [selectedChannel, setselectedChannel] = useState('APPOINTMENTS');
-  const [animation, setanimation] = useState(new Animated.Value(0));
-  const [startend, setstartend] = useState(false);
-  const [fileData, setfileData] = useState('');
-  const [userdata, setuserdata] = useState({document: {}});
+  const [isModalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState('');
   const [loginId, setId] = useState('');
-  //const [filePath, setFilePath] = useState({});
-  //const [toptab,settoptab] = useState('0')
-  console.log('===============sdgdfggdf=====================');
-  console.log(userdata);
-  console.log('====================================');
 
   useEffect(() => {
     AsyncStorage.getItem('login_user_details', (err, result) => {
@@ -59,41 +69,21 @@ const index = props => {
       } else {
       }
     });
+    return () => { }
   });
 
   useEffect(() => {
-    //read messages
     readMessage();
-  });
+    return () => { }
+  }, []);
 
-  useEffect(() => {
-    if (startend) {
-      startAnimation();
-    } else {
-      EndAnimation();
-    }
-  }, [startend]);
-
-  const startAnimation = () => {
-    Animated.timing(animation, {
-      toValue: 70,
-      duration: 1000,
-    }).start(() => {});
-  };
-  const EndAnimation = () => {
-    Animated.timing(animation, {
-      toValue: -100,
-      duration: 1000,
-    }).start(() => {});
-  };
 
   const chooseFile = () => {
     let options = {
       mediaType: 'photo',
     };
-    launchCamera({mediaType: 'mixed'}, response => {
-      console.log('Response = ', response);
 
+    launchCamera({ mediaType: 'mixed' }, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -101,53 +91,47 @@ const index = props => {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        console.log(response.fileName);
-        console.log(response.uri);
-        let imageurl = {
-          name: 'gallery.png',
-          uri: response.assets[0].uri,
-          type: '*/*',
-        };
-        setfileData(imageurl);
-         //Setimage(image)
-        setuserdata(imageurl);
+        setModalVisible(false)
       }
     });
   };
 
   const image = () => {
-    let options = {
-      mediaType: 'photo',
-    };
-    launchImageLibrary({mediaType: 'photo'}, response => {
-      console.log('Response = ', response);
+    try {
+      launchImageLibrary({ mediaType: 'photo' }, response => {
+        console.log('Response = ', response);
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        } else {
+          console.log(response.fileName);
+          console.log(response.uri);
 
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        console.log(response.fileName);
-        console.log(response.uri);
-        let imageurl = {
-          name: 'gallery.png',
-          uri: response.assets[0].uri,
-          type: '*/*',
-        };
-        setfileData(imageurl);
-        // Setimage(image)
-        setuserdata(imageurl);
-      }
-    });
+          const file = new ReactNativeFile({
+            uri: response.assets[0].uri,
+            type: "image/jpeg",
+            name: response.assets[0].fileName,
+          });
+
+          setTimeout(() => {
+            setModalVisible(false)
+          }, 100);
+        }
+      });
+    }
+    catch (e) {
+      alert(e.message)
+    }
   };
 
   const Videoss = () => {
     let options = {
       mediaType: 'photo',
     };
-    launchImageLibrary({mediaType: 'video'}, response => {
+    launchImageLibrary({ mediaType: 'video' }, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -164,14 +148,12 @@ const index = props => {
           uri: response.assets[0].uri,
           type: '*/*',
         };
-        setfileData(imageurl);
-        // Setimage(image)
-        setuserdata(imageurl);
+        setModalVisible(false)
       }
     });
   };
 
-  const filePiker = async () => {
+  const filePicker = async () => {
     try {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
@@ -189,13 +171,10 @@ const index = props => {
       };
       console.log('================xzdfdsfs====================');
       console.log(res);
-
-      setfileData(RNFetchBlob.wrap(res.uri));
-      // console.log('====================================');
-      setuserdata(pdf);
+      setModalVisible(false)
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        // User cancelled the picker, exit any dialogs or menus and move on
+
       } else {
         throw err;
       }
@@ -212,8 +191,9 @@ const index = props => {
 
   const sendMessages = async () => {
     if (!message && !fileData) {
-      Toast.show('Please enter message or select file');
-    } else {
+      return
+    }
+    else {
       const result = await sendMessage(
         loginId,
         toUser,
@@ -223,16 +203,13 @@ const index = props => {
         false,
       );
 
-  if (result.data && result.data.data.sendMessage != null) {
-                setTimeout(() => {
-                    setMessage('')
-                    setfileData('')
-                  
-                }, 100);
-            } else {
-                Toast.show('Something went wrong', 2000);
-            }
-
+      if (result.data && result.data.data.sendMessage != null) {
+        setTimeout(() => {
+          setMessage('')
+        }, 100);
+      } else {
+        Toast.show('Something went wrong', 2000);
+      }
     }
   };
 
@@ -268,7 +245,7 @@ const index = props => {
               props.navigation.goBack();
             }}>
             <Image
-              style={{height: 20, width: 20}}
+              style={{ height: 20, width: 20 }}
               source={require('./../../assetss/back.png')}
             />
           </TouchableOpacity>
@@ -282,15 +259,15 @@ const index = props => {
               borderWidth: 2,
             }}
             source=//{{
-            {getImage() ? {uri: getImage()} : null}
-            //uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
-            // }}
+            {getImage() ? { uri: getImage() } : null}
+          //uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
+          // }}
           />
           <TouchableOpacity
             onPress={() => {
               props.navigation.navigate('ClientsDetail');
             }}
-            style={{width: '70%'}}>
+            style={{ width: '70%' }}>
             <Text
               style={{
                 fontSize: 18,
@@ -323,7 +300,7 @@ const index = props => {
               setselected(0);
               setselectedChannel('APPOINTMENTS');
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -348,7 +325,7 @@ const index = props => {
               setselected(1);
               setselectedChannel('MEAL_PLAN');
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -373,7 +350,7 @@ const index = props => {
               setselected(2);
               setselectedChannel('PROGRESS');
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -398,7 +375,7 @@ const index = props => {
               setselected(3);
               setselectedChannel('QUESTIONS');
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -454,7 +431,7 @@ const index = props => {
           <View style={style.inputrow}>
             <TextInput
               style={style.input}
-              value= {message}
+              value={message}
               placeholder="Send message"
               onChangeText={text => {
                 setMessage(text);
@@ -462,11 +439,11 @@ const index = props => {
             />
             <TouchableOpacity
               onPress={() => {
-                setstartend(!startend);
+                setModalVisible(true)
               }}
               style={{}}>
               <Image
-                style={{height: 20, width: 20}}
+                style={{ height: 20, width: 20 }}
                 source={require('./../../assetss/paperClip.png')}
               />
             </TouchableOpacity>
@@ -496,150 +473,120 @@ const index = props => {
           </View>
         </View>
       </View>
-      <Animated.View
-        style={{
-          position: 'absolute',
-          bottom: animation,
-          height: 100,
-          width: width,
-          backgroundColor: CONFIGURATION.white,
-          zIndex: 1,
-          flexDirection: 'row',
-          elevation: 5,
-          borderColor: CONFIGURATION.loginInputBorder,
-          borderBottomWidth: 1,
-        }}>
-        {userdata.uri ? (
-          <View
-            style={{
-              alignItems: 'center',
-              alignContent: 'center',
-              marginHorizontal: 10,
-            }}>
-            <Image
-              style={{height: 80, width: 80, marginTop: 10, borderRadius: 10}}
-              source={{uri: userdata.uri}}
-            />
-            {userdata.uri ? (
+      <Modal style={{ flex: 1.0 }} animationType='slide' visible={isModalVisible} transparent={true}>
+        <View style={{ flex: 1.0, backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <TouchableOpacity style={{ flex: 1.0 }} onPress={() => {
+            setModalVisible(false)
+          }}>
+
+          </TouchableOpacity>
+          <View style={{
+            width: width,
+            backgroundColor: CONFIGURATION.white,
+            zIndex: 1,
+            flexDirection: 'row',
+            elevation: 5,
+            borderColor: CONFIGURATION.loginInputBorder,
+            borderBottomWidth: 1,
+          }}>
+            <>
               <TouchableOpacity
                 onPress={() => {
-                  setuserdata({document: {}});
+                  chooseFile();
                 }}
                 style={{
-                  backgroundColor: CONFIGURATION.primaryRed,
-                  height: 15,
-                  width: 15,
-                  borderRadius: 15 / 2,
-                  position: 'absolute',
-                  top: 5,
-                  right: -5,
+                  height: 100,
+                  width: width / 4,
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
                 <Image
-                  style={{height: 10, width: 10}}
-                  source={require('./../../assetss/closes.png')}
+                  source={require('./../../assetss/Cameras.png')}
+                  style={{ height: 30, width: 30 }}
                 />
+                <Text
+                  style={{
+                    fontFamily: CONFIGURATION.TextBold,
+                    color: CONFIGURATION.TextDarkBlack,
+                    marginTop: 5,
+                  }}>
+                  Camera
+                </Text>
               </TouchableOpacity>
-            ) : null}
+              <TouchableOpacity
+                onPress={() => {
+                  filePicker();
+                }}
+                style={{
+                  height: 100,
+                  width: width / 4,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image
+                  source={require('./../../assetss/File.png')}
+                  style={{ height: 30, width: 30 }}
+                />
+                <Text
+                  style={{
+                    fontFamily: CONFIGURATION.TextBold,
+                    color: CONFIGURATION.TextDarkBlack,
+                    marginTop: 5,
+                  }}>
+                  Files
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  image();
+                }}
+                style={{
+                  height: 100,
+                  width: width / 4,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image
+                  source={require('./../../assetss/Photo.png')}
+                  style={{ height: 30, width: 30 }}
+                />
+                <Text
+                  style={{
+                    fontFamily: CONFIGURATION.TextBold,
+                    color: CONFIGURATION.TextDarkBlack,
+                    marginTop: 5,
+                  }}>
+                  Photos
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  Videoss();
+                }}
+                style={{
+                  height: 100,
+                  width: width / 4,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image
+                  source={require('./../../assetss/Video.png')}
+                  style={{ height: 30, width: 30 }}
+                />
+                <Text
+                  style={{
+                    fontFamily: CONFIGURATION.TextBold,
+                    color: CONFIGURATION.TextDarkBlack,
+                    marginTop: 5,
+                  }}>
+                  Videos
+                </Text>
+              </TouchableOpacity>
+            </>
           </View>
-        ) : (
-          <>
-            <TouchableOpacity
-              onPress={() => {
-                chooseFile();
-              }}
-              style={{
-                height: 100,
-                width: width / 4,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Image
-                source={require('./../../assetss/Cameras.png')}
-                style={{height: 30, width: 30}}
-              />
-              <Text
-                style={{
-                  fontFamily: CONFIGURATION.TextBold,
-                  color: CONFIGURATION.TextDarkBlack,
-                  marginTop: 5,
-                }}>
-                Camera
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                filePiker();
-              }}
-              style={{
-                height: 100,
-                width: width / 4,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Image
-                source={require('./../../assetss/File.png')}
-                style={{height: 30, width: 30}}
-              />
-              <Text
-                style={{
-                  fontFamily: CONFIGURATION.TextBold,
-                  color: CONFIGURATION.TextDarkBlack,
-                  marginTop: 5,
-                }}>
-                Files
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                image();
-              }}
-              style={{
-                height: 100,
-                width: width / 4,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Image
-                source={require('./../../assetss/Photo.png')}
-                style={{height: 30, width: 30}}
-              />
-              <Text
-                style={{
-                  fontFamily: CONFIGURATION.TextBold,
-                  color: CONFIGURATION.TextDarkBlack,
-                  marginTop: 5,
-                }}>
-                Photos
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Videoss();
-              }}
-              style={{
-                height: 100,
-                width: width / 4,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Image
-                source={require('./../../assetss/Video.png')}
-                style={{height: 30, width: 30}}
-              />
-              <Text
-                style={{
-                  fontFamily: CONFIGURATION.TextBold,
-                  color: CONFIGURATION.TextDarkBlack,
-                  marginTop: 5,
-                }}>
-                Videos
-              </Text>
-            </TouchableOpacity>
-          </>
-        )}
-      </Animated.View>
+          <SafeAreaView />
+        </View>
+      </Modal>
       <SafeAreaView />
     </View>
   );

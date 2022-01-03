@@ -256,7 +256,7 @@ PODS:
   - React-jsinspector (0.64.2)
   - react-native-document-picker (5.2.0):
     - React-Core
-  - react-native-image-picker (4.0.6):
+  - react-native-image-picker (4.6.1):
     - React-Core
   - react-native-pager-view (5.4.1):
     - React-Core
@@ -547,7 +547,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 80c46bd381fd06e418e0d4f53672dc1d1945c4c3
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
   react-native-document-picker: f1b5398801b332c77bc62ae0eae2116f49bdff26
-  react-native-image-picker: a6e56460d34905c849ada551db30897dc7f3d535
+  react-native-image-picker: d39243cb717e7b666b9a602d23c5ed8e131d93a8
   react-native-pager-view: 43f51f45f37ec9715f6c188e4af46ccdf79872e8
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-simple-toast: bf002828cf816775a6809f7a9ec3907509bce11f
@@ -575,6 +575,6 @@ SPEC CHECKSUMS:
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: ccfd0818151b0b6b60aaed1777af77874f0e52f0
+PODFILE CHECKSUM: aef5cd1d765daf96ddd011f6554760952482e256
 
 COCOAPODS: 1.11.1

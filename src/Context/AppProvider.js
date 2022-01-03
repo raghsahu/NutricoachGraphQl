@@ -5,7 +5,6 @@ import { AuthContext } from './AuthProvider'
 
 //PACKAGES
 import axios from 'axios'
-import { useQuery, gql } from '@apollo/client';
 
 export const APPContext = createContext();
 
@@ -116,9 +115,9 @@ export const APPProvider = props => {
         return await request('post', graphqlQuery);
     };
 
-   const getUserProfile = async (id) => {
-    const graphqlQuery = {
-      query: `query user($id: ID) {
+    const getUserProfile = async (id) => {
+        const graphqlQuery = {
+            query: `query user($id: ID) {
                 user(id: $id){
                    id,
                    email,
@@ -137,12 +136,12 @@ export const APPProvider = props => {
                   }                    
                 }
             }`,
-        variables: {
-            id: id,
-      },
+            variables: {
+                id: id,
+            },
+        };
+        return await request('post', graphqlQuery);
     };
-    return await request('post', graphqlQuery);
-  };
 
     async function getStrugglingClients() {
         const graphqlQuery = {
@@ -224,19 +223,48 @@ export const APPProvider = props => {
               }`,
             variables: {
                 input: {
-				from: fromUser,
-				to: toUser,
-				message: message,
-				attachments: [],
-				channel: channel,
-				notifyViaEmail: notifyViaEmail,
-				},
+                    from: fromUser,
+                    to: toUser,
+                    message: message,
+                    attachments: [],
+                    channel: channel,
+                    notifyViaEmail: notifyViaEmail,
+                },
             },
         };
         return await request('post', graphqlQuery);
     };
 
-     const readMessages = async (
+    const sendMessageWithFile = async (
+        fromUser,
+        toUser,
+        attachments,
+        channel,
+        notifyViaEmail,
+    ) => {
+        console.log(attachments)
+        const graphqlQuery = {
+            query: `mutation sendMessage($input: SendMessageInput!) {
+                sendMessage(input: $input){
+                    id
+                    body                                                                                     
+                }
+              }`,
+            variables: {
+                input: {
+                    from: fromUser,
+                    to: toUser,
+                    message: '',
+                    attachments: attachments,
+                    channel: channel,
+                    notifyViaEmail: notifyViaEmail,
+                },
+            },
+        };
+        return await request('post', graphqlQuery);
+    };
+
+    const readMessages = async (
         otherMember,
         dateSeen,
         channel,
@@ -253,10 +281,10 @@ export const APPProvider = props => {
               }`,
             variables: {
                 input: {
-                otherMember: otherMember,
-				dateSeen: dateSeen,
-				channel: channel,
-				},
+                    otherMember: otherMember,
+                    dateSeen: dateSeen,
+                    channel: channel,
+                },
             },
         };
         return await request('post', graphqlQuery);
@@ -272,6 +300,7 @@ export const APPProvider = props => {
             console.log('===================');
 
             let value = authDetails && authDetails.data && authDetails.data.logInCoach && authDetails.data.logInCoach.token ? authDetails.data.logInCoach.token : ''
+            console.log(`bearer ${value}`)
             if (method == 'get') {
                 const response = await axios.get(baseURL, {
                     params: params,
@@ -311,16 +340,27 @@ export const APPProvider = props => {
     const getResponse = response => {
         console.log(JSON.stringify(response.data));
         if (response.data) {
-            let result = {
-                status: true,
-                data: response.data,
-                error: null,
-            };
-            return result;
+            if (response.data.data) {
+                let result = {
+                    status: true,
+                    data: response.data,
+                    error: null,
+                };
+                return result;
+            }
+            else if (response.data.errors && response.data.errors.length > 0) {
+                let error = response.data.errors[0].message
+                let result = {
+                    status: false,
+                    data: null,
+                    error: error,
+                };
+                return result;
+            }
         } else {
             let result = {
                 status: false,
-                data: {},
+                data: null,
                 error: 'Something went wrong',
             };
             return result;
@@ -367,6 +407,7 @@ export const APPProvider = props => {
                 getStrugglingClients,
                 getClients,
                 sendMessage,
+                sendMessageWithFile,
                 readMessages,
             }}>
             {props.children}
