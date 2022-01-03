@@ -17,6 +17,7 @@ import style from './style';
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
 import Chat from '../../Components/Chat';
+import ProgressView from '../../Components/ProgressView'
 
 //CONTEXT
 import { APPContext } from '../../Context/AppProvider';
@@ -41,7 +42,7 @@ import {
 } from "@apollo/client";
 
 
-const DATA = [{}];
+//const DATA = [{}];
 const { height, width } = Dimensions.get('screen');
 
 const index = props => {
@@ -57,6 +58,8 @@ const index = props => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState('');
   const [loginId, setId] = useState('');
+  const [chatData, setChatData] = useState([])
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     AsyncStorage.getItem('login_user_details', (err, result) => {
@@ -73,7 +76,7 @@ const index = props => {
   });
 
   useEffect(() => {
-    //readMessage();
+    readMessage();
     getMessages();
   });
 
@@ -182,30 +185,44 @@ const index = props => {
   };
 
   const readMessage = async () => {
+    const now = new Date()
+    // ISO String
+      console.log("timeiso "+ now.toISOString() );
+
     const result = await readMessages(
       toUser,
-      '2021-12-31T10:15:30Z',
+      now.toISOString() ,
       selectedChannel,
     );
+
+
+
   };
 
    const getMessages = async () => {
-    const result = await getChatMessages(toUser);
-
-
+    //setLoading(true)
+    const result = await getChatMessages(toUser, selectedChannel);
+    //setLoading(false)
+    if (result && result.data && result.data.data && result.data.data.me) {
+      //channelMessages 
+      setChatData(result.data.data.me.channelMessages.reverse())
+    }else {
+        Toast.show('Something went wrong', 2000);
+      }
+       //setLoading(false)
 
   };
 
-  const sendMessages = async () => {
-    if (!message && !fileData) {
+  const sendMessages = async (messageText) => {
+    if (!message) {
       return
     }
     else {
       const result = await sendMessage(
         loginId,
         toUser,
-        message,
-        fileData,
+        messmessageTextage,
+        "",
         selectedChannel,
         false,
       );
@@ -229,6 +246,7 @@ const index = props => {
   }
 
   return (
+    <SafeAreaView style={style.container}>
     <View style={style.container}>
       <GeneralStatusBar
         backgroundColor={CONFIGURATION.statusbarColor}
@@ -412,25 +430,78 @@ const index = props => {
           onPageSelected={e => {
             console.log(e.nativeEvent.position);
             setselected(e.nativeEvent.position);
+            if(selected=== 0){
+              setselectedChannel('APPOINTMENTS');
+            }else if(selected=== 1){
+              setselectedChannel('MEAL_PLAN');
+            }else if(selected=== 2){
+               setselectedChannel('PROGRESS');
+            }else if(selected=== 3){
+               setselectedChannel('QUESTIONS');
+            }
+
           }}>
           <View key="1">
+          
             <FlatList
-              data={DATA}
-              showsVerticalScrollIndicator={false}
-              renderItem={() => {
-                return <Chat />;
+               data={chatData && chatData.length > 0 ? chatData : null}
+               showsVerticalScrollIndicator={false}
+                renderItem={({ item, index }) => {
+                return (
+                <Chat 
+                item={item}
+                selectedChannel={selectedChannel}
+                />
+                );
               }}
-              keyExtractor={item => item.id}
+             keyExtractor={(item, index) => index.toString()}
             />
           </View>
           <View key="2">
-            <Text>Meal plan</Text>
+            {/* <Text>Meal plan</Text> */}
+              <FlatList
+              data={chatData && chatData.length > 0 ? chatData : null}
+              showsVerticalScrollIndicator={false}
+                renderItem={({ item, index }) => {
+                return (
+                <Chat 
+                item={item}
+                selectedChannel={selectedChannel}
+                />
+                );
+              }}
+             keyExtractor={(item, index) => index.toString()}
+            />
           </View>
           <View key="3">
-            <Text>Progress</Text>
+              <FlatList
+               data={chatData && chatData.length > 0 ? chatData : null}
+              showsVerticalScrollIndicator={false}
+                renderItem={({ item, index }) => {
+                return (
+                <Chat 
+                item={item}
+                selectedChannel={selectedChannel}
+                />
+                );
+              }}
+             keyExtractor={(item, index) => index.toString()}
+            />
           </View>
           <View key="4">
-            <Text>Questions</Text>
+              <FlatList
+               data={chatData && chatData.length > 0 ? chatData : null}
+               showsVerticalScrollIndicator={false}
+                renderItem={({ item, index }) => {
+                return (
+                <Chat 
+                item={item}
+                selectedChannel={selectedChannel}
+                />
+                );
+              }}
+             keyExtractor={(item, index) => index.toString()}
+            />
           </View>
         </PagerView>
 
@@ -455,20 +526,24 @@ const index = props => {
               />
             </TouchableOpacity>
           </View>
-          <View
-            style={{
+           <TouchableOpacity
+              onPress={() => {
+                sendMessages(message);
+                 getMessages();
+              }}
+               style={{
               width: '20%',
               backgroundColor: CONFIGURATION.primaryGreen,
               paddingVertical: 12,
               alignItems: 'center',
               justifyContent: 'center',
               borderRadius: 50,
+            }}
+              >
+          <View
+            style={{
+           
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                sendMessages();
-              }}
-              style={{}}>
               <Text
                 style={{
                   fontFamily: CONFIGURATION.TextBold,
@@ -476,8 +551,9 @@ const index = props => {
                 }}>
                 Send
               </Text>
-            </TouchableOpacity>
+        
           </View>
+         </TouchableOpacity>
         </View>
       </View>
       <Modal style={{ flex: 1.0 }} animationType='slide' visible={isModalVisible} transparent={true}>
@@ -594,8 +670,9 @@ const index = props => {
           <SafeAreaView />
         </View>
       </Modal>
-      <SafeAreaView />
-    </View>
+         {/* {isLoading && <ProgressView />} */}
+          </View>
+        </SafeAreaView>
   );
 };
 
