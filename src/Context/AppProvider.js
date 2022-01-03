@@ -142,10 +142,11 @@ export const APPProvider = props => {
                 id: id,
             },
         };
+    }
 
-        async function getStrugglingClients() {
-            const graphqlQuery = {
-                query: `{
+    async function getStrugglingClients() {
+        const graphqlQuery = {
+            query: `{
                 me {
                   ... on Coach {
                     strugglingClients {
@@ -166,13 +167,13 @@ export const APPProvider = props => {
                   }
                 }
               }`,
-            };
-            return await request('post', graphqlQuery);
-        }
+        };
+        return await request('post', graphqlQuery);
+    }
 
-        async function getClients() {
-            const graphqlQuery = {
-                query: `{
+    async function getClients() {
+        const graphqlQuery = {
+            query: `{
                 me {
                   ... on Coach {
                     customers {
@@ -202,42 +203,42 @@ export const APPProvider = props => {
                   }
                 }
               }`,
-            };
-            return await request('post', graphqlQuery);
-        }
+        };
+        return await request('post', graphqlQuery);
+    }
 
-        const sendMessage = async (
-            fromUser,
-            toUser,
-            message,
-            attachments,
-            channel,
-            notifyViaEmail,
-        ) => {
-            const graphqlQuery = {
-                query: `mutation sendMessage($input: SendMessageInput!) {
+    const sendMessage = async (
+        fromUser,
+        toUser,
+        message,
+        attachments,
+        channel,
+        notifyViaEmail,
+    ) => {
+        const graphqlQuery = {
+            query: `mutation sendMessage($input: SendMessageInput!) {
                 sendMessage(input: $input){
                     id
                     body                                                                                     
                 }
               }`,
-                variables: {
-                    input: {
-                        from: fromUser,
-                        to: toUser,
-                        message: message,
-                        attachments: [],
-                        channel: channel,
-                        notifyViaEmail: notifyViaEmail,
-                    },
+            variables: {
+                input: {
+                    from: fromUser,
+                    to: toUser,
+                    message: message,
+                    attachments: [],
+                    channel: channel,
+                    notifyViaEmail: notifyViaEmail,
                 },
-            };
-            return await request('post', graphqlQuery);
+            },
         };
+        return await request('post', graphqlQuery);
+    };
 
-        const readMessages = async (otherMember, dateSeen, channel) => {
-            const graphqlQuery = {
-                query: `mutation readMessages($input: ReadMessagesInput!) {
+    const readMessages = async (otherMember, dateSeen, channel) => {
+        const graphqlQuery = {
+            query: `mutation readMessages($input: ReadMessagesInput!) {
                 readMessages(input: $input){
                      body
                      attachments
@@ -246,20 +247,20 @@ export const APPProvider = props => {
                      createdAt                                                                                    
                 }
               }`,
-                variables: {
-                    input: {
-                        otherMember: otherMember,
-                        dateSeen: dateSeen,
-                        channel: channel,
-                    },
+            variables: {
+                input: {
+                    otherMember: otherMember,
+                    dateSeen: dateSeen,
+                    channel: channel,
                 },
-            };
-            return await request('post', graphqlQuery);
+            },
         };
+        return await request('post', graphqlQuery);
+    };
 
-        const getChatMessages = async customerId => {
-            const graphqlQuery = {
-                query: `{
+    const getChatMessages = async customerId => {
+        const graphqlQuery = {
+            query: `{
                 me {
                   ... on Coach {
                     messagesWith($customerId: ID!){
@@ -271,139 +272,138 @@ export const APPProvider = props => {
                   }
                 }
             }`,
-                variables: {
-                    customerId: customerId,
-                },
-            };
-            return await request('post', graphqlQuery);
+            variables: {
+                customerId: customerId,
+            },
         };
+        return await request('post', graphqlQuery);
+    };
 
-        const request = async (method, params) => {
-            try {
-                console.log('===================');
-                console.log('URL: ', baseURL);
-                console.log('METHOD: ', method);
-                console.log('PARAMS: ', params);
-                console.log('===================');
+    const request = async (method, params) => {
+        try {
+            console.log('===================');
+            console.log('URL: ', baseURL);
+            console.log('METHOD: ', method);
+            console.log('PARAMS: ', params);
+            console.log('===================');
 
-                let value =
-                    authDetails &&
-                        authDetails.data &&
-                        authDetails.data.logInCoach &&
-                        authDetails.data.logInCoach.token
-                        ? authDetails.data.logInCoach.token
-                        : '';
-                if (method == 'get') {
-                    const response = await axios.get(baseURL, {
-                        params: params,
-                        headers: {
-                            Authorization: `bearer ${value}`,
-                        },
-                    });
+            let value =
+                authDetails &&
+                    authDetails.data &&
+                    authDetails.data.logInCoach &&
+                    authDetails.data.logInCoach.token
+                    ? authDetails.data.logInCoach.token
+                    : '';
+            if (method == 'get') {
+                const response = await axios.get(baseURL, {
+                    params: params,
+                    headers: {
+                        Authorization: `bearer ${value}`,
+                    },
+                });
 
-                    return getResponse(response);
-                } else if (method == 'put') {
-                    const response = await axios.put(baseURL, params, {
-                        headers: {
-                            Authorization: `bearer ${value}`,
-                        },
-                    });
+                return getResponse(response);
+            } else if (method == 'put') {
+                const response = await axios.put(baseURL, params, {
+                    headers: {
+                        Authorization: `bearer ${value}`,
+                    },
+                });
 
-                    return getResponse(response);
-                } else {
-                    var response = await axios({
-                        method: method,
-                        url: baseURL,
-                        data: params,
-                        headers: {
-                            Authorization: `bearer ${value}`,
-                            'Content-Type': 'application/json',
-                        },
-                    });
-
-                    return getResponse(response);
-                }
-            } catch (e) {
-                console.log(e);
-                return getError(e);
-            }
-        };
-
-        const getResponse = response => {
-            console.log(JSON.stringify(response.data));
-            if (response.data) {
-                if (response.data.data) {
-                    let result = {
-                        status: true,
-                        data: response.data,
-                        error: null,
-                    };
-                    return result;
-                }
-                else if (response.data.errors && response.data.errors.length > 0) {
-                    let error = response.data.errors[0].message
-                    let result = {
-                        status: false,
-                        data: null,
-                        error: error,
-                    };
-                    return result;
-                }
+                return getResponse(response);
             } else {
+                var response = await axios({
+                    method: method,
+                    url: baseURL,
+                    data: params,
+                    headers: {
+                        Authorization: `bearer ${value}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                return getResponse(response);
+            }
+        } catch (e) {
+            console.log(e);
+            return getError(e);
+        }
+    };
+
+    const getResponse = response => {
+        console.log(JSON.stringify(response.data));
+        if (response.data) {
+            if (response.data.data) {
                 let result = {
-                    status: false,
-                    data: null,
-                    error: 'Something went wrong',
+                    status: true,
+                    data: response.data,
+                    error: null,
                 };
                 return result;
             }
-        };
+            else if (response.data.errors && response.data.errors.length > 0) {
+                let error = response.data.errors[0].message
+                let result = {
+                    status: false,
+                    data: null,
+                    error: error,
+                };
+                return result;
+            }
+        } else {
+            let result = {
+                status: false,
+                data: null,
+                error: 'Something went wrong',
+            };
+            return result;
+        }
+    };
 
-        const getError = error => {
-            var message = '';
-            if (error.response) {
-                if (error.response.data) {
-                    console.log(error.response.data);
-                    if (error.response.data.msg) {
-                        message = error.response.data.message;
-                    } else {
-                        message = JSON.stringify(error.response.data.message);
-                    }
+    const getError = error => {
+        var message = '';
+        if (error.response) {
+            if (error.response.data) {
+                console.log(error.response.data);
+                if (error.response.data.msg) {
+                    message = error.response.data.message;
                 } else {
-                    console.log(error.response);
-                    message = 'Something went wrong';
+                    message = JSON.stringify(error.response.data.message);
                 }
             } else {
-                console.log(error);
-                message = error.message;
+                console.log(error.response);
+                message = 'Something went wrong';
             }
+        } else {
+            console.log(error);
+            message = error.message;
+        }
 
-            let data = {
-                status: false,
-                result: null,
-                error: message,
-            };
-            return data;
+        let data = {
+            status: false,
+            result: null,
+            error: message,
         };
+        return data;
+    };
 
-        return (
-            <APPContext.Provider
-                value={{
-                    baseURL,
-                    login,
-                    forgot,
-                    resetNewPassword,
-                    register,
-                    changeNewPassword,
-                    getUserProfile,
-                    getStrugglingClients,
-                    getClients,
-                    sendMessage,
-                    readMessages,
-                    getChatMessages,
-                }}>
-                {props.children}
-            </APPContext.Provider>
-        );
-    }
+    return (
+        <APPContext.Provider
+            value={{
+                baseURL,
+                login,
+                forgot,
+                resetNewPassword,
+                register,
+                changeNewPassword,
+                getUserProfile,
+                getStrugglingClients,
+                getClients,
+                sendMessage,
+                readMessages,
+                getChatMessages,
+            }}>
+            {props.children}
+        </APPContext.Provider>
+    );
 }
