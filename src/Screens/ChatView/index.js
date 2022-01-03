@@ -32,7 +32,7 @@ const index = props => {
   const toUser = props.route.params.toUser;
   const toFullName = props.route.params.fullName;
   const profileImage = props.route.params.profileImage;
-  const {sendMessage, readMessages} = useContext(APPContext);
+  const {sendMessage, readMessages, getChatMessages} = useContext(APPContext);
 
   const [selected, setselected] = useState(0);
   const [selectedChannel, setselectedChannel] = useState('APPOINTMENTS');
@@ -62,8 +62,8 @@ const index = props => {
   });
 
   useEffect(() => {
-    //read messages
-    readMessage();
+    //readMessage();
+    getMessages();
   });
 
   useEffect(() => {
@@ -208,6 +208,13 @@ const index = props => {
       '2021-12-31T10:15:30Z',
       selectedChannel,
     );
+  };
+
+   const getMessages = async () => {
+    const result = await getChatMessages(toUser);
+
+
+
   };
 
   const sendMessages = async () => {
