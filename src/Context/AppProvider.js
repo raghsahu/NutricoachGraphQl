@@ -263,20 +263,15 @@ export const APPProvider = props => {
             query: `{
                 me {
                   ... on Coach {
-                    messagesWith($customerId: ID!){
-                      messagesWith(customerId: $customerId){
-                      id
+                    messagesWith(customerId: "${customerId}"), {
+                      id,
                       body
-                     }
                     }
                   }
                 }
-            }`,
-            variables: {
-                customerId: customerId,
-            },
+              }`
         };
-        return await request('post', graphqlQuery);
+        return await request('get', graphqlQuery);
     };
 
     const request = async (method, params) => {
@@ -294,6 +289,7 @@ export const APPProvider = props => {
                     authDetails.data.logInCoach.token
                     ? authDetails.data.logInCoach.token
                     : '';
+            console.log(value)
             if (method == 'get') {
                 const response = await axios.get(baseURL, {
                     params: params,
