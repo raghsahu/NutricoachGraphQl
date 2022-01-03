@@ -313,7 +313,7 @@ export const APPProvider = props => {
             Authorization: `bearer ${value}`,
           },
         });
-
+   
         return getResponse(response);
       } else if (method == 'put') {
         const response = await axios.put(baseURL, params, {

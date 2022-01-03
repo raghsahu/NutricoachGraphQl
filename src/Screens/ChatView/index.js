@@ -187,7 +187,7 @@ const index = props => {
   const readMessage = async () => {
     const now = new Date()
     // ISO String
-      console.log("timeiso "+ now.toISOString() );
+      //console.log("timeiso "+ now.toISOString() );
 
     const result = await readMessages(
       toUser,
