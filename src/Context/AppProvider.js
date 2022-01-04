@@ -1,18 +1,18 @@
-import React, {createContext, useContext} from 'react';
+import React, { createContext, useContext } from 'react';
 
 //CONTEXT
-import {AuthContext} from './AuthProvider';
+import { AuthContext } from './AuthProvider';
 
 //PACKAGES
 import axios from 'axios';
-import {useQuery, gql} from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 
 export const APPContext = createContext();
 
 export const APPProvider = props => {
   const baseURL = 'https://api-nightly.nutricoach.pro/graphql';
 
-  const {authDetails} = useContext(AuthContext);
+  const { authDetails } = useContext(AuthContext);
 
   const login = async (email, password) => {
     const graphqlQuery = {
@@ -191,12 +191,12 @@ export const APPProvider = props => {
                         goals,
                         workout{description}
                       }
-                     unreadMessages(
-					 channel: APPOINTMENTS
-                     ){
+                      unreadMessages(
+					              channel: APPOINTMENTS
+                      ) {
                         id,
                         body,
-          		        createdAt
+          		          createdAt
                      }
                      messagesWithCoach{id, body, createdAt}
                     }
@@ -219,7 +219,11 @@ export const APPProvider = props => {
       query: `mutation sendMessage($input: SendMessageInput!) {
                 sendMessage(input: $input){
                     id
-                    body                                                                                     
+                    body
+                    from {
+                      id, email
+                    }
+                    attachments                                                                                       
                 }
               }`,
       variables: {
@@ -236,8 +240,41 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
+  const sendFileToMessage = async (
+    fromUser,
+    toUser,
+    attachments,
+    channel,
+    notifyViaEmail,
+  ) => {
+    const graphqlQuery = {
+      query: `mutation sendMessage($input: SendMessageInput!) {
+                sendMessage(input: $input){
+                  id
+                  body
+                  from {
+                    id, email
+                  }
+                  attachments                                                                            
+                }
+              }`,
+      variables: {
+        input: {
+          from: fromUser,
+          to: toUser,
+          message: "",
+          attachments: [attachments],
+          channel: channel,
+          notifyViaEmail: notifyViaEmail,
+        },
+      },
+    };
+
+    return await request('multipart', graphqlQuery);
+  };
+
   const readMessages = async (otherMember, dateSeen, channel) => {
-      let selectedChannel= `${channel}`
+    let selectedChannel = `${channel}`
     const graphqlQuery = {
       query: `mutation readMessages($input: ReadMessagesInput!) {
                 readMessages(input: $input){
@@ -259,9 +296,9 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
-// channelMessages
+  // channelMessages
   const getChatMessages = async (customerId, selectedChannel) => {
-      let channel= `${selectedChannel}`
+    let channel = `${selectedChannel}`
     const graphqlQuery = {
       query: `{
                 me {
@@ -300,9 +337,9 @@ export const APPProvider = props => {
 
       let value =
         authDetails &&
-        authDetails.data &&
-        authDetails.data.logInCoach &&
-        authDetails.data.logInCoach.token
+          authDetails.data &&
+          authDetails.data.logInCoach &&
+          authDetails.data.logInCoach.token
           ? authDetails.data.logInCoach.token
           : '';
       console.log(value);
@@ -313,7 +350,7 @@ export const APPProvider = props => {
             Authorization: `bearer ${value}`,
           },
         });
-   
+
         return getResponse(response);
       } else if (method == 'put') {
         const response = await axios.put(baseURL, params, {
@@ -323,14 +360,27 @@ export const APPProvider = props => {
         });
 
         return getResponse(response);
-      } else {
+      }
+      else if (method == 'multipart') {
         var response = await axios({
           method: method,
           url: baseURL,
           data: params,
           headers: {
             Authorization: `bearer ${value}`,
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        return getResponse(response);
+      }
+      else {
+        var response = await axios({
+          method: method,
+          url: baseURL,
+          data: params,
+          headers: {
+            Authorization: `bearer ${value}`,
           },
         });
 
@@ -413,6 +463,7 @@ export const APPProvider = props => {
         sendMessage,
         readMessages,
         getChatMessages,
+        sendFileToMessage
       }}>
       {props.children}
     </APPContext.Provider>

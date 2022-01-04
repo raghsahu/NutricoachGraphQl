@@ -33,7 +33,6 @@ const index = props => {
   async function getClientData() {
     const result = await getClients()
     setLoading(false)
-    //console.log("client_list "+ result.data.data.me.customers)
     if (result && result.data && result.data.data && result.data.data.me) {
       setClient(result.data.data.me.customers)
     }
