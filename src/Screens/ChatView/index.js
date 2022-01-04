@@ -326,7 +326,11 @@ const index = props => {
             />
             <TouchableOpacity
               onPress={() => {
-                props.navigation.navigate('ClientsDetail');
+                props.navigation.navigate('ClientsDetail',
+                {
+                  toUser: toUser,
+                }
+                );
               }}
               style={{ width: '70%' }}>
               <Text

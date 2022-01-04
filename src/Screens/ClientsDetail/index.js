@@ -89,14 +89,6 @@ const index = props => {
   const customerId = props.route.params.toUser;
   const [isLoading, setLoading] = useState(true);
 
-  const {getClientsDetails} = useContext(APPContext);
-  const [fullName, setFullName] = useState('');
-  const [gender, setGender] = useState('');
-  const [image, setImage] = useState('');
-  const [dob, setDOB] = useState('');
-  const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
-
   const refRBSheet = useRef();
   const [selectedNames, setselectedNames] = useState('Meal of the day');
   const [date, setDate] = useState(new Date());
@@ -128,6 +120,39 @@ const index = props => {
   const [numberX, setnumberX] = useState([20, 21, 22, 23, 24, 25, 26]);
   const [values, setvalues] = useState([110, 140, 140, 105, 135, 130, 130]);
 
+  const {getClientsDetails} = useContext(APPContext);
+  const [clientData, setClientData] = useState('');
+
+  const [fullName, setFullName] = useState('');
+  const [gender, setGender] = useState('');
+  const [image, setImage] = useState('');
+  const [dob, setDOB] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+   const [lastActivity, setlastActivity] = useState('');
+    const [heightInches, setHeightInches] = useState('');
+      const [currentWeight, setCurrentWeight] = useState('');
+       const [targetWeight, setTargetWeight] = useState('');
+        const [armsCm, setarmsCm] = useState('');
+         const [abdomenCm, setabdomenCm] = useState('');
+         const [thighsCm, setthighsCm] = useState('');
+         const [waistCm, setwaistCm] = useState('');
+         const [hipsCm, sethipsCm] = useState('');
+         const [chestCm, setchestCm] = useState('');
+         const [calvesCm, setcalvesCm] = useState('');
+         const [pregnancyCount, setpregnancyCount] = useState('');
+         const [firstDayOfLactation, setfirstDayOfLactation] = useState('');
+         const [lactationDurationMonths, setlactationDurationMonths] = useState('');
+         const [coachingType, setcoachingType] = useState('');
+         const [physicalActivityLevel, setphysicalActivityLevel] = useState('');
+         const [sportsDescription, setsportsDescription] = useState('');
+         const [sportsFrequency, setsportsFrequency] = useState('');
+         const [doYouDrink, setdoYouDrink] = useState('');
+         const [alcoholIntakefrequency, setalcoholfrequency] = useState('');
+         const [foodIntolerance, setfoodIntolerance] = useState('');
+
+
+
   useEffect(() => {
     getClientData();
   });
@@ -137,6 +162,8 @@ const index = props => {
 
     if (result.status == true && result.data && result.data.data.me != null) {
       setTimeout(() => {
+        setClientData(result.data.data.me.customer);
+
         let full_name = result.data.data.me.customer.profile.fullName;
         setFullName(full_name);
 
@@ -149,6 +176,31 @@ const index = props => {
         setDOB(result.data.data.me.customer.profile.dateOfBirth);
         setEmail(result.data.data.me.customer.email);
         setMobile(result.data.data.me.customer.profile.mobileNum);
+        setlastActivity(result.data.data.me.customer.lastActivity);
+        setHeightInches(result.data.data.me.customer.healthProfile.height.inches);
+        setCurrentWeight(result.data.data.me.customer.healthProfile.weight.currentWeight);
+        setTargetWeight(result.data.data.me.customer.healthProfile.weight.targetWeight);
+        setarmsCm(result.data.data.me.customer.healthProfile.bodyMeasurements.armsCm);
+        setabdomenCm(result.data.data.me.customer.healthProfile.bodyMeasurements.abdomenCm);
+        setthighsCm(result.data.data.me.customer.healthProfile.bodyMeasurements.thighsCm);
+        setwaistCm(result.data.data.me.customer.healthProfile.bodyMeasurements.waistCm);
+        sethipsCm(result.data.data.me.customer.healthProfile.bodyMeasurements.hipsCm);
+        setchestCm(result.data.data.me.customer.healthProfile.bodyMeasurements.chestCm);
+         setcalvesCm(result.data.data.me.customer.healthProfile.bodyMeasurements.calvesCm);
+        setpregnancyCount(result.data.data.me.customer.healthProfile.pregnancyHistory.pregnancyCount);
+        setfirstDayOfLactation(result.data.data.me.customer.healthProfile.pregnancyHistory.firstDayOfLactation);
+        setlactationDurationMonths(result.data.data.me.customer.healthProfile.pregnancyHistory.lactationDurationMonths);
+        setcoachingType(result.data.data.me.customer.healthProfile.coachingType);
+        setphysicalActivityLevel(result.data.data.me.customer.healthProfile.physicalActivityLevel);
+        setsportsDescription(result.data.data.me.customer.healthProfile.sports.description);
+        setsportsFrequency(result.data.data.me.customer.healthProfile.sports.frequency);
+        setdoYouDrink(result.data.data.me.customer.healthProfile.alcoholIntake.doYouDrink);
+        setalcoholfrequency(result.data.data.me.customer.healthProfile.alcoholIntake.frequency);
+        setfoodIntolerance(result.data.data.me.customer.healthProfile.foodIntolerance);
+
+      
+
+         
       }, 100);
     } else {
       Toast.show(result.error, 2000);
@@ -501,7 +553,7 @@ const index = props => {
                   fontFamily: CONFIGURATION.TextBold,
                   color: CONFIGURATION.TextDarkBlack,
                 }}>
-                5 june 2021, 5:00 pm
+                {lastActivity}
               </Text>
             </View>
           </View>
@@ -1094,7 +1146,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            58kg
+                            {currentWeight ? currentWeight : '0'}
                           </Text>
                           <Text
                             numberOfLines={1}
@@ -1125,7 +1177,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            58kg
+                            {targetWeight}
                           </Text>
                           <Text
                             numberOfLines={1}
@@ -1134,7 +1186,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkGray,
                             }}>
-                            Current Weight
+                            Target Weight
                           </Text>
                         </View>
                       </View>
@@ -1158,7 +1210,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          65-80 kg
+                         {currentWeight ? currentWeight : '0'}-{targetWeight} kg
                         </Text>
                       </View>
                     </View>
@@ -1181,7 +1233,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          30 %
+                          {heightInches} in
                         </Text>
                       </View>
                     </View>
@@ -1204,7 +1256,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          42 in
+                          {thighsCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1227,7 +1279,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          30 %
+                          {armsCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1250,7 +1302,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          21 in
+                          {waistCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1273,7 +1325,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          21 in
+                          {hipsCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1296,7 +1348,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          10 %
+                         {abdomenCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1319,7 +1371,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          10 %
+                         {chestCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1342,7 +1394,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          10 %
+                          {calvesCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1968,7 +2020,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkGray,
                             }}>
-                            2 time pregnancy
+                            {pregnancyCount ? pregnancyCount : '0'} time pregnancy
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -1991,7 +2043,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            12th jan, 2020
+                            {firstDayOfLactation}
                           </Text>
                         </View>
                       </View>
@@ -2014,7 +2066,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            2 Months
+                            {lactationDurationMonths ? lactationDurationMonths : '0'} Months
                           </Text>
                         </View>
                       </View>
@@ -2238,7 +2290,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkGray,
                             }}>
-                            Personal coaching
+                            {coachingType}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -2297,7 +2349,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkGray,
                             }}>
-                            Extreme
+                            {physicalActivityLevel}
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -2344,8 +2396,7 @@ const index = props => {
                           fontFamily: CONFIGURATION.TextRegular,
                           color: CONFIGURATION.TextDarkGray,
                         }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
+                       {sportsDescription}
                       </Text>
                       <View
                         style={{
@@ -2366,7 +2417,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            Weekly
+                            {sportsFrequency}
                           </Text>
                         </View>
                       </View>
@@ -2408,7 +2459,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkGray,
                             }}>
-                            No
+                            {doYouDrink ? doYouDrink : ""}
                           </Text>
                         </TouchableOpacity>
                       </View>
