@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useState } from 'react';
 //PACKAGES
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export const AuthContext = createContext();
 
 export const AuthProvider = (props) => {
@@ -10,6 +11,7 @@ export const AuthProvider = (props) => {
     const [authDetails, setAuthDetails] = useState(null)
 
     async function setLoggedInUser(data) {
+        console.log('login_user_details', JSON.stringify(data))
         AsyncStorage.setItem('login_user_details', JSON.stringify(data))
         setAuthDetails(data)
     }

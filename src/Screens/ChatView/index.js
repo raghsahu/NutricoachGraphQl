@@ -9,7 +9,8 @@ import {
   FlatList,
   Animated,
   SafeAreaView,
-  Modal
+  Modal,
+  ActivityIndicator
 } from 'react-native';
 import style from './style';
 
@@ -21,6 +22,7 @@ import ProgressView from '../../Components/ProgressView'
 
 //CONTEXT
 import { APPContext } from '../../Context/AppProvider';
+import { AuthContext } from '../../Context/AuthProvider';
 
 // PACKAGES
 import Toast from "react-native-simple-toast";
@@ -51,34 +53,26 @@ const index = props => {
   const toFullName = props.route.params.fullName;
   const profileImage = props.route.params.profileImage;
 
-  const { sendMessage, readMessages, sendMessageWithFile, getChatMessages } = useContext(APPContext);
+  const { sendMessage, readMessages, sendFileToMessage, getChatMessages } = useContext(APPContext);
+  const { authDetails } = useContext(AuthContext);
 
   const [selected, setselected] = useState(0);
   const [selectedChannel, setselectedChannel] = useState('APPOINTMENTS');
   const [isModalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState('');
-  const [loginId, setId] = useState('');
   const [chatData, setChatData] = useState([])
-  const [isLoading, setLoading] = useState(false)
+  const [isLoading, setLoading] = useState(true)
 
-  useEffect(() => {
-    AsyncStorage.getItem('login_user_details', (err, result) => {
-      if (result) {
-        let obj = JSON.parse(result);
-        let id = obj.data.logInCoach.id;
-        if (id != null) {
-          setId(id);
-        }
-      } else {
-      }
-    });
+    useEffect(() => {
+    readMessage();
+    getMessages();
     return () => { }
-  });
+  }, []);
 
   useEffect(() => {
-   // readMessage();
-    //getMessages();
-  });
+    getMessages()
+    return () => { }
+  }, [selectedChannel])
 
 
   const chooseFile = () => {
@@ -115,9 +109,11 @@ const index = props => {
 
           const file = new ReactNativeFile({
             uri: response.assets[0].uri,
-            type: "image/jpeg",
             name: response.assets[0].fileName,
+            type: 'image/jpeg',
           });
+    
+          sendFile(file)
 
           setTimeout(() => {
             setModalVisible(false)
@@ -186,42 +182,45 @@ const index = props => {
 
   const readMessage = async () => {
     const now = new Date()
-    // ISO String
-      //console.log("timeiso "+ now.toISOString() );
 
     const result = await readMessages(
       toUser,
-      now.toISOString() ,
+      now.toISOString(),
       selectedChannel,
     );
 
-
-
+    console.log("readMessages Response ==> ", JSON.stringify(result))
   };
 
-   const getMessages = async () => {
-    //setLoading(true)
+  const getMessages = async () => {
+    setLoading(true)
     const result = await getChatMessages(toUser, selectedChannel);
-    //setLoading(false)
+    setLoading(false)
     if (result && result.data && result.data.data && result.data.data.me) {
-      //channelMessages 
-      setChatData(result.data.data.me.channelMessages.reverse())
-    }else {
-        Toast.show('Something went wrong', 2000);
-      }
-       //setLoading(false)
-
+      setChatData(result.data.data.me.channelMessages)
+    } else {
+      setChatData([])
+      Toast.show(result.error, 2000);
+    }
   };
 
   const sendMessages = async (messageText) => {
-    if (!message) {
+    if (!messageText) {
       return
     }
     else {
+      let loginId =
+        authDetails &&
+          authDetails.data &&
+          authDetails.data.logInCoach &&
+          authDetails.data.logInCoach.id
+          ? authDetails.data.logInCoach.id
+          : '';
+
       const result = await sendMessage(
         loginId,
         toUser,
-        messmessageTextage,
+        messageText,
         "",
         selectedChannel,
         false,
@@ -230,12 +229,51 @@ const index = props => {
       if (result.data && result.data.data.sendMessage != null) {
         setTimeout(() => {
           setMessage('')
+          let data = [...chatData]
+          data.splice(0, 0, result.data.data.sendMessage);
+          setChatData(data)
         }, 100);
       } else {
         Toast.show('Something went wrong', 2000);
       }
     }
   };
+
+  const sendFile = async (file) => {
+    if (!file) {
+      return
+    }
+    else {
+      let loginId =
+        authDetails &&
+          authDetails.data &&
+          authDetails.data.logInCoach &&
+          authDetails.data.logInCoach.id
+          ? authDetails.data.logInCoach.id
+          : '';
+
+      const result = await sendFileToMessage(
+        loginId,
+        toUser,
+        file,
+        selectedChannel,
+        false,
+      );
+
+      if (result.data && result.data.data.sendMessage != null) {
+        setTimeout(() => {
+          setMessage('')
+          let data = [...chatData]
+          data.splice(0, 0, result.data.data.sendMessage);
+          setChatData(data)
+        }, 100);
+      } else {
+        setTimeout(() => {
+          Toast.show('Something went wrong', 2000);
+        }, 1000);
+      }
+    }
+  }
 
   function getImage() {
     if (profileImage) {
@@ -246,435 +284,396 @@ const index = props => {
   }
 
   return (
-    <SafeAreaView style={style.container}>
     <View style={style.container}>
-      <GeneralStatusBar
-        backgroundColor={CONFIGURATION.statusbarColor}
-        barStyle="light-content"
-      />
-      <LinearGradient
-        colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]}
-        style={style.yellowView}>
-        <View
-          style={{
-            padding: 10,
-            borderColor: CONFIGURATION.loginInputBorder,
-            borderBottomWidth: 0,
-            flexDirection: 'row',
-            alignItems: 'center',
-            width: width - 40,
-            justifyContent: 'space-between',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.goBack();
-            }}>
-            <Image
-              style={{ height: 20, width: 20 }}
-              source={require('./../../assetss/back.png')}
-            />
-          </TouchableOpacity>
-          <Image
-            resizeMode={'cover'}
+      <View style={style.container}>
+        <GeneralStatusBar
+          backgroundColor={CONFIGURATION.statusbarColor}
+          barStyle="light-content"
+        />
+        <LinearGradient
+          colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]}
+          style={style.yellowView}>
+          <View
             style={{
-              height: 50,
-              width: 50,
-              borderRadius: 50 / 2,
-              borderColor: CONFIGURATION.white,
-              borderWidth: 2,
-            }}
-            source=//{{
-            {getImage() ? { uri: getImage() } : null}
-          //uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
-          // }}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate('ClientsDetail', {
-                toUser: toUser,
-              });
-            }}
-            style={{ width: '70%' }}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontFamily: CONFIGURATION.TextBold,
-                color: CONFIGURATION.white,
+              padding: 10,
+              borderColor: CONFIGURATION.loginInputBorder,
+              borderBottomWidth: 0,
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: width - 40,
+              justifyContent: 'space-between',
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.goBack();
               }}>
-              {toFullName}
-            </Text>
-            <Text
+              <Image
+                style={{ height: 20, width: 20 }}
+                source={require('./../../assetss/back.png')}
+              />
+            </TouchableOpacity>
+            <Image
+              resizeMode={'cover'}
               style={{
-                fontSize: 14,
-                fontFamily: CONFIGURATION.TextRegular,
-                color: CONFIGURATION.white,
-              }}>
-              Active
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            position: 'absolute',
-            bottom: 0,
-            width: width,
-            paddingHorizontal: 20,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              setselected(0);
-              setselectedChannel('APPOINTMENTS');
-            }}
-            style={{ alignItems: 'center' }}>
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily:
-                  selected == 0
-                    ? CONFIGURATION.TextBold
-                    : CONFIGURATION.TextRegular,
-                color: CONFIGURATION.white,
-              }}>
-              Appointments
-            </Text>
-            <View
-              style={{
-                height: 3,
+                height: 50,
                 width: 50,
-                backgroundColor: selected == 0 ? CONFIGURATION.white : null,
-                marginTop: 10,
-              }}></View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setselected(1);
-              setselectedChannel('MEAL_PLAN');
-            }}
-            style={{ alignItems: 'center' }}>
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily:
-                  selected == 1
-                    ? CONFIGURATION.TextBold
-                    : CONFIGURATION.TextRegular,
-                color: CONFIGURATION.white,
-              }}>
-              Meal plan
-            </Text>
-            <View
-              style={{
-                height: 3,
-                width: 50,
-                backgroundColor: selected == 1 ? CONFIGURATION.white : null,
-                marginTop: 10,
-              }}></View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setselected(2);
-              setselectedChannel('PROGRESS');
-            }}
-            style={{ alignItems: 'center' }}>
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily:
-                  selected == 2
-                    ? CONFIGURATION.TextBold
-                    : CONFIGURATION.TextRegular,
-                color: CONFIGURATION.white,
-              }}>
-              Progress
-            </Text>
-            <View
-              style={{
-                height: 3,
-                width: 50,
-                backgroundColor: selected == 2 ? CONFIGURATION.white : null,
-                marginTop: 10,
-              }}></View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              setselected(3);
-              setselectedChannel('QUESTIONS');
-            }}
-            style={{ alignItems: 'center' }}>
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily:
-                  selected == 3
-                    ? CONFIGURATION.TextBold
-                    : CONFIGURATION.TextRegular,
-                color: CONFIGURATION.white,
-              }}>
-              Questions
-            </Text>
-            <View
-              style={{
-                height: 3,
-                width: 50,
-                backgroundColor: selected == 3 ? CONFIGURATION.white : null,
-                marginTop: 10,
-              }}></View>
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
-
-      <View style={style.whiteView}>
-        <PagerView
-          style={style.pagerView}
-          initialPage={0}
-          onPageSelected={e => {
-            console.log(e.nativeEvent.position);
-            setselected(e.nativeEvent.position);
-            if(selected=== 0){
-              setselectedChannel('APPOINTMENTS');
-            }else if(selected=== 1){
-              setselectedChannel('MEAL_PLAN');
-            }else if(selected=== 2){
-               setselectedChannel('PROGRESS');
-            }else if(selected=== 3){
-               setselectedChannel('QUESTIONS');
-            }
-
-          }}>
-          <View key="1">
-          
-            <FlatList
-               data={chatData && chatData.length > 0 ? chatData : null}
-               showsVerticalScrollIndicator={false}
-                renderItem={({ item, index }) => {
-                return (
-                <Chat 
-                item={item}
-                selectedChannel={selectedChannel}
-                />
-                );
+                borderRadius: 50 / 2,
+                borderColor: CONFIGURATION.white,
+                borderWidth: 2,
               }}
-             keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-          <View key="2">
-            {/* <Text>Meal plan</Text> */}
-              <FlatList
-              data={chatData && chatData.length > 0 ? chatData : null}
-              showsVerticalScrollIndicator={false}
-                renderItem={({ item, index }) => {
-                return (
-                <Chat 
-                item={item}
-                selectedChannel={selectedChannel}
-                />
-                );
-              }}
-             keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-          <View key="3">
-              <FlatList
-               data={chatData && chatData.length > 0 ? chatData : null}
-              showsVerticalScrollIndicator={false}
-                renderItem={({ item, index }) => {
-                return (
-                <Chat 
-                item={item}
-                selectedChannel={selectedChannel}
-                />
-                );
-              }}
-             keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-          <View key="4">
-              <FlatList
-               data={chatData && chatData.length > 0 ? chatData : null}
-               showsVerticalScrollIndicator={false}
-                renderItem={({ item, index }) => {
-                return (
-                <Chat 
-                item={item}
-                selectedChannel={selectedChannel}
-                />
-                );
-              }}
-             keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-        </PagerView>
-
-        <View style={style.inputView}>
-          <View style={style.inputrow}>
-            <TextInput
-              style={style.input}
-              value={message}
-              placeholder="Send message"
-              onChangeText={text => {
-                setMessage(text);
-              }}
+              source=//{{
+              {getImage() ? { uri: getImage() } : null}
             />
             <TouchableOpacity
               onPress={() => {
-                setModalVisible(true)
+                props.navigation.navigate('ClientsDetail');
               }}
-              style={{}}>
-              <Image
-                style={{ height: 20, width: 20 }}
-                source={require('./../../assetss/paperClip.png')}
-              />
-            </TouchableOpacity>
-          </View>
-           <TouchableOpacity
-              onPress={() => {
-                sendMessages(message);
-                 getMessages();
-              }}
-               style={{
-              width: '20%',
-              backgroundColor: CONFIGURATION.primaryGreen,
-              paddingVertical: 12,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 50,
-            }}
-              >
-          <View
-            style={{
-           
-            }}>
+              style={{ width: '70%' }}>
               <Text
                 style={{
+                  fontSize: 18,
                   fontFamily: CONFIGURATION.TextBold,
                   color: CONFIGURATION.white,
                 }}>
-                Send
+                {toFullName}
               </Text>
-        
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: CONFIGURATION.TextRegular,
+                  color: CONFIGURATION.white,
+                }}>
+                Active
+              </Text>
+            </TouchableOpacity>
           </View>
-         </TouchableOpacity>
-        </View>
-      </View>
-      <Modal style={{ flex: 1.0 }} animationType='slide' visible={isModalVisible} transparent={true}>
-        <View style={{ flex: 1.0, backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <TouchableOpacity style={{ flex: 1.0 }} onPress={() => {
-            setModalVisible(false)
-          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              position: 'absolute',
+              bottom: 0,
+              width: width,
+              paddingHorizontal: 20,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                setselected(0);
+                setselectedChannel('APPOINTMENTS');
+              }}
+              style={{ alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontFamily:
+                    selected == 0
+                      ? CONFIGURATION.TextBold
+                      : CONFIGURATION.TextRegular,
+                  color: CONFIGURATION.white,
+                }}>
+                Appointments
+              </Text>
+              <View
+                style={{
+                  height: 3,
+                  width: 50,
+                  backgroundColor: selected == 0 ? CONFIGURATION.white : null,
+                  marginTop: 10,
+                }}></View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setselected(1);
+                setselectedChannel('MEAL_PLAN');
+              }}
+              style={{ alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontFamily:
+                    selected == 1
+                      ? CONFIGURATION.TextBold
+                      : CONFIGURATION.TextRegular,
+                  color: CONFIGURATION.white,
+                }}>
+                Meal plan
+              </Text>
+              <View
+                style={{
+                  height: 3,
+                  width: 50,
+                  backgroundColor: selected == 1 ? CONFIGURATION.white : null,
+                  marginTop: 10,
+                }}></View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setselected(2);
+                setselectedChannel('PROGRESS');
+              }}
+              style={{ alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontFamily:
+                    selected == 2
+                      ? CONFIGURATION.TextBold
+                      : CONFIGURATION.TextRegular,
+                  color: CONFIGURATION.white,
+                }}>
+                Progress
+              </Text>
+              <View
+                style={{
+                  height: 3,
+                  width: 50,
+                  backgroundColor: selected == 2 ? CONFIGURATION.white : null,
+                  marginTop: 10,
+                }}></View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setselected(3);
+                setselectedChannel('QUESTIONS');
+              }}
+              style={{ alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  fontFamily:
+                    selected == 3
+                      ? CONFIGURATION.TextBold
+                      : CONFIGURATION.TextRegular,
+                  color: CONFIGURATION.white,
+                }}>
+                Questions
+              </Text>
+              <View
+                style={{
+                  height: 3,
+                  width: 50,
+                  backgroundColor: selected == 3 ? CONFIGURATION.white : null,
+                  marginTop: 10,
+                }}></View>
+            </TouchableOpacity>
+          </View>
+        </LinearGradient>
+        <View style={style.whiteView}>
+          <PagerView
+            style={style.pagerView}
+            initialPage={0}
+            onPageSelected={e => {
+              setselected(e.nativeEvent.position);
+              if (selected === 0) {
+                setselectedChannel('APPOINTMENTS');
+              } else if (selected === 1) {
+                setselectedChannel('MEAL_PLAN');
+              } else if (selected === 2) {
+                setselectedChannel('PROGRESS');
+              } else if (selected === 3) {
+                setselectedChannel('QUESTIONS');
+              }
+            }}>
+            <View style={{ flex: 1.0 }}>
+              <FlatList
+                data={chatData && chatData.length > 0 ? chatData : null}
+                inverted={true}
+                showsVerticalScrollIndicator={false}
+                extraData={chatData}
+                keyExtractor={(item, index) => item.id}
+                ListFooterComponent={() => {
+                  if (isLoading) {
+                    return (
+                      <View style={{ height: 100, justifyContent: 'center' }}>
+                        <ActivityIndicator color={'#000'} animating={true}></ActivityIndicator>
+                      </View>
+                    )
+                  }
+                  else {
+                    return null
+                  }
+                }}
+                renderItem={({ item, index }) => {
+                  return (
+                    <Chat
+                      item={item}
+                      selectedChannel={selectedChannel}
+                    />
+                  );
+                }}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </View>
+          </PagerView>
 
-          </TouchableOpacity>
-          <View style={{
-            width: width,
-            backgroundColor: CONFIGURATION.white,
-            zIndex: 1,
-            flexDirection: 'row',
-            elevation: 5,
-            borderColor: CONFIGURATION.loginInputBorder,
-            borderBottomWidth: 1,
-          }}>
-            <>
+          <View style={style.inputView}>
+            <View style={style.inputrow}>
+              <TextInput
+                style={style.input}
+                value={message}
+                placeholder="Send message"
+                onChangeText={text => {
+                  setMessage(text);
+                }}
+              />
               <TouchableOpacity
                 onPress={() => {
-                  chooseFile();
+                  setModalVisible(true)
                 }}
-                style={{
-                  height: 100,
-                  width: width / 4,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+                style={{}}>
                 <Image
-                  source={require('./../../assetss/Cameras.png')}
-                  style={{ height: 30, width: 30 }}
+                  style={{ height: 20, width: 20 }}
+                  source={require('./../../assetss/paperClip.png')}
                 />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                sendMessages(message);
+              }}
+              style={{
+                width: '20%',
+                backgroundColor: CONFIGURATION.primaryGreen,
+                paddingVertical: 12,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 50,
+              }}
+            >
+              <View
+                style={{
+
+                }}>
                 <Text
                   style={{
                     fontFamily: CONFIGURATION.TextBold,
-                    color: CONFIGURATION.TextDarkBlack,
-                    marginTop: 5,
+                    color: CONFIGURATION.white,
                   }}>
-                  Camera
+                  Send
                 </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  filePicker();
-                }}
-                style={{
-                  height: 100,
-                  width: width / 4,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Image
-                  source={require('./../../assetss/File.png')}
-                  style={{ height: 30, width: 30 }}
-                />
-                <Text
-                  style={{
-                    fontFamily: CONFIGURATION.TextBold,
-                    color: CONFIGURATION.TextDarkBlack,
-                    marginTop: 5,
-                  }}>
-                  Files
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  image();
-                }}
-                style={{
-                  height: 100,
-                  width: width / 4,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Image
-                  source={require('./../../assetss/Photo.png')}
-                  style={{ height: 30, width: 30 }}
-                />
-                <Text
-                  style={{
-                    fontFamily: CONFIGURATION.TextBold,
-                    color: CONFIGURATION.TextDarkBlack,
-                    marginTop: 5,
-                  }}>
-                  Photos
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  Videoss();
-                }}
-                style={{
-                  height: 100,
-                  width: width / 4,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Image
-                  source={require('./../../assetss/Video.png')}
-                  style={{ height: 30, width: 30 }}
-                />
-                <Text
-                  style={{
-                    fontFamily: CONFIGURATION.TextBold,
-                    color: CONFIGURATION.TextDarkBlack,
-                    marginTop: 5,
-                  }}>
-                  Videos
-                </Text>
-              </TouchableOpacity>
-            </>
+
+              </View>
+            </TouchableOpacity>
           </View>
-          <SafeAreaView />
         </View>
-      </Modal>
-         {/* {isLoading && <ProgressView />} */}
+        <Modal style={{ flex: 1.0 }} animationType='slide' visible={isModalVisible} transparent={true}>
+          <View style={{ flex: 1.0, backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <TouchableOpacity style={{ flex: 1.0 }} onPress={() => {
+              setModalVisible(false)
+            }}>
+
+            </TouchableOpacity>
+            <View style={{
+              width: width,
+              backgroundColor: CONFIGURATION.white,
+              zIndex: 1,
+              flexDirection: 'row',
+              elevation: 5,
+              borderColor: CONFIGURATION.loginInputBorder,
+              borderBottomWidth: 1,
+            }}>
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    chooseFile();
+                  }}
+                  style={{
+                    height: 100,
+                    width: width / 4,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Image
+                    source={require('./../../assetss/Cameras.png')}
+                    style={{ height: 30, width: 30 }}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: CONFIGURATION.TextBold,
+                      color: CONFIGURATION.TextDarkBlack,
+                      marginTop: 5,
+                    }}>
+                    Camera
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    filePicker();
+                  }}
+                  style={{
+                    height: 100,
+                    width: width / 4,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Image
+                    source={require('./../../assetss/File.png')}
+                    style={{ height: 30, width: 30 }}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: CONFIGURATION.TextBold,
+                      color: CONFIGURATION.TextDarkBlack,
+                      marginTop: 5,
+                    }}>
+                    Files
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    image();
+                  }}
+                  style={{
+                    height: 100,
+                    width: width / 4,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Image
+                    source={require('./../../assetss/Photo.png')}
+                    style={{ height: 30, width: 30 }}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: CONFIGURATION.TextBold,
+                      color: CONFIGURATION.TextDarkBlack,
+                      marginTop: 5,
+                    }}>
+                    Photos
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    Videoss();
+                  }}
+                  style={{
+                    height: 100,
+                    width: width / 4,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Image
+                    source={require('./../../assetss/Video.png')}
+                    style={{ height: 30, width: 30 }}
+                  />
+                  <Text
+                    style={{
+                      fontFamily: CONFIGURATION.TextBold,
+                      color: CONFIGURATION.TextDarkBlack,
+                      marginTop: 5,
+                    }}>
+                    Videos
+                  </Text>
+                </TouchableOpacity>
+              </>
+            </View>
+            <SafeAreaView />
           </View>
-        </SafeAreaView>
+        </Modal>
+        {/* {isLoading && <ProgressView />} */}
+      </View>
+      <SafeAreaView />
+    </View>
   );
 };
 
