@@ -76,8 +76,8 @@ const index = props => {
   });
 
   useEffect(() => {
-    readMessage();
-    getMessages();
+   // readMessage();
+    //getMessages();
   });
 
 
@@ -290,7 +290,9 @@ const index = props => {
           />
           <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate('ClientsDetail');
+              props.navigation.navigate('ClientsDetail', {
+                toUser: toUser,
+              });
             }}
             style={{ width: '70%' }}>
             <Text

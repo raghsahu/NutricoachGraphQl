@@ -290,6 +290,52 @@ export const APPProvider = props => {
     return await request('get', graphqlQuery);
   };
 
+// get client details
+  const getClientsDetails = async (customerId) => {
+    const graphqlQuery = {
+      query: `{
+                me {
+                  ... on Coach {
+                    customer(id: "${customerId}" ),
+                    {
+                      id
+                      email
+                      profile
+                      {
+                      fullName
+                      dateOfBirth
+                      gender
+                      profileImg
+                      mobileNum
+                      }  
+                      lastActivity
+                      healthProfile{
+                      height{
+                     inches
+                     }
+                    weight{
+                    currentWeight
+                    targetWeight
+                    }
+                    bodyMeasurements{
+                    armsCm
+                    abdomenCm
+                    thighsCm
+                  waistCm
+                  hipsCm
+                  chestCm
+                  calvesCm
+                  }
+                  }
+                    }
+                  }
+                }
+              }`,
+    };
+    return await request('get', graphqlQuery);
+  };
+
+
   const request = async (method, params) => {
     try {
       console.log('===================');
@@ -413,6 +459,7 @@ export const APPProvider = props => {
         sendMessage,
         readMessages,
         getChatMessages,
+        getClientsDetails,
       }}>
       {props.children}
     </APPContext.Provider>
