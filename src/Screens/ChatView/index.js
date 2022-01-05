@@ -32,16 +32,6 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import LinearGradient from 'react-native-linear-gradient';
-import { ReactNativeFile, createUploadLink } from 'apollo-upload-client'
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  useMutation,
-  UPLOAD_IMAGE,
-  gql
-} from "@apollo/client";
 
 
 //const DATA = [{}];
@@ -62,6 +52,7 @@ const index = props => {
   const [message, setMessage] = useState('');
   const [chatData, setChatData] = useState([])
   const [isLoading, setLoading] = useState(true)
+  const [isImageLoading, setImageLoading] = useState(false)
 
     useEffect(() => {
     readMessage();
@@ -76,10 +67,6 @@ const index = props => {
 
 
   const chooseFile = () => {
-    let options = {
-      mediaType: 'photo',
-    };
-
     launchCamera({ mediaType: 'mixed' }, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -88,7 +75,17 @@ const index = props => {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        setModalVisible(false)
+        const file = {
+          uri: response.assets[0].uri,
+          name: response.assets[0].fileName,
+          type: response.assets[0].type ? response.assets[0].type : 'image/jpeg',
+        }
+        setTimeout(() => {
+          setModalVisible(false)
+          setTimeout(() => {
+            sendFile(file)
+          }, 200);
+        }, 100);
       }
     });
   };
@@ -107,16 +104,17 @@ const index = props => {
           console.log(response.fileName);
           console.log(response.uri);
 
-          const file = new ReactNativeFile({
+          const file = {
             uri: response.assets[0].uri,
             name: response.assets[0].fileName,
-            type: 'image/jpeg',
-          });
-    
-          sendFile(file)
+            type: response.assets[0].type ? response.assets[0].type : 'image/jpeg',
+          }
 
           setTimeout(() => {
             setModalVisible(false)
+            setTimeout(() => {
+              sendFile(file)
+            }, 200);
           }, 100);
         }
       });
@@ -140,14 +138,18 @@ const index = props => {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        console.log(response.fileName);
-        console.log(response.uri);
-        let imageurl = {
-          name: 'gallery.png',
+        const file = {
           uri: response.assets[0].uri,
-          type: '*/*',
-        };
-        setModalVisible(false)
+          name: response.assets[0].fileName,
+          type: response.assets[0].type ? response.assets[0].type : 'video/mp4',
+        }
+
+        setTimeout(() => {
+          setModalVisible(false)
+          setTimeout(() => {
+            sendFile(file)
+          }, 200);
+        }, 100);
       }
     });
   };
@@ -165,12 +167,17 @@ const index = props => {
       );
       const pdf = {
         uri: res.uri,
-        type: '*/*',
+        type: res.type ? res.type : '*/*',
         name: res.name,
       };
-      console.log('================xzdfdsfs====================');
-      console.log(res);
-      setModalVisible(false)
+
+      setTimeout(() => {
+        setModalVisible(false)
+        setTimeout(() => {
+          sendFile(file)
+        }, 200);
+      }, 100);
+
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
 
@@ -244,6 +251,7 @@ const index = props => {
       return
     }
     else {
+      setImageLoading(true)
       let loginId =
         authDetails &&
           authDetails.data &&
@@ -266,8 +274,10 @@ const index = props => {
           let data = [...chatData]
           data.splice(0, 0, result.data.data.sendMessage);
           setChatData(data)
+          setImageLoading(false)
         }, 100);
       } else {
+        setImageLoading(false)
         setTimeout(() => {
           Toast.show('Something went wrong', 2000);
         }, 1000);
@@ -674,8 +684,8 @@ const index = props => {
             <SafeAreaView />
           </View>
         </Modal>
-        {/* {isLoading && <ProgressView />} */}
       </View>
+      {isImageLoading && <ProgressView />}
       <SafeAreaView />
     </View>
   );

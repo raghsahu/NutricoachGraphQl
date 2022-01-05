@@ -9,7 +9,7 @@ import { View, Modal, ActivityIndicator } from 'react-native';
 const ProgressView = props => {
     return (
         <Modal visible={true} transparent={true}>
-            <View style={{ flex: 1.0, justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.3)' }}>
+            <View style={{ flex: 1.0, justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
                 <View style={{ backgroundColor: '#fff', alignSelf: 'center', padding: 30, borderRadius: 10, }}>
                     <ActivityIndicator
                         size='large'

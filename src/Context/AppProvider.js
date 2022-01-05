@@ -220,6 +220,7 @@ export const APPProvider = props => {
                 sendMessage(input: $input){
                     id
                     body
+                    createdAt
                     from {
                       id, email
                     }
@@ -252,6 +253,7 @@ export const APPProvider = props => {
                 sendMessage(input: $input){
                   id
                   body
+                  createdAt
                   from {
                     id, email
                   }
@@ -263,14 +265,26 @@ export const APPProvider = props => {
           from: fromUser,
           to: toUser,
           message: '',
-          attachments: [attachments],
+          attachments: [null],
           channel: channel,
           notifyViaEmail: notifyViaEmail,
         },
       },
     };
 
-    return await request('multipart', graphqlQuery);
+
+    const map = {
+      "0": ["variables.input.attachments"]
+    }
+    
+    console.log(JSON.stringify(graphqlQuery))
+    console.log(JSON.stringify(map))
+
+    let formData = new FormData();
+    formData.append('operations', JSON.stringify(graphqlQuery));
+    formData.append('map', JSON.stringify(map))
+    formData.append('0', attachments)
+    return await request('multipart', formData);
   };
 
   const readMessages = async (otherMember, dateSeen, channel) => {
@@ -431,7 +445,7 @@ export const APPProvider = props => {
         return getResponse(response);
       } else if (method == 'multipart') {
         var response = await axios({
-          method: method,
+          method: 'POST',
           url: baseURL,
           data: params,
           headers: {
