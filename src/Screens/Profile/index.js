@@ -50,7 +50,7 @@ const index = (props) => {
   const getProfile = async () => {
     const result = await getUserProfile(id);
 
-    if (result.status == true && result.data && result.data.data.user != null) {
+    if (result && result.data && result.data.data.user != null) {
       setTimeout(() => {
         let full_name = result.data.data.user.profile.fullName;
         setFullName(full_name)
@@ -64,7 +64,7 @@ const index = (props) => {
 
       }, 100);
     } else {
-      Toast.show(result.error, 2000);
+      //Toast.show(result.error, 2000);
     }
   };
 
