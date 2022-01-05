@@ -380,6 +380,13 @@ export const APPProvider = props => {
                               frequency
                             }
                             foodIntolerance
+                             latestBodyComposition(clientId: "${customerId}")
+                             {
+                            bodyFatMassKg
+                            bodyFatPercentage
+                            muscleMassKg
+                            muscleMassPercentage
+                          }
                     }
                   }
                 }
