@@ -150,6 +150,10 @@ const index = props => {
          const [doYouDrink, setdoYouDrink] = useState('');
          const [alcoholIntakefrequency, setalcoholfrequency] = useState('');
          const [foodIntolerance, setfoodIntolerance] = useState('');
+         const [bodyFatMassKg, setbodyFatMassKg] = useState('');
+         const [muscleMassKg, setmuscleMassKg] = useState('');
+         const [bodyFatPercentage, setbodyFatPercentage] = useState('');
+         const [muscleMassPercentage, setmuscleMassPercentage] = useState('');
 
 
 
@@ -186,7 +190,7 @@ const index = props => {
         setwaistCm(result.data.data.me.customer.healthProfile.bodyMeasurements.waistCm);
         sethipsCm(result.data.data.me.customer.healthProfile.bodyMeasurements.hipsCm);
         setchestCm(result.data.data.me.customer.healthProfile.bodyMeasurements.chestCm);
-         setcalvesCm(result.data.data.me.customer.healthProfile.bodyMeasurements.calvesCm);
+        setcalvesCm(result.data.data.me.customer.healthProfile.bodyMeasurements.calvesCm);
         setpregnancyCount(result.data.data.me.customer.healthProfile.pregnancyHistory.pregnancyCount);
         setfirstDayOfLactation(result.data.data.me.customer.healthProfile.pregnancyHistory.firstDayOfLactation);
         setlactationDurationMonths(result.data.data.me.customer.healthProfile.pregnancyHistory.lactationDurationMonths);
@@ -198,9 +202,13 @@ const index = props => {
         setalcoholfrequency(result.data.data.me.customer.healthProfile.alcoholIntake.frequency);
         setfoodIntolerance(result.data.data.me.customer.healthProfile.foodIntolerance);
 
-      
+      if (result.data.data.me.customer.healthProfile && result.data.data.me.customer.healthProfile.latestBodyComposition != null) {
+        setbodyFatMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatMassKg);
+        setmuscleMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatPercentage);
+        setbodyFatPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassKg);
+        setmuscleMassPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassPercentage);
+      }
 
-         
       }, 100);
     } else {
       Toast.show(result.error, 2000);
@@ -1554,7 +1562,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          150 kg
+                          {bodyFatMassKg} kg
                         </Text>
                       </View>
                     </View>
@@ -1577,7 +1585,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          30 %
+                          {bodyFatPercentage} %
                         </Text>
                       </View>
                     </View>
@@ -1600,7 +1608,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          29 jan, 1992
+                         {muscleMassKg} Kg
                         </Text>
                       </View>
                     </View>
@@ -1623,7 +1631,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          10 %
+                          {muscleMassPercentage} %
                         </Text>
                       </View>
                     </View>
