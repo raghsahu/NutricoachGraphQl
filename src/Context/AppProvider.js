@@ -1,18 +1,18 @@
-import React, { createContext, useContext } from 'react';
+import React, {createContext, useContext} from 'react';
 
 //CONTEXT
-import { AuthContext } from './AuthProvider';
+import {AuthContext} from './AuthProvider';
 
 //PACKAGES
 import axios from 'axios';
-import { useQuery, gql } from '@apollo/client';
+import {useQuery, gql} from '@apollo/client';
 
 export const APPContext = createContext();
 
 export const APPProvider = props => {
   const baseURL = 'https://api-nightly.nutricoach.pro/graphql';
 
-  const { authDetails } = useContext(AuthContext);
+  const {authDetails} = useContext(AuthContext);
 
   const login = async (email, password) => {
     const graphqlQuery = {
@@ -288,7 +288,7 @@ export const APPProvider = props => {
   };
 
   const readMessages = async (otherMember, dateSeen, channel) => {
-    let selectedChannel = `${channel}`
+    let selectedChannel = `${channel}`;
     const graphqlQuery = {
       query: `mutation readMessages($input: ReadMessagesInput!) {
                 readMessages(input: $input){
@@ -312,7 +312,7 @@ export const APPProvider = props => {
 
   // channelMessages
   const getChatMessages = async (customerId, selectedChannel) => {
-    let channel = `${selectedChannel}`
+    let channel = `${selectedChannel}`;
     const graphqlQuery = {
       query: `{
                 me {
@@ -341,6 +341,75 @@ export const APPProvider = props => {
     return await request('get', graphqlQuery);
   };
 
+  // get client details
+  const getClientsDetails = async customerId => {
+    const graphqlQuery = {
+      query: `{
+                me {
+                  ... on Coach {
+                    customer(id: "${customerId}" ),
+                    {
+                      id
+                      email
+                      profile
+                      {
+                      fullName
+                      dateOfBirth
+                      gender
+                      profileImg
+                      mobileNum
+                      }  
+                      lastActivity
+                      healthProfile{
+                        height{
+                        inches
+                        }
+                        weight{
+                        currentWeight
+                        targetWeight
+                        }
+                        bodyMeasurements{
+                        armsCm
+                        abdomenCm
+                        thighsCm
+                        waistCm
+                        hipsCm
+                        chestCm
+                        calvesCm
+                        }
+                         
+                          pregnancyHistory{
+                            pregnancyCount
+                            firstDayOfLactation
+                            lactationDurationMonths
+                          }
+                            coachingType
+                            physicalActivityLevel
+                            sports{
+                              description
+                              frequency
+                            }
+                            alcoholIntake{
+                              doYouDrink
+                              frequency
+                            }
+                            foodIntolerance
+                             latestBodyComposition(clientId: "${customerId}")
+                             {
+                            bodyFatMassKg
+                            bodyFatPercentage
+                            muscleMassKg
+                            muscleMassPercentage
+                          }
+                    }
+                  }
+                }
+              }
+            }`,
+    };
+    return await request('get', graphqlQuery);
+  };
+
   const request = async (method, params) => {
     try {
       console.log('===================');
@@ -351,9 +420,9 @@ export const APPProvider = props => {
 
       let value =
         authDetails &&
-          authDetails.data &&
-          authDetails.data.logInCoach &&
-          authDetails.data.logInCoach.token
+        authDetails.data &&
+        authDetails.data.logInCoach &&
+        authDetails.data.logInCoach.token
           ? authDetails.data.logInCoach.token
           : '';
       console.log(value);
@@ -374,8 +443,7 @@ export const APPProvider = props => {
         });
 
         return getResponse(response);
-      }
-      else if (method == 'multipart') {
+      } else if (method == 'multipart') {
         var response = await axios({
           method: 'POST',
           url: baseURL,
@@ -387,8 +455,7 @@ export const APPProvider = props => {
         });
 
         return getResponse(response);
-      }
-      else {
+      } else {
         var response = await axios({
           method: method,
           url: baseURL,
@@ -477,7 +544,8 @@ export const APPProvider = props => {
         sendMessage,
         readMessages,
         getChatMessages,
-        sendFileToMessage
+        getClientsDetails,
+        sendFileToMessage,
       }}>
       {props.children}
     </APPContext.Provider>

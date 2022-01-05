@@ -54,7 +54,7 @@ const index = props => {
   const [isLoading, setLoading] = useState(true)
   const [isImageLoading, setImageLoading] = useState(false)
 
-  useEffect(() => {
+    useEffect(() => {
     readMessage();
     getMessages();
     return () => { }
@@ -336,7 +336,11 @@ const index = props => {
             />
             <TouchableOpacity
               onPress={() => {
-                props.navigation.navigate('ClientsDetail');
+                props.navigation.navigate('ClientsDetail',
+                {
+                  toUser: toUser,
+                }
+                );
               }}
               style={{ width: '70%' }}>
               <Text
