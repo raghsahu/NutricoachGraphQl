@@ -5,7 +5,7 @@ const { height, width } = Dimensions.get("screen")
 import Moment from 'moment';
 
 const ClientsBox = (props) => {
-   const item = props.item
+    const item = props.item
 
     useEffect(() => {
         getPlans()
@@ -34,7 +34,7 @@ const ClientsBox = (props) => {
     function getLastActivity() {
         Moment.locale('en');
         if (item && item.lastActivity) {
-            {/* 5 Jun, 2021 | 5:00 am */}
+            {/* 5 Jun, 2021 | 5:00 am */ }
             return item.lastActivity == '' ? '' : Moment(item.lastActivity).format('d MMM, YYYY | hh:mm a')
         }
         else {
@@ -44,21 +44,21 @@ const ClientsBox = (props) => {
 
 
     return (
-        <View  style={{width:width-40,marginVertical: 5,backgroundColor:CONFIGURATION.white,marginHorizontal: 20,elevation:2}}>
+        <View style={{ width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2 }}>
             <View style={{
                 padding: 20,
                 borderColor: CONFIGURATION.loginInputBorder,
                 borderBottomWidth: 1,
                 flexDirection: "row",
                 alignItems: "center",
-               // justifyContent: "space-between",
+                // justifyContent: "space-between",
             }}>
                 <Image resizeMode={"cover"} style={{
                     height: 50,
                     width: 50,
                     borderRadius: 50 / 2
                 }} source={getImage() ? { uri: getImage() } : null} />
-                <View style={{ width: "60%", marginLeft:20 }}>
+                <View style={{ width: "60%", marginLeft: 20 }}>
                     <Text numberOfLines={1} style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{item.profile ? item.profile.fullName : ""}</Text>
                     <Text numberOfLines={1} style={{ fontSize: 14, fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray }}>{getPlans()}</Text>
                 </View>
@@ -73,10 +73,10 @@ const ClientsBox = (props) => {
                 </View>
                 } */}
             </View>
-            <View style={{flexDirection:"row",justifyContent:"space-between",paddingHorizontal:20,paddingVertical:20}}>
-                <Text style={{fontSize:16,fontFamily:CONFIGURATION.TextBold,color:CONFIGURATION.TextDarkGray}}>Last Activity :</Text>
-                <Text style={{fontSize:16,fontFamily:CONFIGURATION.TextBold,color:CONFIGURATION.TextDarkBlack}}>{getLastActivity()}</Text>
-                
+            <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 20 }}>
+                <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkGray }}>Last Activity :</Text>
+                <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{getLastActivity()}</Text>
+
             </View>
         </View>
     )
