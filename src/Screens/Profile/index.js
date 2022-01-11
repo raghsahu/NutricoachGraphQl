@@ -28,7 +28,7 @@ const index = (props) => {
   const [fullName, setFullName] = useState('')
   const [mobile, setMobile] = useState('***** *****')
   const [image, setImage] = useState('')
-  const [id, setId] = useState('')
+  const [idLogin, setId] = useState('')
 
   useEffect(() => {
     AsyncStorage.getItem('login_user_details', (err, result) => {
@@ -48,7 +48,7 @@ const index = (props) => {
 
 
   const getProfile = async () => {
-    const result = await getUserProfile(id);
+    const result = await getUserProfile(idLogin);
 
     if (result && result.data && result.data.data.user != null) {
       setTimeout(() => {

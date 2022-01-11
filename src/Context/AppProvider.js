@@ -142,6 +142,7 @@ export const APPProvider = props => {
         id: id,
       },
     };
+    return await request('post', graphqlQuery);
   };
 
   async function getStrugglingClients() {
@@ -272,18 +273,17 @@ export const APPProvider = props => {
       },
     };
 
-
     const map = {
-      "0": ["variables.input.attachments"]
-    }
-    
-    console.log(JSON.stringify(graphqlQuery))
-    console.log(JSON.stringify(map))
+      0: ['variables.input.attachments'],
+    };
+
+    console.log(JSON.stringify(graphqlQuery));
+    console.log(JSON.stringify(map));
 
     let formData = new FormData();
     formData.append('operations', JSON.stringify(graphqlQuery));
-    formData.append('map', JSON.stringify(map))
-    formData.append('0', attachments)
+    formData.append('map', JSON.stringify(map));
+    formData.append('0', attachments);
     return await request('multipart', formData);
   };
 
@@ -363,6 +363,7 @@ export const APPProvider = props => {
                       healthProfile{
                         height{
                         inches
+                        feet
                         }
                         weight{
                         currentWeight
@@ -393,9 +394,9 @@ export const APPProvider = props => {
                               doYouDrink
                               frequency
                             }
+                            hoursOfSleep
                             foodIntolerance
-                             latestBodyComposition(clientId: "${customerId}")
-                             {
+                            latestBodyComposition(clientId: "${customerId}"){
                             bodyFatMassKg
                             bodyFatPercentage
                             muscleMassKg
@@ -405,6 +406,32 @@ export const APPProvider = props => {
                   }
                 }
               }
+            }`,
+    };
+    return await request('get', graphqlQuery);
+  };
+
+  // get client unread count
+  const getClientsUnreadMessage = async (selectedChannel, customerId) => {
+    let channel = `${selectedChannel}`;
+    const graphqlQuery = {
+      query: `{
+                me {
+                  ... on Coach {
+                    customer(id: "${customerId}" ),
+                    {
+                      id
+                      unreadMessages(
+					              channel: ${channel}
+                      ) {
+                        body,
+          		          createdAt,
+                        channel
+                     }
+                    }
+                  }
+                }
+              
             }`,
     };
     return await request('get', graphqlQuery);
@@ -546,6 +573,7 @@ export const APPProvider = props => {
         getChatMessages,
         getClientsDetails,
         sendFileToMessage,
+        getClientsUnreadMessage,
       }}>
       {props.children}
     </APPContext.Provider>

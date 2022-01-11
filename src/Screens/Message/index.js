@@ -116,9 +116,9 @@ const index = props => {
           }}
         />
       </View>
-      <TouchableOpacity style={{ position: "absolute", bottom: 20, right: 20 }}>
+      {/* <TouchableOpacity style={{ position: "absolute", bottom: 20, right: 20 }}>
         <Image resizeMode={"contain"} style={{ height: 50, width: 50 }} source={require('./../../assetss/add.png')} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
