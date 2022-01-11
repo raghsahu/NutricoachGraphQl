@@ -6,6 +6,7 @@ import { AuthContext } from './AuthProvider'
 //PACKAGES
 import axios from 'axios'
 import { useQuery, gql } from '@apollo/client';
+import { Alert } from 'react-native';
 
 export const APPContext = createContext();
 
@@ -116,9 +117,9 @@ export const APPProvider = props => {
         return await request('post', graphqlQuery);
     };
 
-   const getUserProfile = async (id) => {
-    const graphqlQuery = {
-      query: `query user($id: ID) {
+    const getUserProfile = async (id) => {
+        const graphqlQuery = {
+            query: `query user($id: ID) {
                 user(id: $id){
                    id,
                    email,
@@ -137,12 +138,12 @@ export const APPProvider = props => {
                   }                    
                 }
             }`,
-        variables: {
-            id: id,
-      },
+            variables: {
+                id: id,
+            },
+        };
+        return await request('post', graphqlQuery);
     };
-    return await request('post', graphqlQuery);
-  };
 
 
     async function getStrugglingClients() {
@@ -208,32 +209,23 @@ export const APPProvider = props => {
         return await request('post', graphqlQuery);
     }
 
-    const sendMessage = async (
-        id,
-        fromUser,
-        toUser,
-        message,
-        attachments,
-        channel,
-        notifyViaEmail,
-    ) => {
+    const sendMessage = async (loginId, toUser, message, fileData, selectedChannel, notifyViaEmail) => {
         const graphqlQuery = {
             query: `mutation sendMessage($input: SendMessageInput!) {
                 sendMessage(input: $input){
-                    id
-                    body                                                                                     
+                    Message                                                                                    
                 }
               }`,
             variables: {
                 input: {
-                id: id,
-				from: fromUser,
-				to: toUser,
-				message: message,
-				attachments: attachments,
-				channel: channel,
-				notifyViaEmail: notifyViaEmail,
-				},
+                    id: loginId,
+                    from: toUser,
+                    to: loginId,
+                    message: message,
+                    attachments: fileData,
+                    channel: `${selectedChannel}`,
+                    notifyViaEmail: notifyViaEmail,
+                },
             },
         };
         return await request('post', graphqlQuery);

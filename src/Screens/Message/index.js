@@ -1,4 +1,4 @@
-import React , { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   FlatList,
+  Alert,
 } from 'react-native';
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
@@ -15,6 +16,8 @@ import style from './style';
 import MassageBox from '../../Components/MessageBox';
 //CONTEXT 
 import { APPContext } from '../../Context/AppProvider'
+import { AuthContext } from '../../Context/AuthProvider';
+import { VariablesInAllowedPositionRule } from 'graphql';
 
 const DATA = [
   {
@@ -22,10 +25,10 @@ const DATA = [
     name: 'Jaeremy gaurkau',
     mess: 'Please take a look at the powepoint',
   },
-  {new: '2', name: 'Dulce Passaquindici', mess: 'How are you ?'},
-  {new: '4', name: 'Randy Workman', mess: 'Does anyone know where i can find'},
-  {new: '', name: 'Rayna Aminoff', mess: 'Please take a look at the powepoint'},
-  {new: '', name: 'Jaeremy gaurkau', mess: 'Hiii...'},
+  { new: '2', name: 'Dulce Passaquindici', mess: 'How are you ?' },
+  { new: '4', name: 'Randy Workman', mess: 'Does anyone know where i can find' },
+  { new: '', name: 'Rayna Aminoff', mess: 'Please take a look at the powepoint' },
+  { new: '', name: 'Jaeremy gaurkau', mess: 'Hiii...' },
   {
     new: '5',
     name: 'Jaeremy gaurkau',
@@ -33,26 +36,27 @@ const DATA = [
   },
 ];
 
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
 
 const index = props => {
-    const { getClients } = useContext(APPContext)
-    const [isLoading, setLoading] = useState(true)
-    const [client, setClient] = useState([])
+  
+  const { getClients } = useContext(APPContext)
+  const [isLoading, setLoading] = useState(true)
+  const [client, setClient] = useState([])
 
- useEffect(() => {
-        getClientData()
-        return () => { }
-    }, [])
+  useEffect(() => {    
+    getClientData()
+    return () => { }
+  }, [])
 
-    async function getClientData() {
-        const result = await getClients()
-        setLoading(false)
-        //console.log("client_list "+ result.data.data.me.customers)
-        if (result && result.data && result.data.data && result.data.data.me) {
-            setClient(result.data.data.me.customers)
-        }
+  async function getClientData() {
+    const result = await getClients()
+    setLoading(false)
+    console.log("client_list " + JSON.stringify(result.data.data.me.customers))
+    if (result && result.data && result.data.data && result.data.data.me) {
+      setClient(result.data.data.me.customers)
     }
+  }
 
   return (
     <View style={style.container}>
@@ -77,7 +81,7 @@ const index = props => {
           </TouchableOpacity>
 
           <Text style={style.titleText}>Message</Text>
-          <View style={{width: 35}}></View>
+          <View style={{ width: 35 }}></View>
         </View>
       </LinearGradient>
       <View style={style.whiteView}>
@@ -87,20 +91,20 @@ const index = props => {
             style={style.searchIcoN}
           />
           <TextInput
-            style={{width: '90%', fontFamily: CONFIGURATION.TextRegular}}
+            style={{ width: '90%', fontFamily: CONFIGURATION.TextRegular }}
             placeholder="Search Client"
             placeholderTextColor={CONFIGURATION.loginpalceholder}
           />
         </View>
         <FlatList
           data={client}
-          style={{marginTop: 35}}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item, index }) => {
+          style={{ marginTop: 35 }}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => {
             return (
               <MassageBox
                 click={() => {
-                  props.navigation.navigate('ChatView', { toUser: item.id});
+                  props.navigation.navigate('ChatView', { toUser: item.id });
                 }}
                 item={item}
                 mess={"this is text message"}

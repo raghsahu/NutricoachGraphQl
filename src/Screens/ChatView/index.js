@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   FlatList,
   Animated,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
@@ -17,18 +18,21 @@ import style from './style';
 import Chat from '../../Components/Chat';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-picker';
 import PagerView from 'react-native-pager-view';
 import { APPContext } from '../../Context/AppProvider';
+import { AuthContext } from '../../Context/AuthProvider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DATA = [{}];
 
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
 
 const index = (props) => {
-  const  toUser  = props.route.params.toUser
+
+  const { authDetails } = useContext(AuthContext)
+  const toUser = props.route.params.toUser
   const { sendMessage } = useContext(APPContext);
 
   const [selected, setselected] = useState(0);
@@ -36,14 +40,12 @@ const index = (props) => {
   const [animation, setanimation] = useState(new Animated.Value(0));
   const [startend, setstartend] = useState(false);
   const [fileData, setfileData] = useState('');
-  const [userdata, setuserdata] = useState({document: {}});
+  const [userdata, setuserdata] = useState({ document: {} });
   const [message, setMessage] = useState('');
   const [loginId, setId] = useState('')
   //const [filePath, setFilePath] = useState({});
   //const [toptab,settoptab] = useState('0')
-  console.log('===============sdgdfggdf=====================');
-  console.log(userdata);
-  console.log('====================================');
+
 
   useEffect(() => {
     AsyncStorage.getItem('login_user_details', (err, result) => {
@@ -52,7 +54,7 @@ const index = (props) => {
         let id = obj.data.logInCoach.id;
         if (id != null) {
           setId(id)
-        
+          console.log(id)
         }
       } else {
       }
@@ -70,20 +72,20 @@ const index = (props) => {
     Animated.timing(animation, {
       toValue: 70,
       duration: 1000,
-    }).start(() => {});
+    }).start(() => { });
   };
   const EndAnimation = () => {
     Animated.timing(animation, {
       toValue: -100,
       duration: 1000,
-    }).start(() => {});
+    }).start(() => { });
   };
 
   const chooseFile = () => {
     let options = {
       mediaType: 'photo',
     };
-    launchCamera({mediaType: 'mixed'}, response => {
+    launchCamera({ mediaType: 'mixed' }, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -111,7 +113,7 @@ const index = (props) => {
     let options = {
       mediaType: 'photo',
     };
-    launchImageLibrary({mediaType: 'photo'}, response => {
+    launchImageLibrary({ mediaType: 'photo' }, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -139,7 +141,7 @@ const index = (props) => {
     let options = {
       mediaType: 'photo',
     };
-    launchImageLibrary({mediaType: 'video'}, response => {
+    launchImageLibrary({ mediaType: 'video' }, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -194,8 +196,8 @@ const index = (props) => {
     }
   };
 
-   const sendMessages = async () => {
-    const result = await sendMessage("", loginId, toUser, message, fileData, selectedChannel, false);
+  const sendMessages = async () => {
+    const result = await sendMessage(loginId, toUser, message, fileData, selectedChannel, false)
 
   };
 
@@ -223,7 +225,7 @@ const index = (props) => {
               props.navigation.goBack();
             }}>
             <Image
-              style={{height: 20, width: 20}}
+              style={{ height: 20, width: 20 }}
               source={require('./../../assetss/back.png')}
             />
           </TouchableOpacity>
@@ -244,7 +246,7 @@ const index = (props) => {
             onPress={() => {
               props.navigation.navigate('ClientsDetail');
             }}
-            style={{width: '70%'}}>
+            style={{ width: '70%' }}>
             <Text
               style={{
                 fontSize: 18,
@@ -277,7 +279,7 @@ const index = (props) => {
               setselected(0);
               setselectedChannel("APPOINTMENTS");
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -300,9 +302,9 @@ const index = (props) => {
           <TouchableOpacity
             onPress={() => {
               setselected(1);
-               setselectedChannel("MEAL_PLAN");
+              setselectedChannel("MEAL_PLAN");
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -327,7 +329,7 @@ const index = (props) => {
               setselected(2);
               setselectedChannel("PROGRESS");
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -350,9 +352,9 @@ const index = (props) => {
           <TouchableOpacity
             onPress={() => {
               setselected(3);
-               setselectedChannel("QUESTIONS");
+              setselectedChannel("QUESTIONS");
             }}
-            style={{alignItems: 'center'}}>
+            style={{ alignItems: 'center' }}>
             <Text
               style={{
                 fontSize: 15,
@@ -407,18 +409,18 @@ const index = (props) => {
         <View style={style.inputView}>
           <View style={style.inputrow}>
             <TextInput style={style.input}
-             placeholder="Send message"
-             onChangeText={(text) => {
-                            setMessage(text)
-                        }}
-              />
+              placeholder="Send message"
+              onChangeText={(text) => {
+                setMessage(text)
+              }}
+            />
             <TouchableOpacity
               onPress={() => {
                 setstartend(!startend);
               }}
               style={{}}>
               <Image
-                style={{height: 20, width: 20}}
+                style={{ height: 20, width: 20 }}
                 source={require('./../../assetss/paperClip.png')}
               />
             </TouchableOpacity>
@@ -433,17 +435,17 @@ const index = (props) => {
               borderRadius: 50,
             }}>
             <TouchableOpacity
-            onPress={() => {
+              onPress={() => {
                 sendMessages();
               }}
-               style={{}}>
-            <Text
-              style={{
-                fontFamily: CONFIGURATION.TextBold,
-                color: CONFIGURATION.white,
-              }}>
-              Send
-            </Text>
+              style={{}}>
+              <Text
+                style={{
+                  fontFamily: CONFIGURATION.TextBold,
+                  color: CONFIGURATION.white,
+                }}>
+                Send
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -469,13 +471,13 @@ const index = (props) => {
               marginHorizontal: 10,
             }}>
             <Image
-              style={{height: 80, width: 80, marginTop: 10, borderRadius: 10}}
-              source={{uri: userdata.uri}}
+              style={{ height: 80, width: 80, marginTop: 10, borderRadius: 10 }}
+              source={{ uri: userdata.uri }}
             />
             {userdata.uri ? (
               <TouchableOpacity
                 onPress={() => {
-                  setuserdata({document: {}});
+                  setuserdata({ document: {} });
                 }}
                 style={{
                   backgroundColor: CONFIGURATION.primaryRed,
@@ -489,7 +491,7 @@ const index = (props) => {
                   justifyContent: 'center',
                 }}>
                 <Image
-                  style={{height: 10, width: 10}}
+                  style={{ height: 10, width: 10 }}
                   source={require('./../../assetss/closes.png')}
                 />
               </TouchableOpacity>
@@ -509,7 +511,7 @@ const index = (props) => {
               }}>
               <Image
                 source={require('./../../assetss/Cameras.png')}
-                style={{height: 30, width: 30}}
+                style={{ height: 30, width: 30 }}
               />
               <Text
                 style={{
@@ -532,7 +534,7 @@ const index = (props) => {
               }}>
               <Image
                 source={require('./../../assetss/File.png')}
-                style={{height: 30, width: 30}}
+                style={{ height: 30, width: 30 }}
               />
               <Text
                 style={{
@@ -555,7 +557,7 @@ const index = (props) => {
               }}>
               <Image
                 source={require('./../../assetss/Photo.png')}
-                style={{height: 30, width: 30}}
+                style={{ height: 30, width: 30 }}
               />
               <Text
                 style={{
@@ -578,7 +580,7 @@ const index = (props) => {
               }}>
               <Image
                 source={require('./../../assetss/Video.png')}
-                style={{height: 30, width: 30}}
+                style={{ height: 30, width: 30 }}
               />
               <Text
                 style={{
