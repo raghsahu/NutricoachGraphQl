@@ -224,6 +224,7 @@ const index = (props) => {
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="Birthdate*"
+                            pointerEvents='none'
                             value={selectDate}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             editable={false}
@@ -234,6 +235,7 @@ const index = (props) => {
                         <TextInput
                             style={[style.textInput, { width: "81%" }]}
                             placeholder="Select Gender*"
+                            pointerEvents='none'
                             value={gender}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             editable={false}
