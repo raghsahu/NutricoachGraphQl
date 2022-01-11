@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, Image, Dimensions } from 'react-native'
+import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
 import CONFIGURATION from './Config/index'
 const { height, width } = Dimensions.get("screen")
 
@@ -32,14 +32,25 @@ const TodayAppointment = (props) => {
     }
 
     return (
-        <View style={{
-            width: width - 40,
+         <TouchableOpacity
+      onPress={props.click}
+      style={{
+       width: width - 40,
             marginHorizontal: 20,
             elevation: 2,
             marginVertical: 5,
             backgroundColor: CONFIGURATION.white,
             borderColor: CONFIGURATION.loginInputBorder,
             borderWidth: 0.5,
+      }}>
+        <View style={{
+            // width: width - 40,
+            // marginHorizontal: 20,
+            // elevation: 2,
+            // marginVertical: 5,
+            // backgroundColor: CONFIGURATION.white,
+            // borderColor: CONFIGURATION.loginInputBorder,
+            // borderWidth: 0.5,
         }}>
             <View style={{
                 padding: 10,
@@ -64,6 +75,7 @@ const TodayAppointment = (props) => {
                 <Image style={{ height: 30, width: 30 }} source={require("./../assetss/more.png")} />
             </View>
         </View>
+         </TouchableOpacity>
     )
 }
 

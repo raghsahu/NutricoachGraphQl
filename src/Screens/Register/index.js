@@ -91,7 +91,7 @@ const index = (props) => {
             const result = await register(firstname, lastname, middleName, email, password, selectDate, gender, mobile, referalCode)
             setLoading(false)
             console.log("RESULRvccsdcds", JSON.stringify(result))
-            if (result.data.data && result.data.data.createCoach != null) {
+            if (result.data && result.data.data && result.data.data.createCoach != null) {
                 Alert.alert(
                     '',
                     'Thanks for you registration, log in here',
@@ -109,11 +109,17 @@ const index = (props) => {
                     ]
                 );
             } else {
-                if (result.data.errors.length > 0) {
-                    Toast.show(result.data.errors[0].message)
-                } else {
+                if (result.error) {
+                    Toast.show(result.error, 2000);
+                }else{
                     Toast.show('Somthing went wrong')
                 }
+               
+                // if (result.errors.length > 0) {
+                //     Toast.show(result.errors[0].message)
+                // } else {
+                //     Toast.show('Somthing went wrong')
+                // }
             }
 
         }

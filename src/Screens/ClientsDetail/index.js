@@ -34,6 +34,7 @@ import {LineChart, BarChart} from './../../Components/dist/index';
 import Toast from 'react-native-simple-toast';
 //CONTEXT
 import {APPContext} from '../../Context/AppProvider';
+import Moment from 'moment';
 
 const data = {
   labels: ['20', '21', '22', '23', '24', '25', '26'],
@@ -94,7 +95,7 @@ const index = props => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [selectDate, setselectDate] = useState('');
+  const [selectDate, setselectDate] = useState("");
   const [selected, setselected] = useState(0);
   const [mealDay, setmealDay] = useState(0);
   const [mealDay2, setmealDay2] = useState(0);
@@ -130,6 +131,7 @@ const index = props => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
    const [lastActivity, setlastActivity] = useState('');
+   const [heightFeet, setHeightFeet] = useState('');
     const [heightInches, setHeightInches] = useState('');
       const [currentWeight, setCurrentWeight] = useState('');
        const [targetWeight, setTargetWeight] = useState('');
@@ -149,6 +151,7 @@ const index = props => {
          const [sportsFrequency, setsportsFrequency] = useState('');
          const [doYouDrink, setdoYouDrink] = useState('');
          const [alcoholIntakefrequency, setalcoholfrequency] = useState('');
+         const [hoursOfSleep, sethoursOfSleep] = useState('');
          const [foodIntolerance, setfoodIntolerance] = useState('');
          const [bodyFatMassKg, setbodyFatMassKg] = useState('');
          const [muscleMassKg, setmuscleMassKg] = useState('');
@@ -181,6 +184,7 @@ const index = props => {
         setEmail(result.data.data.me.customer.email);
         setMobile(result.data.data.me.customer.profile.mobileNum);
         setlastActivity(result.data.data.me.customer.lastActivity);
+        setHeightFeet(result.data.data.me.customer.healthProfile.height.feet);
         setHeightInches(result.data.data.me.customer.healthProfile.height.inches);
         setCurrentWeight(result.data.data.me.customer.healthProfile.weight.currentWeight);
         setTargetWeight(result.data.data.me.customer.healthProfile.weight.targetWeight);
@@ -201,6 +205,7 @@ const index = props => {
         setdoYouDrink(result.data.data.me.customer.healthProfile.alcoholIntake.doYouDrink);
         setalcoholfrequency(result.data.data.me.customer.healthProfile.alcoholIntake.frequency);
         setfoodIntolerance(result.data.data.me.customer.healthProfile.foodIntolerance);
+        sethoursOfSleep(result.data.data.me.customer.healthProfile.hoursOfSleep);
 
       if (result.data.data.me.customer.healthProfile && result.data.data.me.customer.healthProfile.latestBodyComposition != null) {
         setbodyFatMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatMassKg);
@@ -217,10 +222,10 @@ const index = props => {
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
+    setShow(Platform.OS === 'ios' ? true : false);
     setDate(currentDate);
     //console.log(moment(currentDate).format("DD-MM-YYYY"));
-    setselectDate(moment(currentDate).format('DD-MM-YYYY'));
+    setselectDate(moment(currentDate).format('DD-MM-YYYY'))
   };
 
   const showMode = currentMode => {
@@ -244,12 +249,14 @@ const index = props => {
     Animated.timing(value1, {
       toValue: height / 3 + 23,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen1 = () => {
     Animated.timing(value1, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
 
@@ -265,12 +272,14 @@ const index = props => {
     Animated.timing(value2, {
       toValue: height / 2 + 30,
       duration: 1500,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen2 = () => {
     Animated.timing(value2, {
       toValue: 0,
       duration: 1500,
+      useNativeDriver: false // Add This line
     }).start();
   };
 
@@ -286,12 +295,14 @@ const index = props => {
     Animated.timing(value3, {
       toValue: width / 2 + 20,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen3 = () => {
     Animated.timing(value3, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
 
@@ -307,12 +318,14 @@ const index = props => {
     Animated.timing(value4, {
       toValue: height / 1.7,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen4 = () => {
     Animated.timing(value4, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
 
@@ -328,12 +341,14 @@ const index = props => {
     Animated.timing(value5, {
       toValue: height / 1.5 - 10,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen5 = () => {
     Animated.timing(value5, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
 
@@ -349,12 +364,14 @@ const index = props => {
     Animated.timing(value6, {
       toValue: height + 20,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen6 = () => {
     Animated.timing(value6, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
 
@@ -370,12 +387,14 @@ const index = props => {
     Animated.timing(value7, {
       toValue: height / 1.3 + 10,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen7 = () => {
     Animated.timing(value7, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
 
@@ -391,12 +410,14 @@ const index = props => {
     Animated.timing(value8, {
       toValue: height / 2 - 20,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen8 = () => {
     Animated.timing(value8, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
 
@@ -412,14 +433,23 @@ const index = props => {
     Animated.timing(value9, {
       toValue: height / 2.5 - 20,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
   const closeOpen9 = () => {
     Animated.timing(value9, {
       toValue: 0,
       duration: 1000,
+      useNativeDriver: false // Add This line
     }).start();
   };
+
+ function getLastTime(lastActivity) {
+    Moment.locale('en');
+    var localDate = new Date(lastActivity);
+    return Moment(localDate).format('MM-DD-yyyy hh:mm a')
+
+  }
 
   return (
     <View style={style.container}>
@@ -455,20 +485,20 @@ const index = props => {
               //source={{ uri: "https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80" }}
               source={image == '' ? null : {uri: image}}
             />
-            <View style={{width: '73%'}}>
+            <View style={{width:'73%'}}>
               <Text
                 style={{
-                  fontSize: 18,
-                  fontFamily: CONFIGURATION.TextBold,
-                  color: CONFIGURATION.TextDarkBlack,
+                  fontSize:18,
+                  fontFamily:CONFIGURATION.TextBold,
+                  color:CONFIGURATION.TextDarkBlack,
                 }}>
                 {fullName}
               </Text>
               <Text
                 style={{
-                  fontSize: 14,
-                  fontFamily: CONFIGURATION.TextRegular,
-                  color: CONFIGURATION.TextDarkGray,
+                  fontSize:14,
+                  fontFamily:CONFIGURATION.TextRegular,
+                  color:CONFIGURATION.TextDarkGray,
                 }}>
                 {dob} | {gender}
               </Text>
@@ -561,7 +591,7 @@ const index = props => {
                   fontFamily: CONFIGURATION.TextBold,
                   color: CONFIGURATION.TextDarkBlack,
                 }}>
-                {lastActivity}
+                {lastActivity ? getLastTime(lastActivity) : ''}
               </Text>
             </View>
           </View>
@@ -652,6 +682,7 @@ const index = props => {
                 Invite to download app
               </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -661,7 +692,17 @@ const index = props => {
                 backgroundColor: CONFIGURATION.primaryGreen,
                 borderRadius: 50,
                 paddingHorizontal: 25,
-              }}>
+              }}
+               onPress={() => {
+                props.navigation.navigate('ChatView',
+                    {
+                      toUser: customerId,
+                      fullName: fullName,
+                      profileImage: image,
+                     // item: item
+                    });
+              }}
+              >
               <Text
                 style={{
                   fontFamily: CONFIGURATION.TextBold,
@@ -1218,7 +1259,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                         {currentWeight ? currentWeight : '0'}-{targetWeight} kg
+                         {currentWeight ? currentWeight : '0'}'{targetWeight} kg
                         </Text>
                       </View>
                     </View>
@@ -1241,7 +1282,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          {heightInches} in
+                         {heightFeet}'{heightInches}
                         </Text>
                       </View>
                     </View>
@@ -1562,7 +1603,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          {bodyFatMassKg} kg
+                          {bodyFatMassKg ? bodyFatMassKg : ''} kg
                         </Text>
                       </View>
                     </View>
@@ -1585,7 +1626,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          {bodyFatPercentage} %
+                          {bodyFatPercentage ? bodyFatPercentage : ''} %
                         </Text>
                       </View>
                     </View>
@@ -1608,7 +1649,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                         {muscleMassKg} Kg
+                         {muscleMassKg ? muscleMassKg : ''} Kg
                         </Text>
                       </View>
                     </View>
@@ -1631,7 +1672,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                          {muscleMassPercentage} %
+                          {muscleMassPercentage ? muscleMassPercentage : ''} %
                         </Text>
                       </View>
                     </View>
@@ -2404,7 +2445,7 @@ const index = props => {
                           fontFamily: CONFIGURATION.TextRegular,
                           color: CONFIGURATION.TextDarkGray,
                         }}>
-                       {sportsDescription}
+                       {sportsDescription ? sportsDescription : ''}
                       </Text>
                       <View
                         style={{
@@ -2425,7 +2466,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            {sportsFrequency}
+                            {sportsFrequency ? sportsFrequency : ''}
                           </Text>
                         </View>
                       </View>
@@ -2573,7 +2614,8 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkGray,
                             }}>
-                            About 5 hours / night
+                            {/* About 5 hours / night */}
+                           {hoursOfSleep ? hoursOfSleep : ''} hours
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -2666,7 +2708,10 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <TouchableOpacity
-                        onPress={showDatepicker}
+                        //onPress={showDatepicker}
+                         onPress={() => {
+                            showDatepicker();
+                         }}
                         style={[
                           style.InputBox,
                           {
@@ -2693,7 +2738,7 @@ const index = props => {
                           style.InputBox,
                           {
                             flexDirection: 'row',
-                            alignItems: 'center',
+                           // alignItems: 'center',
                             marginTop: 15,
                           },
                         ]}>

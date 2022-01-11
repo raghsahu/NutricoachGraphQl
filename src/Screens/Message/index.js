@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   FlatList,
+  Alert,
 } from 'react-native';
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
@@ -15,6 +16,8 @@ import style from './style';
 import MassageBox from '../../Components/MessageBox';
 //CONTEXT 
 import { APPContext } from '../../Context/AppProvider'
+import { AuthContext } from '../../Context/AuthProvider';
+import { VariablesInAllowedPositionRule } from 'graphql';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -116,9 +119,9 @@ const index = props => {
           }}
         />
       </View>
-      <TouchableOpacity style={{ position: "absolute", bottom: 20, right: 20 }}>
+      {/* <TouchableOpacity style={{ position: "absolute", bottom: 20, right: 20 }}>
         <Image resizeMode={"contain"} style={{ height: 50, width: 50 }} source={require('./../../assetss/add.png')} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
