@@ -202,7 +202,16 @@ const index = (props) => {
                             <>
                                 {strugglingClient.map((data, index) => {
                                     return (
-                                        <TodayAppoinment key={index} item={data} />
+                                        <TodayAppoinment 
+                                         click={() => {
+                                            props.navigation.navigate('ClientsDetail',
+                                                {
+                                                toUser: data.id,
+                                                
+                                                });
+                                            }}
+                                        key={index}
+                                         item={data} />
                                     )
                                 })}
                             </>

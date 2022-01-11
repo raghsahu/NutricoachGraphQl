@@ -28,12 +28,14 @@ const index = (props) => {
   const [fullName, setFullName] = useState('')
   const [mobile, setMobile] = useState('***** *****')
   const [image, setImage] = useState('')
-  const [id, setId] = useState('')
+  const [idLogin, setId] = useState('')
 
   useEffect(() => {
     AsyncStorage.getItem('login_user_details', (err, result) => {
       if (result) {
         let obj = JSON.parse(result)
+        console.log("auth_token "+ obj.data.logInCoach.token);
+
         let id = obj.data.logInCoach.id;
         if (id != null) {
           setId(id)
@@ -46,9 +48,9 @@ const index = (props) => {
 
 
   const getProfile = async () => {
-    const result = await getUserProfile(id);
+    const result = await getUserProfile(idLogin);
 
-    if (result.status == true && result.data && result.data.data.user != null) {
+    if (result && result.data && result.data.data.user != null) {
       setTimeout(() => {
         let full_name = result.data.data.user.profile.fullName;
         setFullName(full_name)
@@ -62,7 +64,7 @@ const index = (props) => {
 
       }, 100);
     } else {
-      Toast.show(result.error, 2000);
+      //Toast.show(result.error, 2000);
     }
   };
 

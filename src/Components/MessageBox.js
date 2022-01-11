@@ -1,38 +1,51 @@
 import React from 'react';
-import {View, Text, Dimensions, Image, TouchableOpacity} from 'react-native';
+import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CONFIGURATION from './Config';
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
+import Moment from 'moment';
 
 const MessageBox = props => {
-      const item = props.item
-      
+  const item = props.item
+
   function getImage() {
-        if (item && item.profile) {
-            return item.profile.profileImg == '' ? null : item.profile.profileImg
-        }
-        else {
-            return null
-        }
+    if (item && item.profile) {
+      return item.profile.profileImg == '' ? null : item.profile.profileImg
     }
+    else {
+      return null
+    }
+  }
 
-       function getUnreadCount() {
-        if (item && item.unreadMessages && item.unreadMessages.length > 0) {
-            return item.unreadMessages.length
-        }
-        else {
-            return ""
-        }
+  function getUnreadCount() {
+    if (item && item.unreadMessages && item.unreadMessages.length > 0) {
+      return item.unreadMessages.length
     }
+    else {
+      return ""
+    }
+  }
 
-      function getLastMessage() {
-        if (item && item.unreadMessages && item.unreadMessages.length > 0) {
-            const array = item.unreadMessages.map((item) => item.body)
-            return array
-        }
-        else {
-            return "Start sending messages"
-        }
+  function getLastMessage() {
+    if (item && item.unreadMessages && item.unreadMessages.length > 0) {
+      const array = item.unreadMessages.map((item) => item.body)
+      return array[0] //get latest unread message
     }
+    else {
+      return "No message"
+    }
+  }
+
+  function getLastMessageTime() {
+    Moment.locale('en');
+    if (item && item.unreadMessages && item.unreadMessages.length > 0) {
+      const array = item.unreadMessages.map((item) => item.createdAt)
+      var localDate = new Date(array[0]);
+      return Moment(localDate).format('hh:mm a')
+    }
+    else {
+      return ""
+    }
+  }
 
 
   return (
@@ -63,15 +76,15 @@ const MessageBox = props => {
             uri: 'https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
           }}
         /> */}
-         <Image
+        <Image
           resizeMode={"cover"}
           style={{
-                    height: 50,
-                    width: 50,
-                    borderRadius: 50 / 2
-                }} source={getImage() ? { uri: getImage() } : null} />
+            height: 50,
+            width: 50,
+            borderRadius: 50 / 2
+          }} source={getImage() ? { uri: getImage() } : null} />
 
-        <View style={{width: '50%'}}>
+        <View style={{ width: '50%' }}>
           <Text
             numberOfLines={1}
             style={{
@@ -98,17 +111,17 @@ const MessageBox = props => {
             width: '30%',
             alignItems: 'flex-end',
           }}
-          >
+        >
           <Text
             style={{
               fontSize: 12,
               fontFamily: CONFIGURATION.TextRegular,
               color: CONFIGURATION.TextDarkGray,
             }}>
-            12:00 pm
+            {getLastMessageTime()}
           </Text>
-      
-        <View
+
+          <View
             style={{
               height: 20,
               width: 20,

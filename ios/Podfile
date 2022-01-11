@@ -17,6 +17,10 @@ target 'nutriCoach' do
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable the next line.
     use_flipper!()
+    pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
+    pod 'RNThumbnail', :path => '../node_modules/react-native-thumbnail'
+
     post_install do |installer|
       react_native_post_install(installer)
           installer.pods_project.build_configurations.each do |config| config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] =  "arm64"

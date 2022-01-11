@@ -8,7 +8,6 @@ import CONFIGURATION from './Components/Config';
 //CONTEXT
 import { APPProvider } from './Context/AppProvider';
 import { AuthProvider } from './Context/AuthProvider';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 //----------------Screens-----------------//
 import Login from './Screens/Login'
@@ -25,6 +24,15 @@ import MyProfile from './Screens/Profile/MyProfile'
 import CalenderView from './Screens/CalenderView/index'
 import Splash from './Screens/Splash/Splash';
 import ChangePassword from './Screens/ChangePassword/ChangePassword';
+
+//PACKAGES
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  gql
+} from "@apollo/client";
 
 
 const Stack = createStackNavigator();
@@ -55,12 +63,12 @@ function MyStack() {
         name="ResetPassword"
         component={ResetPassword}
       />
-       <Stack.Screen
+      <Stack.Screen
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
         name="ChangePassword"
         component={ChangePassword}
       />
-        <Stack.Screen
+      <Stack.Screen
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
         name="MyProfile"
         component={MyProfile}
@@ -163,7 +171,7 @@ function App() {
 
   const client = new ApolloClient({
     uri: 'https://api-nightly.nutricoach.pro/graphql',
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache()
   });
 
   return (
