@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
-import {View, Text, Dimensions, ImageBackground, Image} from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, Dimensions, ImageBackground, Image, Alert } from 'react-native';
 
 //CONSTANT & CONFIG
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
 import CONFIGURATION from './Config';
 
 // PACKAGES
@@ -10,19 +10,12 @@ import Moment from 'moment';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 //CONTEXT
-import {AuthContext} from '../Context/AuthProvider';
+import { AuthContext } from '../Context/AuthProvider';
 
 const Chat = props => {
-  const {authDetails} = useContext(AuthContext);
+  const { authDetails } = useContext(AuthContext);
 
-  let loginId =
-    authDetails &&
-    authDetails.data &&
-    authDetails.data.logInCoach &&
-    authDetails.data.logInCoach.id
-      ? authDetails.data.logInCoach.id
-      : '';
-
+  let loginId = authDetails && authDetails.data && authDetails.data.logInCoach && authDetails.data.logInCoach.id ? authDetails.data.logInCoach.id : '';
   const item = props.item;
 
   function getMessageTime() {
@@ -49,121 +42,121 @@ const Chat = props => {
     if (item.attachments && item.attachments.length > 0) {
       if (item.attachments[0].resource_type == 'image') {
         if (item.attachments[0].format == 'pdf') {
-           return (
-          <View
-            style={{
-              width: width / 2 + 80,
-              backgroundColor: CONFIGURATION.lightGreen,
-              marginLeft: 20,
-              marginVertical: 10,
-              borderTopRightRadius: 20,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              padding: 5,
-              overflow: 'hidden',
-            }}>
+          return (
             <View
               style={{
-                width: width / 2 + 70,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                backgroundColor: CONFIGURATION.white,
-                borderRadius: 20,
-                padding: 10,
+                width: width / 2 + 80,
+                backgroundColor: CONFIGURATION.lightGreen,
+                marginLeft: 20,
+                marginVertical: 10,
+                borderTopRightRadius: 20,
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+                padding: 5,
+                overflow: 'hidden',
               }}>
-              <Image
-                resizeMode={'contain'}
-                style={{height: 40, width: 40}}
-                source={require('./../assetss/PDF.png')}
-              />
-              <Text
-                style={{
-                  fontFamily: CONFIGURATION.TextBold,
-                  color: CONFIGURATION.TextDarkBlack,
-                  width: '60%',
-                }}>
-                {item.attachments[0].original_filename}
-              </Text>
               <View
                 style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 40,
+                  width: width / 2 + 70,
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: CONFIGURATION.primaryGreen,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  backgroundColor: CONFIGURATION.white,
+                  borderRadius: 20,
+                  padding: 10,
                 }}>
                 <Image
-                  style={{height: 15, width: 15}}
-                  source={require('./../assetss/Download.png')}
+                  resizeMode={'contain'}
+                  style={{ height: 40, width: 40 }}
+                  source={require('./../assetss/PDF.png')}
+                />
+                <Text
+                  style={{
+                    fontFamily: CONFIGURATION.TextBold,
+                    color: CONFIGURATION.TextDarkBlack,
+                    width: '60%',
+                  }}>
+                  {item.attachments[0].original_filename}
+                </Text>
+                <View
+                  style={{
+                    height: 40,
+                    width: 40,
+                    borderRadius: 40,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: CONFIGURATION.primaryGreen,
+                  }}>
+                  <Image
+                    style={{ height: 15, width: 15 }}
+                    source={require('./../assetss/Download.png')}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    style={{
+                      fontFamily: CONFIGURATION.TextRegular,
+                      color: CONFIGURATION.TextDarkGray,
+                      fontSize: 12,
+                    }}>
+                    {item.attachments[0].bytes / 1000}Kb - {getMessageTime()}
+                  </Text>
+                </View>
+                <Icon
+                  name="checkmark-done"
+                  size={15}
+                  color={CONFIGURATION.TextDarkGray}
                 />
               </View>
             </View>
+          );
+        } else {
+          return (
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: 10,
-                paddingVertical: 5,
+                width: width / 2 + 80,
+                backgroundColor: CONFIGURATION.messageBack,
+                marginRight: 20,
+                marginVertical: 10,
+                borderRadius: 20,
+                padding: 5,
+                overflow: 'hidden',
+                alignSelf: 'flex-end',
               }}>
-              <View style={{flexDirection: 'row'}}>
+              <ImageBackground
+                style={{
+                  height: width / 2,
+                  width: width / 2 + 70,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                imageStyle={{ borderRadius: 20 }}
+                source={{ uri: item.attachments[0].secure_url }}></ImageBackground>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}>
                 <Text
                   style={{
                     fontFamily: CONFIGURATION.TextRegular,
                     color: CONFIGURATION.TextDarkGray,
                     fontSize: 12,
                   }}>
-                   {item.attachments[0].bytes / 1000}Kb - {getMessageTime()}
+                  {getMessageTime()}
                 </Text>
               </View>
-              <Icon
-                name="checkmark-done"
-                size={15}
-                color={CONFIGURATION.TextDarkGray}
-              />
             </View>
-          </View>
-        );
-        }else{
-        return (
-          <View
-            style={{
-              width: width / 2 + 80,
-              backgroundColor: CONFIGURATION.messageBack,
-              marginRight: 20,
-              marginVertical: 10,
-              borderRadius: 20,
-              padding: 5,
-              overflow: 'hidden',
-              alignSelf: 'flex-end',
-            }}>
-            <ImageBackground
-              style={{
-                height: width / 2,
-                width: width / 2 + 70,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              imageStyle={{borderRadius: 20}}
-              source={{uri: item.attachments[0].secure_url}}></ImageBackground>
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-              }}>
-              <Text
-                style={{
-                  fontFamily: CONFIGURATION.TextRegular,
-                  color: CONFIGURATION.TextDarkGray,
-                  fontSize: 12,
-                }}>
-                {getMessageTime()}
-              </Text>
-            </View>
-          </View>
-        );
+          );
         }
       } else if (item.attachments[0].resource_type == 'video') {
         //VIDEO
@@ -186,11 +179,11 @@ const Chat = props => {
                 width: width / 2 + 70,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: '#000000',             
+                backgroundColor: '#000000',
               }}
-              imageStyle={{borderRadius: 20, opacity:0.4}}
-              source={{uri: ' ' }}
-              >
+              imageStyle={{ borderRadius: 20, opacity: 0.4 }}
+              source={{ uri: ' ' }}
+            >
               <View
                 style={{
                   height: 40,
@@ -201,7 +194,7 @@ const Chat = props => {
                   backgroundColor: '#ffffffc7',
                 }}>
                 <Image
-                  style={{height: 15, width: 15}}
+                  style={{ height: 15, width: 15 }}
                   source={require('./../assetss/paly.png')}
                 />
               </View>
@@ -218,7 +211,7 @@ const Chat = props => {
                   right: 10,
                 }}>
                 <Image
-                  style={{height: 15, width: 15}}
+                  style={{ height: 15, width: 15 }}
                   source={require('./../assetss/Download.png')}
                 />
               </View>
@@ -277,7 +270,7 @@ const Chat = props => {
               }}>
               <Image
                 resizeMode={'contain'}
-                style={{height: 40, width: 40}}
+                style={{ height: 40, width: 40 }}
                 source={require('./../assetss/PDF.png')}
               />
               <Text
@@ -298,7 +291,7 @@ const Chat = props => {
                   backgroundColor: CONFIGURATION.primaryGreen,
                 }}>
                 <Image
-                  style={{height: 15, width: 15}}
+                  style={{ height: 15, width: 15 }}
                   source={require('./../assetss/Download.png')}
                 />
               </View>
@@ -310,7 +303,7 @@ const Chat = props => {
                 paddingHorizontal: 10,
                 paddingVertical: 5,
               }}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Text
                   style={{
                     fontFamily: CONFIGURATION.TextRegular,
@@ -330,7 +323,6 @@ const Chat = props => {
         );
       }
     }
-
     return (
       <View
         style={{
@@ -345,7 +337,7 @@ const Chat = props => {
           alignSelf: 'flex-end',
         }}>
         {item.body ? (
-          <Text style={{fontFamily: CONFIGURATION.TextRegular}}>
+          <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>
             {item.body}
           </Text>
         ) : null}
@@ -364,7 +356,7 @@ const Chat = props => {
             }}>
             {getMessageTime()}
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <Icon
               name="checkmark-done"
               size={15}
@@ -378,124 +370,127 @@ const Chat = props => {
     if (item.attachments && item.attachments.length > 0) {
       if (item.attachments[0].resource_type == 'image') {
         if (item.attachments[0].format == 'pdf') {
-           return (
-          <View
-            style={{
-              width: width / 2 + 80,
-              backgroundColor: CONFIGURATION.lightGreen,
-              marginLeft: 20,
-              marginVertical: 10,
-              borderTopRightRadius: 20,
-              borderBottomLeftRadius: 20,
-              borderBottomRightRadius: 20,
-              padding: 5,
-              overflow: 'hidden',
-            }}>
+          return (
             <View
               style={{
-                width: width / 2 + 70,
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                backgroundColor: CONFIGURATION.white,
-                borderRadius: 20,
-                padding: 10,
+                width: width / 2 + 80,
+                backgroundColor: CONFIGURATION.lightGreen,             
+                marginVertical: 10,
+                marginRight:20,
+                borderTopRightRadius: 20,
+                borderBottomLeftRadius: 20,
+                borderBottomRightRadius: 20,
+                padding: 5,
+                overflow: 'hidden',
+                alignSelf:'flex-end'
               }}>
-              <Image
-                resizeMode={'contain'}
-                style={{height: 40, width: 40}}
-                source={require('./../assetss/PDF.png')}
-              />
-              <Text
-                style={{
-                  fontFamily: CONFIGURATION.TextBold,
-                  color: CONFIGURATION.TextDarkBlack,
-                  width: '60%',
-                }}>
-                {item.attachments[0].original_filename}
-              </Text>
               <View
                 style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 40,
+                  width: width / 2 + 70,
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: CONFIGURATION.primaryGreen,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  backgroundColor: CONFIGURATION.white,
+                  borderRadius: 20,
+                  padding: 10,
                 }}>
                 <Image
-                  style={{height: 15, width: 15}}
-                  source={require('./../assetss/Download.png')}
+                  resizeMode={'contain'}
+                  style={{ height: 40, width: 40 }}
+                  source={require('./../assetss/PDF.png')}
+                />
+                <Text
+                  style={{
+                    fontFamily: CONFIGURATION.TextBold,
+                    color: CONFIGURATION.TextDarkBlack,
+                    width: '60%',
+                  }}>
+                  {item.attachments[0].original_filename}
+                </Text>
+                <View
+                  style={{
+                    height: 40,
+                    width: 40,
+                    borderRadius: 40,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: CONFIGURATION.primaryGreen,
+                  }}>
+                  <Image
+                    style={{ height: 15, width: 15 }}
+                    source={require('./../assetss/Download.png')}
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    style={{
+                      fontFamily: CONFIGURATION.TextRegular,
+                      color: CONFIGURATION.TextDarkGray,
+                      fontSize: 12,
+                    }}>
+                    {item.attachments[0].bytes / 1000}Kb - {getMessageTime()}
+                  </Text>
+                </View>
+                <Icon
+                  name="checkmark-done"
+                  size={15}
+                  color={CONFIGURATION.TextDarkGray}
                 />
               </View>
             </View>
+          );
+        } else {
+          return (
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: 10,
-                paddingVertical: 5,
+                width: width / 2 + 80,
+                backgroundColor: CONFIGURATION.messageBack,
+                marginVertical: 10,
+                borderRadius: 20,
+                marginRight:20,
+                padding: 5,
+                overflow: 'hidden',
+                alignSelf:'flex-end'
+
               }}>
-              <View style={{flexDirection: 'row'}}>
+              <ImageBackground
+                style={{
+                  height: width / 2,
+                  width: width / 2 + 70,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                imageStyle={{ borderRadius: 20 }}
+                source={{ uri: item.attachments[0].secure_url }}>
+
+              </ImageBackground>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                }}>
                 <Text
                   style={{
                     fontFamily: CONFIGURATION.TextRegular,
                     color: CONFIGURATION.TextDarkGray,
                     fontSize: 12,
                   }}>
-                  {item.attachments[0].bytes / 1000}Kb - {getMessageTime()}
+                  {getMessageTime()}
                 </Text>
               </View>
-              <Icon
-                name="checkmark-done"
-                size={15}
-                color={CONFIGURATION.TextDarkGray}
-              />
             </View>
-          </View>
-        );
-        }else{
-      return (
-          <View
-            style={{
-              width: width / 2 + 80,
-              backgroundColor: CONFIGURATION.messageBack,
-              marginLeft: 20,
-              marginVertical: 10,
-              borderRadius: 20,
-              padding: 5,
-              overflow: 'hidden',
-            }}>
-            <ImageBackground
-              style={{
-                height: width / 2,
-                width: width / 2 + 70,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              imageStyle={{borderRadius: 20}}
-              source={{uri: item.attachments[0].secure_url}}>
-
-              </ImageBackground>
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingHorizontal: 10,
-                paddingVertical: 5,
-              }}>
-              <Text
-                style={{
-                  fontFamily: CONFIGURATION.TextRegular,
-                  color: CONFIGURATION.TextDarkGray,
-                  fontSize: 12,
-                }}>
-                {getMessageTime()}
-              </Text>
-            </View>
-          </View>
-        );
+          );
         }
-    
+
       } else if (item.attachments[0].resource_type == 'video') {
         //VIDEO
         return (
@@ -503,13 +498,14 @@ const Chat = props => {
             style={{
               width: width / 2 + 80,
               backgroundColor: CONFIGURATION.messageBack,
-              marginLeft: 20,
               marginVertical: 10,
               borderTopRightRadius: 20,
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
+              marginRight:20,
               padding: 5,
               overflow: 'hidden',
+              alignSelf:'flex-end'
             }}>
             <ImageBackground
               style={{
@@ -517,12 +513,12 @@ const Chat = props => {
                 width: width / 2 + 70,
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: '#000000',             
+                backgroundColor: '#000000',
               }}
-              imageStyle={{borderRadius: 20, opacity:0.4}}
-              source={{uri: ' ' }}
-              >
-           
+              imageStyle={{ borderRadius: 20, opacity: 0.4 }}
+              source={{ uri: ' ' }}
+            >
+
               <View
                 style={{
                   height: 40,
@@ -533,7 +529,7 @@ const Chat = props => {
                   backgroundColor: '#ffffffc7',
                 }}>
                 <Image
-                  style={{height: 15, width: 15}}
+                  style={{ height: 15, width: 15 }}
                   source={require('./../assetss/paly.png')}
                 />
               </View>
@@ -550,7 +546,7 @@ const Chat = props => {
                   right: 10,
                 }}>
                 <Image
-                  style={{height: 15, width: 15}}
+                  style={{ height: 15, width: 15 }}
                   source={require('./../assetss/Download.png')}
                 />
               </View>
@@ -589,13 +585,15 @@ const Chat = props => {
             style={{
               width: width / 2 + 80,
               backgroundColor: CONFIGURATION.lightGreen,
-              marginLeft: 20,
               marginVertical: 10,
               borderTopRightRadius: 20,
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
+              marginRight:20,
               padding: 5,
               overflow: 'hidden',
+              alignSelf:'flex-end'
+
             }}>
             <View
               style={{
@@ -609,7 +607,7 @@ const Chat = props => {
               }}>
               <Image
                 resizeMode={'contain'}
-                style={{height: 40, width: 40}}
+                style={{ height: 40, width: 40 }}
                 source={{
                   uri: 'https://miro.medium.com/max/653/1*sk2TA810bDbkU_nvoHK5pQ.png',
                 }}
@@ -632,7 +630,7 @@ const Chat = props => {
                   backgroundColor: CONFIGURATION.primaryGreen,
                 }}>
                 <Image
-                  style={{height: 15, width: 15}}
+                  style={{ height: 15, width: 15 }}
                   source={require('./../assetss/Download.png')}
                 />
               </View>
@@ -644,7 +642,7 @@ const Chat = props => {
                 paddingHorizontal: 10,
                 paddingVertical: 5,
               }}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <Text
                   style={{
                     fontFamily: CONFIGURATION.TextRegular,
@@ -670,16 +668,17 @@ const Chat = props => {
         style={{
           width: width / 2 + 50,
           backgroundColor: CONFIGURATION.messageBack,
-          marginLeft: 20,
           marginVertical: 10,
           borderTopLeftRadius: 20,
+          marginRight:20,
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           padding: 20,
-          alignSelf: 'flex-start',
+          alignSelf:'flex-end'
+
         }}>
         {item.body ? (
-          <Text style={{fontFamily: CONFIGURATION.TextRegular}}>
+          <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>
             {item.body}
           </Text>
         ) : null}
@@ -699,7 +698,7 @@ const Chat = props => {
             }}>
             {getMessageTime()}
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{ flexDirection: 'row' }}>
             <Icon
               name="checkmark-done"
               size={15}

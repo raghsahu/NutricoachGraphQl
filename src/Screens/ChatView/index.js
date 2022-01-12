@@ -1,17 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  FlatList,
-  Animated,
-  SafeAreaView,
-  Modal,
-  ActivityIndicator,
-} from 'react-native';
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, FlatList, Animated, SafeAreaView, Modal, ActivityIndicator, StyleSheet, } from 'react-native';
 import style from './style';
 
 //CONFIG & COMPONENTS
@@ -21,43 +9,31 @@ import Chat from '../../Components/Chat';
 import ProgressView from '../../Components/ProgressView';
 
 //CONTEXT
-import {APPContext} from '../../Context/AppProvider';
-import {AuthContext} from '../../Context/AuthProvider';
+import { APPContext } from '../../Context/AppProvider';
+import { AuthContext } from '../../Context/AuthProvider';
 
 // PACKAGES
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PagerView from 'react-native-pager-view';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import LinearGradient from 'react-native-linear-gradient';
 
 //const DATA = [{}];
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
 
 const index = props => {
   const toUser = props.route.params.toUser;
   const toFullName = props.route.params.fullName;
   const profileImage = props.route.params.profileImage;
 
-  const {
-    sendMessage,
-    readMessages,
-    sendFileToMessage,
-    getChatMessages,
-    getClientsUnreadMessage,
-  } = useContext(APPContext);
-  const {authDetails} = useContext(AuthContext);
-   let loginId =
-        authDetails &&
-        authDetails.data &&
-        authDetails.data.logInCoach &&
-        authDetails.data.logInCoach.id
-          ? authDetails.data.logInCoach.id
-          : '';
+  const { sendMessage, readMessages, sendFileToMessage, getChatMessages, getClientsUnreadMessage } = useContext(APPContext);
+  const { authDetails } = useContext(AuthContext);
 
   const [selected, setselected] = useState(0);
+  // const [selectedChannel, setselectedChannel] = useState('APPOINTMENTS');
   const [selectedChannel, setselectedChannel] = useState('APPOINTMENTS');
   const [isModalVisible, setModalVisible] = useState(false);
   const [message, setMessage] = useState('');
@@ -74,25 +50,27 @@ const index = props => {
     readMessage();
     getMessages();
 
-      getAppointsUnreadCount('APPOINTMENTS');
-      getMealUnreadCount('MEAL_PLAN');
-      getProgressUnreadCount('PROGRESS');
-      getQuestionUnreadCount('QUESTIONS');
-    return () => {};
-  }, []);
+    getAppointsUnreadCount('APPOINTMENTS');
+    getMealUnreadCount('MEAL_PLAN');
+    getProgressUnreadCount('PROGRESS');
+    getQuestionUnreadCount('QUESTIONS');
+    return () => { };
+  }, [selectedChannel]);
 
   useEffect(() => {
     getMessages();
-    return () => {};
+    return () => { };
   }, [selectedChannel]);
 
   const MINUTE_MS = 5 * 1000; //Logs every 5 sec
   useEffect(() => {
     const interval = setInterval(() => {
-     getMessages();
+      getMessages();
     }, MINUTE_MS);
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  }, []);
+    return () =>
+      clearInterval(interval);
+    // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [selectedChannel]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,85 +83,107 @@ const index = props => {
   }, []);
 
   async function getAppointsUnreadCount(channelName) {
-     let countMessage = 0;
-      const result = await getClientsUnreadMessage('APPOINTMENTS', toUser);
-      if (result && result.data && result.data.data && result.data.data.me) {
-        if (result.data.data.me.customer.unreadMessages != null) {
-          if (result.data.data.me.customer.unreadMessages.length > 0) {
-             for (let i = 0; i < result.data.data.me.customer.unreadMessages.length; i++) {
-               if (result.data.data.me.customer.unreadMessages[i].from.id != loginId) {
-                if (result.data.data.me.customer.unreadMessages[i].channel == 'APPOINTMENTS') {
-                    countMessage = countMessage + 1   
-                }   
-              }
+    const result = await getClientsUnreadMessage('APPOINTMENTS', toUser);
+    if (result && result.data && result.data.data && result.data.data.me) {
+      if (result.data.data.me.customer.unreadMessages != null) {
+        if (result.data.data.me.customer.unreadMessages.length > 0) {
+          for (let i = 0; i < result.data.data.me.customer.unreadMessages.length; i++) {
+            if (result.data.data.me.customer.unreadMessages[i].channel == 'APPOINTMENTS') {
+              setAppointmentsUnread(
+                result.data.data.me.customer.unreadMessages.length
+              );
             }
-             setAppointmentsUnread(countMessage);
-            console.log("appoints_unread "+ countMessage);
           }
-           else {
-            setAppointmentsUnread('');
-          }
-          
+          console.log("appoints_unread " + appointmentsUnread);
         }
-      }
-  }
-    
-  async function getMealUnreadCount(channelName) {
-      const result = await getClientsUnreadMessage('MEAL_PLAN', toUser);
-      if (result && result.data && result.data.data && result.data.data.me) {
-        if (result.data.data.me.customer.unreadMessages != null) {
-          if (result.data.data.me.customer.unreadMessages.length > 0) {
-            setMealPlanUnread(
-              result.data.data.me.customer.unreadMessages.length
-            );
-          } else {
-            setMealPlanUnread('');
-          }
-              console.log("meal_unread "+ mealplanUnread);
+        else {
+          setAppointmentsUnread('');
         }
-      }
-    } 
-    
- async function getProgressUnreadCount(channelName) {
-      const result = await getClientsUnreadMessage('PROGRESS', toUser);
-      if (result && result.data && result.data.data && result.data.data.me) {
-        // setClient(result.data.data.me.customers)
-        if (result.data.data.me.customer.unreadMessages != null) {
-          if (result.data.data.me.customer.unreadMessages.length > 0) {
-            setProgressUnread(
-              result.data.data.me.customer.unreadMessages.length
-            );
-          } else {
-            setProgressUnread('');
-          }
-              console.log("progress_unread "+ progressUnread);
-        }
-      }
-    } 
-    
-    async function getQuestionUnreadCount(channelName) {
-      const result = await getClientsUnreadMessage('QUESTIONS', toUser);
-      if (result && result.data && result.data.data && result.data.data.me) {
-        if (result.data.data.me.customer.unreadMessages != null) {
-          if (result.data.data.me.customer.unreadMessages.length > 0) {
-            for (let i = 0; i < result.data.data.me.customer.unreadMessages.length; i++) {
-                  if (result.data.data.me.customer.unreadMessages[i].channel == 'QUESTIONS') {
-                     setQuestionUnread(
-                       result.data.data.me.customer.unreadMessages.length
-                 );
-              }
-            }
-           
-          } else {
-            setQuestionUnread('');
-          }
-              console.log("question_unread "+ questionUnread);
-        }
+
       }
     }
-  
+  }
+
+  async function getMealUnreadCount(channelName) {
+    const result = await getClientsUnreadMessage('MEAL_PLAN', toUser);
+    if (result && result.data && result.data.data && result.data.data.me) {
+      if (result.data.data.me.customer.unreadMessages != null) {
+        if (result.data.data.me.customer.unreadMessages.length > 0) {
+          setMealPlanUnread(
+            result.data.data.me.customer.unreadMessages.length
+          );
+        } else {
+          setMealPlanUnread('');
+        }
+        console.log("meal_unread " + mealplanUnread);
+      }
+    }
+  }
+
+  async function getProgressUnreadCount(channelName) {
+    const result = await getClientsUnreadMessage('PROGRESS', toUser);
+    if (result && result.data && result.data.data && result.data.data.me) {
+      // setClient(result.data.data.me.customers)
+      if (result.data.data.me.customer.unreadMessages != null) {
+        if (result.data.data.me.customer.unreadMessages.length > 0) {
+          setProgressUnread(
+            result.data.data.me.customer.unreadMessages.length
+          );
+        } else {
+          setProgressUnread('');
+        }
+        console.log("progress_unread " + progressUnread);
+      }
+    }
+  }
+
+  async function getQuestionUnreadCount(channelName) {
+    const result = await getClientsUnreadMessage('QUESTIONS', toUser);
+    if (result && result.data && result.data.data && result.data.data.me) {
+      if (result.data.data.me.customer.unreadMessages != null) {
+        if (result.data.data.me.customer.unreadMessages.length > 0) {
+          for (let i = 0; i < result.data.data.me.customer.unreadMessages.length; i++) {
+            if (result.data.data.me.customer.unreadMessages[i].channel == 'QUESTIONS') {
+              setQuestionUnread(
+                result.data.data.me.customer.unreadMessages.length
+              );
+            }
+          }
+
+        } else {
+          setQuestionUnread('');
+        }
+        console.log("question_unread " + questionUnread);
+      }
+    }
+  }
+
+
+
+  const readMessage = async () => {
+    const now = new Date();
+
+    const result = await readMessages(
+      toUser,
+      now.toISOString(),
+      selectedChannel,
+    );
+  };
+
+  async function getMessages() {
+    setLoading(true);
+    const result = await getChatMessages(toUser, selectedChannel);
+    setLoading(false);
+    if (result && result.data && result.data.data && result.data.data.me) {
+      setChatData(result.data.data.me.channelMessages);
+    } else {
+      setChatData([]);
+      Toast.show(result.error, 2000);
+    }
+  }
+
   const chooseFile = () => {
-    launchCamera({mediaType: 'mixed'}, response => {
+    launchCamera({ mediaType: 'mixed' }, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -194,9 +194,7 @@ const index = props => {
         const file = {
           uri: response.assets[0].uri,
           name: response.assets[0].fileName,
-          type: response.assets[0].type
-            ? response.assets[0].type
-            : 'image/jpeg',
+          type: response.assets[0].type ? response.assets[0].type : 'image/jpeg',
         };
         setTimeout(() => {
           setModalVisible(false);
@@ -210,7 +208,7 @@ const index = props => {
 
   const image = () => {
     try {
-      launchImageLibrary({mediaType: 'photo'}, response => {
+      launchImageLibrary({ mediaType: 'photo' }, response => {
         console.log('Response = ', response);
         if (response.didCancel) {
           console.log('User cancelled image picker');
@@ -304,36 +302,18 @@ const index = props => {
     }
   };
 
-  const readMessage = async () => {
-    const now = new Date();
-
-    const result = await readMessages(
-      toUser,
-      now.toISOString(),
-      selectedChannel,
-    );
-
-    console.log('readMessages Response ==> ', JSON.stringify(result));
-  };
-
-
-  async function getMessages() {
-    console.log("selected_channelllll " + selectedChannel);
-    setLoading(true);
-    const result = await getChatMessages(toUser, selectedChannel);
-    setLoading(false);
-    if (result && result.data && result.data.data && result.data.data.me) {
-      setChatData(result.data.data.me.channelMessages);
-    } else {
-      setChatData([]);
-      Toast.show(result.error, 2000);
-    }
-  }
-
   const sendMessages = async messageText => {
     if (!messageText) {
       return;
     } else {
+      let loginId =
+        authDetails &&
+          authDetails.data &&
+          authDetails.data.logInCoach &&
+          authDetails.data.logInCoach.id
+          ? authDetails.data.logInCoach.id
+          : '';
+
       const result = await sendMessage(
         loginId,
         toUser,
@@ -363,9 +343,9 @@ const index = props => {
       setImageLoading(true);
       let loginId =
         authDetails &&
-        authDetails.data &&
-        authDetails.data.logInCoach &&
-        authDetails.data.logInCoach.id
+          authDetails.data &&
+          authDetails.data.logInCoach &&
+          authDetails.data.logInCoach.id
           ? authDetails.data.logInCoach.id
           : '';
 
@@ -413,35 +393,21 @@ const index = props => {
           colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]}
           style={style.yellowView}>
           <View
-            style={{
-              padding: 10,
-              borderColor: CONFIGURATION.loginInputBorder,
-              borderBottomWidth: 0,
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: width - 40,
-              justifyContent: 'space-between',
-            }}>
+            style={style.goback}>
             <TouchableOpacity
               onPress={() => {
                 props.navigation.goBack();
               }}>
               <Image
-                style={{height: 20, width: 20}}
+                style={{ height: 20, width: 20 }}
                 source={require('./../../assetss/back.png')}
               />
             </TouchableOpacity>
             <Image
               resizeMode={'cover'}
-              style={{
-                height: 50,
-                width: 50,
-                borderRadius: 50 / 2,
-                borderColor: CONFIGURATION.white,
-                borderWidth: 2,
-              }}
+              style={style.userImage}
               source={ //{{
-                getImage() ? {uri: getImage()} : null
+                getImage() ? { uri: getImage() } : null
               }
             />
             <TouchableOpacity
@@ -450,7 +416,7 @@ const index = props => {
                   toUser: toUser,
                 });
               }}
-              style={{width: '70%'}}>
+              style={{ width: '70%' }}>
               <Text
                 style={{
                   fontSize: 18,
@@ -483,26 +449,27 @@ const index = props => {
                 setselected(0);
                 setselectedChannel('APPOINTMENTS');
               }}
-              style={{alignItems: 'center'}}>
+              style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', marginTop: 12 }}>
+
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontFamily: selected == 0 ? CONFIGURATION.TextBold : CONFIGURATION.TextRegular,
+                    color: CONFIGURATION.white,
+                  }}>
+                  Appointments
+                </Text>
                 <View
-                style={{
-                  height: 8,
-                  width: 8,
-                  backgroundColor: appointmentsUnread ? CONFIGURATION.primaryRed : null ,
-                   borderRadius: 8 / 2,
-                  marginTop: 3,
-                }}></View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily:
-                    selected == 0
-                      ? CONFIGURATION.TextBold
-                      : CONFIGURATION.TextRegular,
-                  color: CONFIGURATION.white,
-                }}>
-                Appointments
-              </Text>
+                  style={{
+                    height: 8,
+                    width: 8,
+                    backgroundColor: appointmentsUnread ? CONFIGURATION.primaryRed : null,
+                    borderRadius: 8 / 2,
+                    alignSelf: 'center',
+                    marginStart: 4
+                  }}></View>
+              </View>
               <View
                 style={{
                   height: 3,
@@ -516,26 +483,31 @@ const index = props => {
                 setselected(1);
                 setselectedChannel('MEAL_PLAN');
               }}
-              style={{alignItems: 'center'}}>
-               <View
-                style={{
-                  height: 8,
-                  width: 8,
-                  backgroundColor: mealplanUnread ? CONFIGURATION.primaryRed : null,
-                   borderRadius: 8 / 2,
-                  marginTop: 3,
-                }}></View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily:
-                    selected == 1
-                      ? CONFIGURATION.TextBold
-                      : CONFIGURATION.TextRegular,
-                  color: CONFIGURATION.white,
-                }}>
-                Meal plan
-              </Text>
+              style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', marginTop: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontFamily:
+                      selected == 1
+                        ? CONFIGURATION.TextBold
+                        : CONFIGURATION.TextRegular,
+                    color: CONFIGURATION.white,
+                  }}>
+                  Meal plan
+                </Text>
+                <View
+                  style={{
+                    height: 8,
+                    width: 8,
+                    backgroundColor: mealplanUnread ? CONFIGURATION.primaryRed : null,
+                    borderRadius: 8 / 2,
+                    alignSelf: 'center',
+                    marginStart: 4
+
+                  }}></View>
+              </View>
+
               <View
                 style={{
                   height: 3,
@@ -549,26 +521,29 @@ const index = props => {
                 setselected(2);
                 setselectedChannel('PROGRESS');
               }}
-              style={{alignItems: 'center'}}>
-               <View
-                style={{
-                  height: 8,
-                  width: 8,
-                  backgroundColor: progressUnread ? CONFIGURATION.primaryRed : null ,
-                   borderRadius: 8 / 2,
-                  marginTop: 3,
-                }}></View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily:
-                    selected == 2
-                      ? CONFIGURATION.TextBold
-                      : CONFIGURATION.TextRegular,
-                  color: CONFIGURATION.white,
-                }}>
-                Progress
-              </Text>
+              style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', marginTop: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontFamily:
+                      selected == 2
+                        ? CONFIGURATION.TextBold
+                        : CONFIGURATION.TextRegular,
+                    color: CONFIGURATION.white,
+                  }}>
+                  Progress
+                </Text>
+                <View
+                  style={{
+                    height: 8,
+                    width: 8,
+                    backgroundColor: progressUnread ? CONFIGURATION.primaryRed : null,
+                    borderRadius: 8 / 2,
+                    alignSelf: 'center',
+                    marginStart: 4
+                  }}></View>
+              </View>
               <View
                 style={{
                   height: 3,
@@ -582,26 +557,29 @@ const index = props => {
                 setselected(3);
                 setselectedChannel('QUESTIONS');
               }}
-              style={{alignItems: 'center'}}>
-               <View
-                style={{
-                  height: 8,
-                  width: 8,
-                  backgroundColor: questionUnread ? CONFIGURATION.primaryRed : null,
-                   borderRadius: 8 / 2,
-                  marginTop: 3,
-                }}></View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontFamily:
-                    selected == 3
-                      ? CONFIGURATION.TextBold
-                      : CONFIGURATION.TextRegular,
-                  color: CONFIGURATION.white,
-                }}>
-                Questions
-              </Text>
+              style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', marginTop: 12 }}>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    fontFamily:
+                      selected == 3
+                        ? CONFIGURATION.TextBold
+                        : CONFIGURATION.TextRegular,
+                    color: CONFIGURATION.white,
+                  }}>
+                  Questions
+                </Text>
+                <View
+                  style={{
+                    height: 8,
+                    width: 8,
+                    backgroundColor: questionUnread ? CONFIGURATION.primaryRed : null,
+                    borderRadius: 8 / 2,
+                    alignSelf: 'center',
+                    marginStart: 4
+                  }} />
+              </View>
               <View
                 style={{
                   height: 3,
@@ -613,49 +591,32 @@ const index = props => {
           </View>
         </LinearGradient>
         <View style={style.whiteView}>
-          <PagerView
-            style={style.pagerView}
-            initialPage={0}
-            onPageSelected={e => {
-              setselected(e.nativeEvent.position);
-              if (selected === 0) {
-                setselectedChannel('APPOINTMENTS');
-              } else if (selected === 1) {
-                setselectedChannel('MEAL_PLAN');
-              } else if (selected === 2) {
-                setselectedChannel('PROGRESS');
-              } else if (selected === 3) {
-                setselectedChannel('QUESTIONS');
-              }
-            }}>
-            <View style={{flex: 1.0}}>
-              <FlatList
-                data={chatData && chatData.length > 0 ? chatData : null}
-                inverted={true}
-                showsVerticalScrollIndicator={false}
-                extraData={chatData}
-                keyExtractor={(item, index) => item.id}
-                ListFooterComponent={() => {
-                  if (isLoading) {
-                    return (
-                      <View style={{height: 100, justifyContent: 'center'}}>
-                        <ActivityIndicator
-                          color={'#000'}
-                          animating={true}></ActivityIndicator>
-                      </View>
-                    );
-                  } else {
-                    return null;
-                  }
-                }}
-                renderItem={({item, index}) => {
-                  return <Chat item={item} selectedChannel={selectedChannel} />;
-                }}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
-          </PagerView>
-
+          <View style={{ flex: 1.0 }}>
+            <FlatList
+              data={chatData && chatData.length > 0 ? chatData : null}
+              inverted={true}
+              showsVerticalScrollIndicator={false}
+              extraData={chatData}
+              keyExtractor={(item, index) => item.id}
+              ListFooterComponent={() => {
+                if (isLoading) {
+                  return (
+                    <View style={{ height: 100, justifyContent: 'center' }}>
+                      <ActivityIndicator
+                        color={'#000'}
+                        animating={true}></ActivityIndicator>
+                    </View>
+                  );
+                } else {
+                  return null;
+                }
+              }}
+              renderItem={({ item, index }) => {
+                return <Chat item={item} selectedChannel={selectedChannel} />;
+              }}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
           <View style={style.inputView}>
             <View style={style.inputrow}>
               <TextInput
@@ -672,7 +633,7 @@ const index = props => {
                 }}
                 style={{}}>
                 <Image
-                  style={{height: 20, width: 20}}
+                  style={{ height: 20, width: 20 }}
                   source={require('./../../assetss/paperClip.png')}
                 />
               </TouchableOpacity>
@@ -702,13 +663,13 @@ const index = props => {
           </View>
         </View>
         <Modal
-          style={{flex: 1.0}}
+          style={{ flex: 1.0 }}
           animationType="slide"
           visible={isModalVisible}
           transparent={true}>
-          <View style={{flex: 1.0, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <View style={{ flex: 1.0, backgroundColor: 'rgba(0,0,0,0.5)' }}>
             <TouchableOpacity
-              style={{flex: 1.0}}
+              style={{ flex: 1.0 }}
               onPress={() => {
                 setModalVisible(false);
               }}></TouchableOpacity>
@@ -735,7 +696,7 @@ const index = props => {
                   }}>
                   <Image
                     source={require('./../../assetss/Cameras.png')}
-                    style={{height: 30, width: 30}}
+                    style={{ height: 30, width: 30 }}
                   />
                   <Text
                     style={{
@@ -758,7 +719,7 @@ const index = props => {
                   }}>
                   <Image
                     source={require('./../../assetss/File.png')}
-                    style={{height: 30, width: 30}}
+                    style={{ height: 30, width: 30 }}
                   />
                   <Text
                     style={{
@@ -781,7 +742,7 @@ const index = props => {
                   }}>
                   <Image
                     source={require('./../../assetss/Photo.png')}
-                    style={{height: 30, width: 30}}
+                    style={{ height: 30, width: 30 }}
                   />
                   <Text
                     style={{
@@ -804,7 +765,7 @@ const index = props => {
                   }}>
                   <Image
                     source={require('./../../assetss/Video.png')}
-                    style={{height: 30, width: 30}}
+                    style={{ height: 30, width: 30 }}
                   />
                   <Text
                     style={{
@@ -826,5 +787,6 @@ const index = props => {
     </View>
   );
 };
+
 
 export default index;
