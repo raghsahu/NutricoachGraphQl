@@ -41,19 +41,21 @@ const index = props => {
   const [isLoading, setLoading] = useState(true);
   const [isImageLoading, setImageLoading] = useState(false);
 
-  const [appointmentsUnread, setAppointmentsUnread] = useState('');
-  const [mealplanUnread, setMealPlanUnread] = useState('');
-  const [progressUnread, setProgressUnread] = useState('');
-  const [questionUnread, setQuestionUnread] = useState('');
+  const [appointmentsUnread, setAppointmentsUnread] = useState(false);
+  const [mealplanUnread, setMealPlanUnread] = useState(false);
+  const [progressUnread, setProgressUnread] = useState(false);
+  const [questionUnread, setQuestionUnread] = useState(false);
 
   useEffect(() => {
-    readMessage();
-    getMessages();
 
     getAppointsUnreadCount('APPOINTMENTS');
     getMealUnreadCount('MEAL_PLAN');
     getProgressUnreadCount('PROGRESS');
     getQuestionUnreadCount('QUESTIONS');
+
+    readMessage();
+    getMessages();
+
     return () => { };
   }, [selectedChannel]);
 
@@ -74,30 +76,28 @@ const index = props => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getAppointsUnreadCount('APPOINTMENTS');
-      getMealUnreadCount('MEAL_PLAN');
-      getProgressUnreadCount('PROGRESS');
-      getQuestionUnreadCount('QUESTIONS');
+      // getAppointsUnreadCount('APPOINTMENTS');
+      // getMealUnreadCount('MEAL_PLAN');
+      // getProgressUnreadCount('PROGRESS');
+      // getQuestionUnreadCount('QUESTIONS');
     }, MINUTE_MS);
     return () => clearInterval(interval);
   }, []);
 
   async function getAppointsUnreadCount(channelName) {
-    const result = await getClientsUnreadMessage('APPOINTMENTS', toUser);
+    const result = await getClientsUnreadMessage(channelName, toUser);
     if (result && result.data && result.data.data && result.data.data.me) {
       if (result.data.data.me.customer.unreadMessages != null) {
         if (result.data.data.me.customer.unreadMessages.length > 0) {
           for (let i = 0; i < result.data.data.me.customer.unreadMessages.length; i++) {
             if (result.data.data.me.customer.unreadMessages[i].channel == 'APPOINTMENTS') {
-              setAppointmentsUnread(
-                result.data.data.me.customer.unreadMessages.length
-              );
+              setAppointmentsUnread(true);
             }
           }
           console.log("appoints_unread " + appointmentsUnread);
         }
         else {
-          setAppointmentsUnread('');
+          setAppointmentsUnread(false);
         }
 
       }
@@ -105,15 +105,13 @@ const index = props => {
   }
 
   async function getMealUnreadCount(channelName) {
-    const result = await getClientsUnreadMessage('MEAL_PLAN', toUser);
+    const result = await getClientsUnreadMessage(channelName, toUser);
     if (result && result.data && result.data.data && result.data.data.me) {
       if (result.data.data.me.customer.unreadMessages != null) {
         if (result.data.data.me.customer.unreadMessages.length > 0) {
-          setMealPlanUnread(
-            result.data.data.me.customer.unreadMessages.length
-          );
+          setMealPlanUnread(true);
         } else {
-          setMealPlanUnread('');
+          setMealPlanUnread(false);
         }
         console.log("meal_unread " + mealplanUnread);
       }
@@ -121,16 +119,14 @@ const index = props => {
   }
 
   async function getProgressUnreadCount(channelName) {
-    const result = await getClientsUnreadMessage('PROGRESS', toUser);
+    const result = await getClientsUnreadMessage(channelName, toUser);
     if (result && result.data && result.data.data && result.data.data.me) {
       // setClient(result.data.data.me.customers)
       if (result.data.data.me.customer.unreadMessages != null) {
         if (result.data.data.me.customer.unreadMessages.length > 0) {
-          setProgressUnread(
-            result.data.data.me.customer.unreadMessages.length
-          );
+          setProgressUnread(true);
         } else {
-          setProgressUnread('');
+          setProgressUnread(false);
         }
         console.log("progress_unread " + progressUnread);
       }
@@ -138,31 +134,29 @@ const index = props => {
   }
 
   async function getQuestionUnreadCount(channelName) {
-    const result = await getClientsUnreadMessage('QUESTIONS', toUser);
-    if (result && result.data && result.data.data && result.data.data.me) {
-      if (result.data.data.me.customer.unreadMessages != null) {
-        if (result.data.data.me.customer.unreadMessages.length > 0) {
-          for (let i = 0; i < result.data.data.me.customer.unreadMessages.length; i++) {
-            if (result.data.data.me.customer.unreadMessages[i].channel == 'QUESTIONS') {
-              setQuestionUnread(
-                result.data.data.me.customer.unreadMessages.length
-              );
-            }
-          }
+    const result = await getClientsUnreadMessage(channelName, toUser);
+    console.log("QUESTIONCOUNT=====>",JSON.stringify(result))
+    // if (result && result.data && result.data.data && result.data.data.me) {
+    //   if (result.data.data.me.customer.unreadMessages != null) {
+    //     if (result.data.data.me.customer.unreadMessages.length > 0) {
+    //       for (let i = 0; i < result.data.data.me.customer.unreadMessages.length; i++) {
+    //         if (result.data.data.me.customer.unreadMessages[i].channel == 'QUESTIONS') {
+    //           setQuestionUnread(true);
+    //         }
+    //       }
+    //     } else {
+    //       setQuestionUnread(false);
+    //       console.log("question_unread " + questionUnread);
+    //     }
 
-        } else {
-          setQuestionUnread('');
-        }
-        console.log("question_unread " + questionUnread);
-      }
-    }
+    //   }
+    // }
   }
 
 
 
   const readMessage = async () => {
     const now = new Date();
-
     const result = await readMessages(
       toUser,
       now.toISOString(),

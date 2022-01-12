@@ -1,5 +1,5 @@
 const CONFIGURATION = {
-
+    
     //Colors
     primaryColor: '#015da2',
     primaryDark: "#0a385c",

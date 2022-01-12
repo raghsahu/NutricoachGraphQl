@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   TextInput,
   FlatList,
   Animated,
+  Alert,
 } from 'react-native';
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
@@ -17,10 +18,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import style from './style';
 import MassageBox from '../../Components/MessageBox';
 import Pogress from './../../Components/progressbar';
-import {identifier} from '@babel/types';
+import { identifier } from '@babel/types';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from 'moment';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Calender from './../../Components/Calender';
@@ -30,10 +32,10 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
-import {LineChart, BarChart} from './../../Components/dist/index';
+import { LineChart, BarChart } from './../../Components/dist/index';
 import Toast from 'react-native-simple-toast';
 //CONTEXT
-import {APPContext} from '../../Context/AppProvider';
+import { APPContext } from '../../Context/AppProvider';
 import Moment from 'moment';
 
 const data = {
@@ -46,14 +48,14 @@ const data = {
   ],
 };
 const chartData = [
-  {label: 'Venezuela', value: '250'},
-  {label: 'Saudi', value: '260'},
-  {label: 'Canada', value: '180'},
-  {label: 'Iran', value: '140'},
-  {label: 'Russia', value: '115'},
-  {label: 'UAE', value: '100'},
-  {label: 'US', value: '30'},
-  {label: 'China', value: '30'},
+  { label: 'Venezuela', value: '250' },
+  { label: 'Saudi', value: '260' },
+  { label: 'Canada', value: '180' },
+  { label: 'Iran', value: '140' },
+  { label: 'Russia', value: '115' },
+  { label: 'UAE', value: '100' },
+  { label: 'US', value: '30' },
+  { label: 'China', value: '30' },
 ];
 //STEP 3 - Chart Configurations
 const chartConfigs = {
@@ -84,7 +86,7 @@ const chartConfig = {
   barPercentage: 0,
   useShadowColorFromDataset: false, // optional
 };
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
 
 const index = props => {
   const customerId = props.route.params.toUser;
@@ -121,7 +123,7 @@ const index = props => {
   const [numberX, setnumberX] = useState([20, 21, 22, 23, 24, 25, 26]);
   const [values, setvalues] = useState([110, 140, 140, 105, 135, 130, 130]);
 
-  const {getClientsDetails} = useContext(APPContext);
+  const { getClientsDetails } = useContext(APPContext);
   const [clientData, setClientData] = useState('');
 
   const [fullName, setFullName] = useState('');
@@ -130,39 +132,51 @@ const index = props => {
   const [dob, setDOB] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
-   const [lastActivity, setlastActivity] = useState('');
-   const [heightFeet, setHeightFeet] = useState('');
-    const [heightInches, setHeightInches] = useState('');
-      const [currentWeight, setCurrentWeight] = useState('');
-       const [targetWeight, setTargetWeight] = useState('');
-        const [armsCm, setarmsCm] = useState('');
-         const [abdomenCm, setabdomenCm] = useState('');
-         const [thighsCm, setthighsCm] = useState('');
-         const [waistCm, setwaistCm] = useState('');
-         const [hipsCm, sethipsCm] = useState('');
-         const [chestCm, setchestCm] = useState('');
-         const [calvesCm, setcalvesCm] = useState('');
-         const [pregnancyCount, setpregnancyCount] = useState('');
-         const [firstDayOfLactation, setfirstDayOfLactation] = useState('');
-         const [lactationDurationMonths, setlactationDurationMonths] = useState('');
-         const [coachingType, setcoachingType] = useState('');
-         const [physicalActivityLevel, setphysicalActivityLevel] = useState('');
-         const [sportsDescription, setsportsDescription] = useState('');
-         const [sportsFrequency, setsportsFrequency] = useState('');
-         const [doYouDrink, setdoYouDrink] = useState('');
-         const [alcoholIntakefrequency, setalcoholfrequency] = useState('');
-         const [hoursOfSleep, sethoursOfSleep] = useState('');
-         const [foodIntolerance, setfoodIntolerance] = useState('');
-         const [bodyFatMassKg, setbodyFatMassKg] = useState('');
-         const [muscleMassKg, setmuscleMassKg] = useState('');
-         const [bodyFatPercentage, setbodyFatPercentage] = useState('');
-         const [muscleMassPercentage, setmuscleMassPercentage] = useState('');
-
-
+  const [lastActivity, setlastActivity] = useState('');
+  const [heightFeet, setHeightFeet] = useState('');
+  const [heightInches, setHeightInches] = useState('');
+  const [currentWeight, setCurrentWeight] = useState('');
+  const [targetWeight, setTargetWeight] = useState('');
+  const [armsCm, setarmsCm] = useState('');
+  const [abdomenCm, setabdomenCm] = useState('');
+  const [thighsCm, setthighsCm] = useState('');
+  const [waistCm, setwaistCm] = useState('');
+  const [hipsCm, sethipsCm] = useState('');
+  const [chestCm, setchestCm] = useState('');
+  const [calvesCm, setcalvesCm] = useState('');
+  const [pregnancyCount, setpregnancyCount] = useState('');
+  const [firstDayOfLactation, setfirstDayOfLactation] = useState('');
+  const [lactationDurationMonths, setlactationDurationMonths] = useState('');
+  const [coachingType, setcoachingType] = useState('');
+  const [physicalActivityLevel, setphysicalActivityLevel] = useState('');
+  const [sportsDescription, setsportsDescription] = useState('');
+  const [sportsFrequency, setsportsFrequency] = useState('');
+  const [doYouDrink, setdoYouDrink] = useState('');
+  const [alcoholIntakefrequency, setalcoholfrequency] = useState('');
+  const [hoursOfSleep, sethoursOfSleep] = useState('');
+  const [foodIntolerance, setfoodIntolerance] = useState('');
+  const [bodyFatMassKg, setbodyFatMassKg] = useState('');
+  const [muscleMassKg, setmuscleMassKg] = useState('');
+  const [bodyFatPercentage, setbodyFatPercentage] = useState('');
+  const [muscleMassPercentage, setmuscleMassPercentage] = useState('');
+  const [isDate, setDatePicker] = useState(false)
 
   useEffect(() => {
     getClientData();
   });
+
+  const handleConfirm = (date) => {  
+    // const currentDate = isDate || date;
+    // setShow(Platform.OS === 'ios' ? true : false);
+    // setDate(currentDate);
+    //console.log(moment(currentDate).format("DD-MM-YYYY"));
+    setselectDate(moment(date).format('DD-MM-YYYY'))
+    hideDatePicker();
+  };
+
+  const hideDatePicker = () => {
+    setDatePicker(false);
+  };
 
   const getClientData = async () => {
     const result = await getClientsDetails(customerId);
@@ -207,12 +221,12 @@ const index = props => {
         setfoodIntolerance(result.data.data.me.customer.healthProfile.foodIntolerance);
         sethoursOfSleep(result.data.data.me.customer.healthProfile.hoursOfSleep);
 
-      if (result.data.data.me.customer.healthProfile && result.data.data.me.customer.healthProfile.latestBodyComposition != null) {
-        setbodyFatMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatMassKg);
-        setmuscleMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatPercentage);
-        setbodyFatPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassKg);
-        setmuscleMassPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassPercentage);
-      }
+        if (result.data.data.me.customer.healthProfile && result.data.data.me.customer.healthProfile.latestBodyComposition != null) {
+          setbodyFatMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatMassKg);
+          setmuscleMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatPercentage);
+          setbodyFatPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassKg);
+          setmuscleMassPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassPercentage);
+        }
 
       }, 100);
     } else {
@@ -230,6 +244,7 @@ const index = props => {
 
   const showMode = currentMode => {
     setShow(true);
+    setDatePicker(true)
     setMode(currentMode);
   };
 
@@ -444,7 +459,7 @@ const index = props => {
     }).start();
   };
 
- function getLastTime(lastActivity) {
+  function getLastTime(lastActivity) {
     Moment.locale('en');
     var localDate = new Date(lastActivity);
     return Moment(localDate).format('MM-DD-yyyy hh:mm a')
@@ -473,7 +488,7 @@ const index = props => {
             />
           </TouchableOpacity>
           <Text style={style.titleText}>Clients detail</Text>
-          <View style={{width: 35}}></View>
+          <View style={{ width: 35 }}></View>
         </View>
       </LinearGradient>
       <View style={style.whiteView}>
@@ -483,22 +498,22 @@ const index = props => {
               resizeMode={'cover'}
               style={style.imagesa}
               //source={{ uri: "https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80" }}
-              source={image == '' ? null : {uri: image}}
+              source={image == '' ? null : { uri: image }}
             />
-            <View style={{width:'73%'}}>
+            <View style={{ width: '73%' }}>
               <Text
                 style={{
-                  fontSize:18,
-                  fontFamily:CONFIGURATION.TextBold,
-                  color:CONFIGURATION.TextDarkBlack,
+                  fontSize: 18,
+                  fontFamily: CONFIGURATION.TextBold,
+                  color: CONFIGURATION.TextDarkBlack,
                 }}>
                 {fullName}
               </Text>
               <Text
                 style={{
-                  fontSize:14,
-                  fontFamily:CONFIGURATION.TextRegular,
-                  color:CONFIGURATION.TextDarkGray,
+                  fontSize: 14,
+                  fontFamily: CONFIGURATION.TextRegular,
+                  color: CONFIGURATION.TextDarkGray,
                 }}>
                 {dob} | {gender}
               </Text>
@@ -552,7 +567,7 @@ const index = props => {
               }}>
               Workplace :{' '}
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -563,7 +578,7 @@ const index = props => {
               </Text>
               <Image
                 resizeMode={'contain'}
-                style={{height: 10, width: 10, marginTop: 5, marginLeft: 10}}
+                style={{ height: 10, width: 10, marginTop: 5, marginLeft: 10 }}
                 source={require('./../../assetss/down.png')}
               />
             </View>
@@ -584,7 +599,7 @@ const index = props => {
               }}>
               Last Activity :
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -611,7 +626,7 @@ const index = props => {
               }}>
               Progress :
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -639,7 +654,7 @@ const index = props => {
               }}>
               Phycial activity :
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -670,7 +685,7 @@ const index = props => {
                 paddingHorizontal: 15,
               }}>
               <Image
-                style={{height: 15, width: 15, marginRight: 10}}
+                style={{ height: 15, width: 15, marginRight: 10 }}
                 source={require('./../../assetss/invite.png')}
               />
               <Text
@@ -693,16 +708,16 @@ const index = props => {
                 borderRadius: 50,
                 paddingHorizontal: 25,
               }}
-               onPress={() => {
+              onPress={() => {
                 props.navigation.navigate('ChatView',
-                    {
-                      toUser: customerId,
-                      fullName: fullName,
-                      profileImage: image,
-                     // item: item
-                    });
+                  {
+                    toUser: customerId,
+                    fullName: fullName,
+                    profileImage: image,
+                    // item: item
+                  });
               }}
-              >
+            >
               <Text
                 style={{
                   fontFamily: CONFIGURATION.TextBold,
@@ -733,7 +748,7 @@ const index = props => {
                 onPress={() => {
                   setselected(0);
                 }}
-                style={{alignItems: 'center'}}>
+                style={{ alignItems: 'center' }}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -761,7 +776,7 @@ const index = props => {
                 onPress={() => {
                   setselected(1);
                 }}
-                style={{alignItems: 'center'}}>
+                style={{ alignItems: 'center' }}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -789,7 +804,7 @@ const index = props => {
                 onPress={() => {
                   setselected(2);
                 }}
-                style={{alignItems: 'center'}}>
+                style={{ alignItems: 'center' }}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -817,7 +832,7 @@ const index = props => {
                 onPress={() => {
                   setselected(3);
                 }}
-                style={{alignItems: 'center'}}>
+                style={{ alignItems: 'center' }}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -843,7 +858,7 @@ const index = props => {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{backgroundColor: CONFIGURATION.homeBG, flex: 1}}>
+          <View style={{ backgroundColor: CONFIGURATION.homeBG, flex: 1 }}>
             {selected == 0 ? (
               <>
                 <View
@@ -868,7 +883,7 @@ const index = props => {
                       onPress={() => {
                         setopen1(!open1);
                       }}
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
+                      style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -903,7 +918,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{height: 30, width: 30}}
+                      style={{ height: 30, width: 30 }}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1018,7 +1033,7 @@ const index = props => {
                       </Text>
                       <View style={style.textV}>
                         <Image
-                          style={{height: 15, width: 15, marginRight: 10}}
+                          style={{ height: 15, width: 15, marginRight: 10 }}
                           source={require('./../../assetss/usaflag.png')}
                         />
                         <Text
@@ -1125,7 +1140,7 @@ const index = props => {
                       onPress={() => {
                         setopen2(!open2);
                       }}
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
+                      style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1160,7 +1175,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{height: 30, width: 30}}
+                      style={{ height: 30, width: 30 }}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1184,10 +1199,10 @@ const index = props => {
                           width: '48%',
                         }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/weight.png')}
                         />
-                        <View style={{marginLeft: 10}}>
+                        <View style={{ marginLeft: 10 }}>
                           <Text
                             numberOfLines={1}
                             style={{
@@ -1215,10 +1230,10 @@ const index = props => {
                           width: '48%',
                         }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/weight.png')}
                         />
-                        <View style={{marginHorizontal: 10}}>
+                        <View style={{ marginHorizontal: 10 }}>
                           <Text
                             numberOfLines={1}
                             style={{
@@ -1259,7 +1274,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                         {currentWeight ? currentWeight : '0'}'{targetWeight} kg
+                          {currentWeight ? currentWeight : '0'}'{targetWeight} kg
                         </Text>
                       </View>
                     </View>
@@ -1282,7 +1297,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                         {heightFeet}'{heightInches}
+                          {heightFeet}'{heightInches}
                         </Text>
                       </View>
                     </View>
@@ -1397,7 +1412,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                         {abdomenCm} cm
+                          {abdomenCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1420,7 +1435,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                         {chestCm} cm
+                          {chestCm} cm
                         </Text>
                       </View>
                     </View>
@@ -1538,7 +1553,7 @@ const index = props => {
                       onPress={() => {
                         setopen3(!open3);
                       }}
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
+                      style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1573,7 +1588,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{height: 30, width: 30}}
+                      style={{ height: 30, width: 30 }}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1649,7 +1664,7 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
                           }}>
-                         {muscleMassKg ? muscleMassKg : ''} Kg
+                          {muscleMassKg ? muscleMassKg : ''} Kg
                         </Text>
                       </View>
                     </View>
@@ -1713,7 +1728,7 @@ const index = props => {
                       onPress={() => {
                         setopen4(!open4);
                       }}
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
+                      style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1748,7 +1763,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{height: 30, width: 30}}
+                      style={{ height: 30, width: 30 }}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1766,9 +1781,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/apple.png')}
                         />
                         <Text
@@ -1782,7 +1797,7 @@ const index = props => {
                           Preffered type of diet
                         </Text>
                       </View>
-                      <View style={{flexDirection: 'row', marginTop: 10}}>
+                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                           style={{
                             backgroundColor: CONFIGURATION.lightGray,
@@ -1825,9 +1840,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/alss.png')}
                         />
                         <Text
@@ -1841,7 +1856,7 @@ const index = props => {
                           Allergies
                         </Text>
                       </View>
-                      <View style={{flexDirection: 'row', marginTop: 10}}>
+                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                           style={{
                             backgroundColor: CONFIGURATION.lightGray,
@@ -1895,9 +1910,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/apple.png')}
                         />
                         <Text
@@ -1922,7 +1937,7 @@ const index = props => {
                         }}>
                         <Image
                           resizeMode={'contain'}
-                          style={{height: 40, width: 40}}
+                          style={{ height: 40, width: 40 }}
                           source={require('./../../assetss/PDF.png')}
                         />
                         <Text
@@ -1981,7 +1996,7 @@ const index = props => {
                       onPress={() => {
                         setopen5(!open5);
                       }}
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
+                      style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -2016,7 +2031,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{height: 30, width: 30}}
+                      style={{ height: 30, width: 30 }}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -2034,9 +2049,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/Preg.png')}
                         />
                         <Text
@@ -2127,9 +2142,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/corona.png')}
                         />
                         <Text
@@ -2143,7 +2158,7 @@ const index = props => {
                           Ailments/ illnesses (if any)
                         </Text>
                       </View>
-                      <View style={{flexDirection: 'row', marginTop: 10}}>
+                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                           style={{
                             backgroundColor: CONFIGURATION.lightGray,
@@ -2180,9 +2195,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/corona.png')}
                         />
                         <Text
@@ -2251,7 +2266,7 @@ const index = props => {
                       onPress={() => {
                         setopen6(!open6);
                       }}
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
+                      style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -2286,7 +2301,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{height: 30, width: 30}}
+                      style={{ height: 30, width: 30 }}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -2304,9 +2319,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/user.png')}
                         />
                         <Text
@@ -2363,9 +2378,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/tree.png')}
                         />
                         <Text
@@ -2422,9 +2437,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/boll.png')}
                         />
                         <Text
@@ -2445,7 +2460,7 @@ const index = props => {
                           fontFamily: CONFIGURATION.TextRegular,
                           color: CONFIGURATION.TextDarkGray,
                         }}>
-                       {sportsDescription ? sportsDescription : ''}
+                        {sportsDescription ? sportsDescription : ''}
                       </Text>
                       <View
                         style={{
@@ -2478,9 +2493,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/walk.png')}
                         />
                         <Text
@@ -2494,7 +2509,7 @@ const index = props => {
                           Do you drink alcohol?
                         </Text>
                       </View>
-                      <View style={{flexDirection: 'row', marginTop: 10}}>
+                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                           style={{
                             backgroundColor: CONFIGURATION.lightGray,
@@ -2531,9 +2546,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/spring.png')}
                         />
                         <Text
@@ -2547,7 +2562,7 @@ const index = props => {
                           Bowel movement
                         </Text>
                       </View>
-                      <View style={{flexDirection: 'row', marginTop: 10}}>
+                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                           style={{
                             backgroundColor: CONFIGURATION.lightGray,
@@ -2584,9 +2599,9 @@ const index = props => {
                         borderBottomWidth: 1,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Image
-                          style={{height: 35, width: 35}}
+                          style={{ height: 35, width: 35 }}
                           source={require('./../../assetss/bed.png')}
                         />
                         <Text
@@ -2600,7 +2615,7 @@ const index = props => {
                           Sleep pattern
                         </Text>
                       </View>
-                      <View style={{flexDirection: 'row', marginTop: 10}}>
+                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <TouchableOpacity
                           style={{
                             backgroundColor: CONFIGURATION.lightGray,
@@ -2615,7 +2630,7 @@ const index = props => {
                               color: CONFIGURATION.TextDarkGray,
                             }}>
                             {/* About 5 hours / night */}
-                           {hoursOfSleep ? hoursOfSleep : ''} hours
+                            {hoursOfSleep ? hoursOfSleep : ''} hours
                           </Text>
                         </TouchableOpacity>
                       </View>
@@ -2655,7 +2670,7 @@ const index = props => {
                       onPress={() => {
                         setopen7(!open7);
                       }}
-                      style={{flexDirection: 'row', alignItems: 'center'}}>
+                      style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -2690,7 +2705,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{height: 30, width: 30}}
+                      style={{ height: 30, width: 30 }}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -2709,9 +2724,9 @@ const index = props => {
                       }}>
                       <TouchableOpacity
                         //onPress={showDatepicker}
-                         onPress={() => {
-                            showDatepicker();
-                         }}
+                        onPress={() => {
+                          showDatepicker();
+                        }}
                         style={[
                           style.InputBox,
                           {
@@ -2721,7 +2736,7 @@ const index = props => {
                           },
                         ]}>
                         <TextInput
-                          style={[style.textInput, {width: '85%'}]}
+                          style={[style.textInput, { width: '85%' }]}
                           placeholder="Select Date"
                           value={selectDate}
                           placeholderTextColor={CONFIGURATION.loginpalceholder}
@@ -2738,14 +2753,14 @@ const index = props => {
                           style.InputBox,
                           {
                             flexDirection: 'row',
-                           // alignItems: 'center',
+                            // alignItems: 'center',
                             marginTop: 15,
                           },
                         ]}>
                         <TextInput
                           style={[
                             style.textInput,
-                            {width: '90%', height: 100, textAlign: 'auto'},
+                            { width: '90%', height: 100, textAlign: 'auto' },
                           ]}
                           placeholder="Write Notes"
                           placeholderTextColor={CONFIGURATION.loginpalceholder}
@@ -2753,14 +2768,24 @@ const index = props => {
                         />
                       </View>
                       {show && (
-                        <DateTimePicker
-                          style={{backgroundColor: CONFIGURATION.primaryDark}}
-                          testID="dateTimePicker"
-                          value={date}
-                          mode={mode}
-                          is24Hour={true}
-                          display="default"
-                          onChange={onChange}
+                        // <DateTimePicker
+                        //   style={{backgroundColor: CONFIGURATION.primaryDark}}
+                        //   testID="dateTimePicker"
+                        //   value={date}
+                        //   mode={mode}
+                        //   is24Hour={false}                         
+                        //   onChange={(date)=>{
+                        //     // onChange(da)
+                        //     Alert.alert(date)
+                        //   }}
+                        // />
+                        <DateTimePickerModal
+                          isVisible={isDate}
+                          mode="date"
+                          format="DD/MM/YYYY"
+                          maximumDate={new Date()}
+                          onConfirm={handleConfirm}
+                          onCancel={hideDatePicker}
                         />
                       )}
                       <TouchableOpacity
@@ -2799,7 +2824,7 @@ const index = props => {
                           width: width - 80,
                         }}>
                         <View
-                          style={[style.textV, {justifyContent: 'flex-start'}]}>
+                          style={[style.textV, { justifyContent: 'flex-start' }]}>
                           <Text
                             numberOfLines={1}
                             style={{
@@ -2811,7 +2836,7 @@ const index = props => {
                           </Text>
                         </View>
                         <Image
-                          style={{height: 30, width: 30}}
+                          style={{ height: 30, width: 30 }}
                           source={require('./../../assetss/more.png')}
                         />
                       </View>
@@ -2841,7 +2866,7 @@ const index = props => {
                           width: width - 80,
                         }}>
                         <View
-                          style={[style.textV, {justifyContent: 'flex-start'}]}>
+                          style={[style.textV, { justifyContent: 'flex-start' }]}>
                           <Text
                             numberOfLines={1}
                             style={{
@@ -2853,7 +2878,7 @@ const index = props => {
                           </Text>
                         </View>
                         <Image
-                          style={{height: 30, width: 30}}
+                          style={{ height: 30, width: 30 }}
                           source={require('./../../assetss/more.png')}
                         />
                       </View>
@@ -2883,7 +2908,7 @@ const index = props => {
                           width: width - 80,
                         }}>
                         <View
-                          style={[style.textV, {justifyContent: 'flex-start'}]}>
+                          style={[style.textV, { justifyContent: 'flex-start' }]}>
                           <Text
                             numberOfLines={1}
                             style={{
@@ -2895,7 +2920,7 @@ const index = props => {
                           </Text>
                         </View>
                         <Image
-                          style={{height: 30, width: 30}}
+                          style={{ height: 30, width: 30 }}
                           source={require('./../../assetss/more.png')}
                         />
                       </View>
@@ -2925,7 +2950,7 @@ const index = props => {
                   }}>
                   <Calender
                     onClick={date => {
-                      props.navigation.navigate('CalenderView', {date});
+                      props.navigation.navigate('CalenderView', { date });
                     }}
                   />
                   {/* <View style={style.rowss}>
@@ -2973,7 +2998,7 @@ const index = props => {
                       alignItems: 'flex-start',
                       justifyContent: 'space-between',
                     }}>
-                    <Text style={{fontFamily: CONFIGURATION.TextRegular}}>
+                    <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>
                       {selectedNames}
                     </Text>
                     <Icon2
@@ -3004,7 +3029,7 @@ const index = props => {
                         elevation: 2,
                         marginBottom: 20,
                       }}>
-                      <Text style={{fontFamily: CONFIGURATION.TextBold}}>
+                      <Text style={{ fontFamily: CONFIGURATION.TextBold }}>
                         Total Calories Consumed
                       </Text>
                       <View
@@ -3076,7 +3101,7 @@ const index = props => {
                         elevation: 2,
                         marginBottom: 20,
                       }}>
-                      <Text style={{fontFamily: CONFIGURATION.TextRegular}}>
+                      <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>
                         Breakfast
                       </Text>
                       <Icon2
@@ -3209,7 +3234,7 @@ const index = props => {
                             <Image
                               resizeMode={'contain'}
                               source={require('./../../assetss/breakfast.png')}
-                              style={{height: 40, width: 40}}
+                              style={{ height: 40, width: 40 }}
                             />
                             <View
                               style={{
@@ -3305,7 +3330,7 @@ const index = props => {
                                 <Image
                                   resizeMode={'contain'}
                                   source={require('./../../assetss/masala.png')}
-                                  style={{height: 40, width: 40}}
+                                  style={{ height: 40, width: 40 }}
                                 />
                                 <View
                                   style={{
@@ -3396,7 +3421,7 @@ const index = props => {
                               <Image
                                 resizeMode={'contain'}
                                 source={require('./../../assetss/banana.png')}
-                                style={{height: 40, width: 40}}
+                                style={{ height: 40, width: 40 }}
                               />
                               <View
                                 style={{
@@ -3446,9 +3471,9 @@ const index = props => {
                                 <Image
                                   resizeMode={'cover'}
                                   source={require('./../../assetss/orenge.png')}
-                                  style={{height: 50, width: 50}}
+                                  style={{ height: 50, width: 50 }}
                                 />
-                                <View style={{marginRight: 10}}>
+                                <View style={{ marginRight: 10 }}>
                                   <Text
                                     style={{
                                       fontSize: 16,
@@ -3490,7 +3515,7 @@ const index = props => {
                         </>
                       ) : null}
                       {mealDay == 1 ? (
-                        <View style={{paddingVertical: 15}}>
+                        <View style={{ paddingVertical: 15 }}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -3542,7 +3567,7 @@ const index = props => {
                                 uri: 'https://images.squarespace-cdn.com/content/v1/5ceafa407824f80001793b84/1617145105645-4JQVM5BOCNU2XD62M3UM/modal-verbs-passive-past.jpg',
                               }}
                             />
-                            <View style={{width: '77%'}}>
+                            <View style={{ width: '77%' }}>
                               <View
                                 style={{
                                   flexDirection: 'row',
@@ -3583,7 +3608,7 @@ const index = props => {
                                   marginTop: 10,
                                 }}>
                                 <Image
-                                  style={{height: 20, width: 20}}
+                                  style={{ height: 20, width: 20 }}
                                   source={require('./../../assetss/replay.png')}
                                 />
                                 <Text
@@ -3616,7 +3641,7 @@ const index = props => {
                                 uri: 'https://www.jqueryscript.net/images/masonry-lightbox-slider-ws-lisli.jpg',
                               }}
                             />
-                            <View style={{width: '77%'}}>
+                            <View style={{ width: '77%' }}>
                               <View
                                 style={{
                                   flexDirection: 'row',
@@ -3657,7 +3682,7 @@ const index = props => {
                                   marginTop: 10,
                                 }}>
                                 <Image
-                                  style={{height: 20, width: 20}}
+                                  style={{ height: 20, width: 20 }}
                                   source={require('./../../assetss/replay.png')}
                                 />
                                 <Text
@@ -3675,7 +3700,7 @@ const index = props => {
                         </View>
                       ) : null}
                       {mealDay == 2 ? (
-                        <View style={{paddingVertical: 15}}>
+                        <View style={{ paddingVertical: 15 }}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -3711,7 +3736,7 @@ const index = props => {
                               <Image
                                 resizeMode={'contain'}
                                 source={require('./../../assetss/masala.png')}
-                                style={{height: 40, width: 40}}
+                                style={{ height: 40, width: 40 }}
                               />
                               <View
                                 style={{
@@ -3777,7 +3802,7 @@ const index = props => {
                               <Image
                                 resizeMode={'contain'}
                                 source={require('./../../assetss/banana.png')}
-                                style={{height: 40, width: 40}}
+                                style={{ height: 40, width: 40 }}
                               />
                               <View
                                 style={{
@@ -3939,7 +3964,7 @@ const index = props => {
                           elevation: 2,
                           paddingHorizontal: 20,
                         }}>
-                        <View style={{paddingVertical: 15}}>
+                        <View style={{ paddingVertical: 15 }}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -3991,7 +4016,7 @@ const index = props => {
                                 uri: 'https://images.squarespace-cdn.com/content/v1/5ceafa407824f80001793b84/1617145105645-4JQVM5BOCNU2XD62M3UM/modal-verbs-passive-past.jpg',
                               }}
                             />
-                            <View style={{width: '77%'}}>
+                            <View style={{ width: '77%' }}>
                               <View
                                 style={{
                                   flexDirection: 'row',
@@ -4032,7 +4057,7 @@ const index = props => {
                                   marginTop: 10,
                                 }}>
                                 <Image
-                                  style={{height: 20, width: 20}}
+                                  style={{ height: 20, width: 20 }}
                                   source={require('./../../assetss/replay.png')}
                                 />
                                 <Text
@@ -4065,7 +4090,7 @@ const index = props => {
                                 uri: 'https://www.jqueryscript.net/images/masonry-lightbox-slider-ws-lisli.jpg',
                               }}
                             />
-                            <View style={{width: '77%'}}>
+                            <View style={{ width: '77%' }}>
                               <View
                                 style={{
                                   flexDirection: 'row',
@@ -4106,7 +4131,7 @@ const index = props => {
                                   marginTop: 10,
                                 }}>
                                 <Image
-                                  style={{height: 20, width: 20}}
+                                  style={{ height: 20, width: 20 }}
                                   source={require('./../../assetss/replay.png')}
                                 />
                                 <Text
@@ -4146,7 +4171,7 @@ const index = props => {
                             <Image
                               resizeMode={'contain'}
                               source={require('./../../assetss/mens.png')}
-                              style={{height: 60, width: 60}}
+                              style={{ height: 60, width: 60 }}
                             />
                             <View
                               style={{
@@ -4220,7 +4245,7 @@ const index = props => {
                               overflow: 'hidden',
                               zIndex: 10,
                             }}>
-                            <View style={{paddingVertical: 15}}>
+                            <View style={{ paddingVertical: 15 }}>
                               <Text
                                 style={{
                                   fontFamily: CONFIGURATION.TextRegular,
@@ -4249,10 +4274,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Reps.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4278,10 +4303,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Sets.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4313,10 +4338,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Duration.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4342,10 +4367,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Distance.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4377,10 +4402,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Speed.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4406,10 +4431,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Sets.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4455,7 +4480,7 @@ const index = props => {
                             <Image
                               resizeMode={'contain'}
                               source={require('./../../assetss/mens.png')}
-                              style={{height: 60, width: 60}}
+                              style={{ height: 60, width: 60 }}
                             />
                             <View
                               style={{
@@ -4529,7 +4554,7 @@ const index = props => {
                               overflow: 'hidden',
                               zIndex: 10,
                             }}>
-                            <View style={{paddingVertical: 15}}>
+                            <View style={{ paddingVertical: 15 }}>
                               <Text
                                 style={{
                                   fontFamily: CONFIGURATION.TextRegular,
@@ -4558,10 +4583,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Reps.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4587,10 +4612,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Sets.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4622,10 +4647,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Duration.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4651,10 +4676,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Distance.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4686,10 +4711,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Speed.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4715,10 +4740,10 @@ const index = props => {
                                       width: '50%',
                                     }}>
                                     <Image
-                                      style={{height: 40, width: 40}}
+                                      style={{ height: 40, width: 40 }}
                                       source={require('./../../assetss/Sets.png')}
                                     />
-                                    <View style={{marginLeft: 10}}>
+                                    <View style={{ marginLeft: 10 }}>
                                       <Text
                                         style={{
                                           fontFamily: CONFIGURATION.TextBold,
@@ -4766,7 +4791,7 @@ const index = props => {
                             <Image
                               resizeMode={'contain'}
                               source={require('./../../assetss/mens.png')}
-                              style={{height: 50, width: 50}}
+                              style={{ height: 50, width: 50 }}
                             />
                             <View
                               style={{
@@ -4825,7 +4850,7 @@ const index = props => {
                             <Image
                               resizeMode={'contain'}
                               source={require('./../../assetss/mens.png')}
-                              style={{height: 50, width: 50}}
+                              style={{ height: 50, width: 50 }}
                             />
                             <View
                               style={{
@@ -4901,9 +4926,9 @@ const index = props => {
                         <Image
                           resizeMode={'contain'}
                           source={require('./../../assetss/water.png')}
-                          style={{height: 150, width: 150}}
+                          style={{ height: 150, width: 150 }}
                         />
-                        <View style={{position: 'absolute'}}>
+                        <View style={{ position: 'absolute' }}>
                           <Text
                             style={{
                               fontFamily: CONFIGURATION.TextBold,
@@ -4947,7 +4972,7 @@ const index = props => {
                           <Image
                             resizeMode={'contain'}
                             source={require('./../../assetss/Group.png')}
-                            style={{height: 25, width: 25}}
+                            style={{ height: 25, width: 25 }}
                           />
                         </View>
                         <View
@@ -4982,7 +5007,7 @@ const index = props => {
                         <Image
                           resizeMode={'contain'}
                           source={require('./../../assetss/more.png')}
-                          style={{height: 30, width: 30}}
+                          style={{ height: 30, width: 30 }}
                         />
                       </View>
                       <View
@@ -5003,7 +5028,7 @@ const index = props => {
                           <Image
                             resizeMode={'contain'}
                             source={require('./../../assetss/Group.png')}
-                            style={{height: 25, width: 25}}
+                            style={{ height: 25, width: 25 }}
                           />
                         </View>
                         <View
@@ -5038,7 +5063,7 @@ const index = props => {
                         <Image
                           resizeMode={'contain'}
                           source={require('./../../assetss/more.png')}
-                          style={{height: 30, width: 30}}
+                          style={{ height: 30, width: 30 }}
                         />
                       </View>
                       <View
@@ -5059,7 +5084,7 @@ const index = props => {
                           <Image
                             resizeMode={'contain'}
                             source={require('./../../assetss/Group.png')}
-                            style={{height: 25, width: 25}}
+                            style={{ height: 25, width: 25 }}
                           />
                         </View>
                         <View
@@ -5094,7 +5119,7 @@ const index = props => {
                         <Image
                           resizeMode={'contain'}
                           source={require('./../../assetss/more.png')}
-                          style={{height: 30, width: 30}}
+                          style={{ height: 30, width: 30 }}
                         />
                       </View>
                     </View>
@@ -5149,7 +5174,7 @@ const index = props => {
                           </Text>
                         </View>
                         <View
-                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <Text
                             style={{
                               fontFamily: CONFIGURATION.TextRegular,
@@ -5178,7 +5203,7 @@ const index = props => {
                       <ScrollView
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
-                        style={{width: '100%'}}>
+                        style={{ width: '100%' }}>
                         <View
                           style={{
                             height: 150,
@@ -5235,7 +5260,7 @@ const index = props => {
                               );
                             })}
                           </View>
-                          <View style={{flexDirection: 'row', marginLeft: 20}}>
+                          <View style={{ flexDirection: 'row', marginLeft: 20 }}>
                             {numberX.map((item, index) => {
                               // console.log(item);
                               // var ra = _.random(colorArray.length-1);
@@ -5266,7 +5291,7 @@ const index = props => {
                                       }}
                                     />
                                   </View>
-                                  <View style={{marginTop: 10}}>
+                                  <View style={{ marginTop: 10 }}>
                                     <Text
                                       style={{
                                         fontSize: 12,
@@ -5320,7 +5345,7 @@ const index = props => {
                           }}>
                           <Image
                             source={require('./../../assetss/scale_1.png')}
-                            style={{height: 50, width: 50}}
+                            style={{ height: 50, width: 50 }}
                           />
                           <Text
                             style={{
@@ -5350,7 +5375,7 @@ const index = props => {
                             numberOfLines={1}
                             style={[
                               style.textx,
-                              {fontFamily: CONFIGURATION.TextBold},
+                              { fontFamily: CONFIGURATION.TextBold },
                             ]}>
                             Initial Weight
                           </Text>
@@ -5378,7 +5403,7 @@ const index = props => {
                             numberOfLines={1}
                             style={[
                               style.textx,
-                              {fontFamily: CONFIGURATION.TextBold},
+                              { fontFamily: CONFIGURATION.TextBold },
                             ]}>
                             65 Kg
                           </Text>
@@ -5440,7 +5465,7 @@ const index = props => {
                           <Image
                             resizeMode={'contain'}
                             source={require('./../../assetss/scale.png')}
-                            style={{height: 25, width: 25}}
+                            style={{ height: 25, width: 25 }}
                           />
                         </View>
                         <View
@@ -5475,7 +5500,7 @@ const index = props => {
                         <Image
                           resizeMode={'contain'}
                           source={require('./../../assetss/more.png')}
-                          style={{height: 30, width: 30}}
+                          style={{ height: 30, width: 30 }}
                         />
                       </View>
                       <View
@@ -5496,7 +5521,7 @@ const index = props => {
                           <Image
                             resizeMode={'contain'}
                             source={require('./../../assetss/scale.png')}
-                            style={{height: 25, width: 25}}
+                            style={{ height: 25, width: 25 }}
                           />
                         </View>
                         <View
@@ -5531,7 +5556,7 @@ const index = props => {
                         <Image
                           resizeMode={'contain'}
                           source={require('./../../assetss/more.png')}
-                          style={{height: 30, width: 30}}
+                          style={{ height: 30, width: 30 }}
                         />
                       </View>
                     </View>
@@ -5586,7 +5611,7 @@ const index = props => {
                           </Text>
                         </View>
                         <View
-                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <Text
                             style={{
                               fontFamily: CONFIGURATION.TextRegular,
@@ -5612,7 +5637,7 @@ const index = props => {
                           </View>
                         </View>
                       </View>
-                      <View style={{width: width - 80, marginTop: 20}}>
+                      <View style={{ width: width - 80, marginTop: 20 }}>
                         <ScrollView
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}>
@@ -5666,7 +5691,7 @@ const index = props => {
               borderRadius: 5,
               marginTop: 10,
             }}>
-            <Text style={{fontFamily: CONFIGURATION.TextBold}}>
+            <Text style={{ fontFamily: CONFIGURATION.TextBold }}>
               Meal of the day
             </Text>
           </TouchableOpacity>
@@ -5684,7 +5709,7 @@ const index = props => {
               borderRadius: 5,
               marginTop: 10,
             }}>
-            <Text style={{fontFamily: CONFIGURATION.TextBold}}>
+            <Text style={{ fontFamily: CONFIGURATION.TextBold }}>
               Exercise of the day
             </Text>
           </TouchableOpacity>
@@ -5702,7 +5727,7 @@ const index = props => {
               borderRadius: 5,
               marginTop: 10,
             }}>
-            <Text style={{fontFamily: CONFIGURATION.TextBold}}>
+            <Text style={{ fontFamily: CONFIGURATION.TextBold }}>
               Water Intake
             </Text>
           </TouchableOpacity>
@@ -5720,7 +5745,7 @@ const index = props => {
               borderRadius: 5,
               marginTop: 10,
             }}>
-            <Text style={{fontFamily: CONFIGURATION.TextBold}}>Weight</Text>
+            <Text style={{ fontFamily: CONFIGURATION.TextBold }}>Weight</Text>
           </TouchableOpacity>
         </ScrollView>
       </RBSheet>
