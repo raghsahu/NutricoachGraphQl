@@ -1,11 +1,22 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CONFIGURATION from './Config';
 const { height, width } = Dimensions.get('screen');
 import Moment from 'moment';
+//CONTEXT
+import {AuthContext} from '../Context/AuthProvider';
 
 const MessageBox = props => {
-  const item = props.item
+  const item = props.item;
+  const {authDetails} = useContext(AuthContext);
+
+  let loginId =
+    authDetails &&
+    authDetails.data &&
+    authDetails.data.logInCoach &&
+    authDetails.data.logInCoach.id
+      ? authDetails.data.logInCoach.id
+      : '';
 
   function getImage() {
     if (item && item.profile) {
@@ -17,8 +28,15 @@ const MessageBox = props => {
   }
 
   function getUnreadCount() {
+    let countMessage = 0;
     if (item && item.unreadMessages && item.unreadMessages.length > 0) {
-      return item.unreadMessages.length
+      for (let i = 0; i < item.unreadMessages.length; i++) {
+        if (item.unreadMessages[i].from.id != loginId) {
+              countMessage = countMessage + 1 
+        }
+      }
+    
+      return countMessage
     }
     else {
       return ""
@@ -28,7 +46,7 @@ const MessageBox = props => {
   function getLastMessage() {
     if (item && item.unreadMessages && item.unreadMessages.length > 0) {
       const array = item.unreadMessages.map((item) => item.body)
-      return array[0] //get latest unread message
+      return array[0] //get last message
     }
     else {
       return "No message"
