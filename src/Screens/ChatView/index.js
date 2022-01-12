@@ -29,8 +29,16 @@ const index = props => {
   const toFullName = props.route.params.fullName;
   const profileImage = props.route.params.profileImage;
 
-  const { sendMessage, readMessages, sendFileToMessage, getChatMessages, getClientsUnreadMessage } = useContext(APPContext);
   const { authDetails } = useContext(AuthContext);
+
+    let loginId =
+    authDetails &&
+    authDetails.data &&
+    authDetails.data.logInCoach &&
+    authDetails.data.logInCoach.id
+      ? authDetails.data.logInCoach.id
+      : '';
+    const { sendMessage, readMessages, sendFileToMessage, getChatMessages, getClientsUnreadMessage } = useContext(APPContext);
 
   const [selected, setselected] = useState(0);
   // const [selectedChannel, setselectedChannel] = useState('APPOINTMENTS');
@@ -85,16 +93,21 @@ const index = props => {
   }, []);
 
   async function getAppointsUnreadCount(channelName) {
-    const result = await getClientsUnreadMessage(channelName, toUser);
+    let countMessage = 0;
+    const result = await getClientsUnreadMessage('APPOINTMENTS', toUser);
     if (result && result.data && result.data.data && result.data.data.me) {
       if (result.data.data.me.customer.unreadMessages != null) {
         if (result.data.data.me.customer.unreadMessages.length > 0) {
           for (let i = 0; i < result.data.data.me.customer.unreadMessages.length; i++) {
             if (result.data.data.me.customer.unreadMessages[i].channel == 'APPOINTMENTS') {
-              setAppointmentsUnread(true);
+               if (result.data.data.me.customer.unreadMessages[i].from.id != loginId) {
+                  countMessage = countMessage + 1 
+              }
+             
             }
           }
-          console.log("appoints_unread " + appointmentsUnread);
+           setAppointmentsUnread(countMessage);
+           console.log("appoints_unread " + appointmentsUnread);
         }
         else {
           setAppointmentsUnread(false);

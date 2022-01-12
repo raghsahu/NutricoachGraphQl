@@ -197,6 +197,9 @@ export const APPProvider = props => {
                       id,
                       body,
                       createdAt
+                      from{
+                        id
+                      }
                    }
                    messagesWithCoach{id, body, createdAt}
                   }
@@ -426,6 +429,9 @@ export const APPProvider = props => {
                       body,
                       createdAt,
                       channel
+                      from{
+                        id
+                      }
                    }
                   }
                 }
@@ -578,4 +584,3 @@ export const APPProvider = props => {
     </APPContext.Provider>
   );
 }
-
