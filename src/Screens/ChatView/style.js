@@ -18,8 +18,8 @@ export default StyleSheet.create({
   whiteView: {
     flex: 0.8
   },
-  pagerView:{
-flex:1
+  pagerView: {
+    flex: 1
   },
   menuView: {
     flexDirection: "row",
@@ -70,8 +70,8 @@ flex:1
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    zIndex:2,
-    elevation:5
+    zIndex: 2,
+    elevation: 5
   },
   input: {
     fontFamily: CONFIGURATION.TextRegular,
@@ -88,10 +88,25 @@ flex:1
     justifyContent: "space-between",
     paddingHorizontal: 10
   },
-  animatedBox:
-  {
+  animatedBox: {
     width: 190,
     height: 190,
     backgroundColor: ('#2E7D32')
   },
+  goback: {
+    padding: 10,
+    borderColor: CONFIGURATION.loginInputBorder,
+    borderBottomWidth: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: width - 40,
+    justifyContent: 'space-between',
+  },
+  userImage: {
+    height: 50,
+    width: 50,
+    borderRadius: 50 / 2,
+    borderColor: CONFIGURATION.white,
+    borderWidth: 2,
+  }
 });

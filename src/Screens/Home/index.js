@@ -69,9 +69,7 @@ const index = (props) => {
             <LinearGradient colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]} style={style.yellowView}>
                 <View style={style.menuView}>
                     <TouchableOpacity onPress={() => {
-                        // setModalVisible(!modalVisible);
-
-                        fetchProfile()
+                        setModalVisible(!modalVisible);
                         
                     }}>
                         <Image resizeMode={"contain"} style={style.menuIcon} source={require('./../../assetss/menu.png')} />
