@@ -429,6 +429,9 @@ export const APPProvider = props => {
                       body,
                       createdAt,
                       channel
+                      from{
+                        id
+                      }
                    }
                   }
                 }
