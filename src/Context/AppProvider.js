@@ -142,6 +142,8 @@ export const APPProvider = props => {
         id: id,
       },
     };
+      return await request('post', graphqlQuery);
+    };
 
     async function getStrugglingClients() {
       const graphqlQuery = {
@@ -553,6 +555,7 @@ export const APPProvider = props => {
       };
       return data;
     };
+
     return (
       <APPContext.Provider
         value={{
@@ -576,6 +579,6 @@ export const APPProvider = props => {
       </APPContext.Provider>
     );
 
-  }
+  
 }
 
