@@ -33,22 +33,22 @@ const index = (props) => {
 
     useEffect(() => {
         getStrugglingClientData()
+        fetchProfile()
         return () => { }
     }, [])
 
     useEffect(() => {
-    AsyncStorage.getItem('login_user_details', (err, result) => {
-      if (result) {
-        let obj = JSON.parse(result)
-        let id = obj.data.logInCoach.id;
-        if (id != null) {
-          setId(id)
-        
-        }
-      } else {
-      }
+        AsyncStorage.getItem('login_user_details', (err, result) => {
+            if (result) {
+                let obj = JSON.parse(result)
+                let id = obj.data.logInCoach.id;
+                if (id != null) {
+                    setId(id)
+                }
+            } else {
+            }
+        })
     })
-  })
 
     async function getStrugglingClientData() {
         const result = await getStrugglingClients()
@@ -59,7 +59,7 @@ const index = (props) => {
     }
 
 
-    async function fetchProfile(){
+    async function fetchProfile() {
         const result = await getUserProfile(id)
     }
 
@@ -70,7 +70,6 @@ const index = (props) => {
                 <View style={style.menuView}>
                     <TouchableOpacity onPress={() => {
                         setModalVisible(!modalVisible);
-                        
                     }}>
                         <Image resizeMode={"contain"} style={style.menuIcon} source={require('./../../assetss/menu.png')} />
                     </TouchableOpacity>
