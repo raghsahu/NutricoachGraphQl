@@ -270,7 +270,7 @@ const index = (props) => {
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
-                            placeholder="Refferal Code"
+                            placeholder="Referral Code"
                             value={referalCode}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             ref={ref_input7}
