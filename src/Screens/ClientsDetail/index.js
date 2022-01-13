@@ -124,7 +124,7 @@ const index = props => {
   const [numberX, setnumberX] = useState([20, 21, 22, 23, 24, 25, 26]);
   const [values, setvalues] = useState([110, 140, 140, 105, 135, 130, 130]);
 
-  const {getClientsDetails, getClientsMealComments} = useContext(APPContext);
+  const { getClientsDetails, getClientsMealComments } = useContext(APPContext);
   const [clientData, setClientData] = useState('');
   const [clientMealCommentsData, setClientMealCommentsData] = useState([]);
 
@@ -165,10 +165,10 @@ const index = props => {
 
   useEffect(() => {
     getClientData();
-   // getMealComments();
+    getMealComments();
   });
 
-  const handleConfirm = (date) => {  
+  const handleConfirm = (date) => {
     // const currentDate = isDate || date;
     // setShow(Platform.OS === 'ios' ? true : false);
     // setDate(currentDate);
@@ -238,12 +238,12 @@ const index = props => {
   };
 
   const getMealComments = async () => {
-       const result = await getClientsMealComments(customerId);
-       console.log('mealdata ', JSON.stringify(result));
+    const result = await getClientsMealComments(customerId);
+    console.log('mealdata ', JSON.stringify(result));
     if (result.status == true && result.data && result.data.data.me.customer.meals.nodes != null) {
       setTimeout(() => {
         setClientMealCommentsData(result.data.data.me.customer.meals.nodes);
-         }, 100);
+      }, 100);
     } else {
       setClientMealCommentsData([]);
       Toast.show(result.error, 2000);
@@ -268,212 +268,212 @@ const index = props => {
     showMode('date');
   };
 
-  useEffect(() => {
-    if (open1) {
-      startOpen1();
-    } else {
-      closeOpen1();
-    }
-  }, [open1]);
+  // useEffect(() => {
+  //   if (open1) {
+  //     startOpen1();
+  //   } else {
+  //     closeOpen1();
+  //   }
+  // }, [open1]);
 
-  const startOpen1 = () => {
-    Animated.timing(value1, {
-      toValue: height / 3 + 23,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen1 = () => {
-    Animated.timing(value1, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen1 = () => {
+  //   Animated.timing(value1, {
+  //     toValue: height / 3 + 23,
+  //     duration: 1,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen1 = () => {
+  //   Animated.timing(value1, {
+  //     toValue: 0,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
-  useEffect(() => {
-    if (open2) {
-      startOpen2();
-    } else {
-      closeOpen2();
-    }
-  }, [open2]);
+  // useEffect(() => {
+  //   if (open2) {
+  //     startOpen2();
+  //   } else {
+  //     closeOpen2();
+  //   }
+  // }, [open2]);
 
-  const startOpen2 = () => {
-    Animated.timing(value2, {
-      toValue: height / 2 + 30,
-      duration: 1500,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen2 = () => {
-    Animated.timing(value2, {
-      toValue: 0,
-      duration: 1500,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen2 = () => {
+  //   Animated.timing(value2, {
+  //     toValue: height / 2 + 30,
+  //     duration: 1500,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen2 = () => {
+  //   Animated.timing(value2, {
+  //     toValue: 0,
+  //     duration: 1500,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
-  useEffect(() => {
-    if (open3) {
-      startOpen3();
-    } else {
-      closeOpen3();
-    }
-  }, [open3]);
+  // useEffect(() => {
+  //   if (open3) {
+  //     startOpen3();
+  //   } else {
+  //     closeOpen3();
+  //   }
+  // }, [open3]);
 
-  const startOpen3 = () => {
-    Animated.timing(value3, {
-      toValue: width / 2 + 20,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen3 = () => {
-    Animated.timing(value3, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen3 = () => {
+  //   Animated.timing(value3, {
+  //     toValue: width / 2 + 20,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen3 = () => {
+  //   Animated.timing(value3, {
+  //     toValue: 0,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
-  useEffect(() => {
-    if (open4) {
-      startOpen4();
-    } else {
-      closeOpen4();
-    }
-  }, [open4]);
+  // useEffect(() => {
+  //   if (open4) {
+  //     startOpen4();
+  //   } else {
+  //     closeOpen4();
+  //   }
+  // }, [open4]);
 
-  const startOpen4 = () => {
-    Animated.timing(value4, {
-      toValue: height / 1.7,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen4 = () => {
-    Animated.timing(value4, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen4 = () => {
+  //   Animated.timing(value4, {
+  //     toValue: height / 1.7,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen4 = () => {
+  //   Animated.timing(value4, {
+  //     toValue: 0,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
-  useEffect(() => {
-    if (open5) {
-      startOpen5();
-    } else {
-      closeOpen5();
-    }
-  }, [open5]);
+  // useEffect(() => {
+  //   if (open5) {
+  //     startOpen5();
+  //   } else {
+  //     closeOpen5();
+  //   }
+  // }, [open5]);
 
-  const startOpen5 = () => {
-    Animated.timing(value5, {
-      toValue: height / 1.5 - 10,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen5 = () => {
-    Animated.timing(value5, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen5 = () => {
+  //   Animated.timing(value5, {
+  //     toValue: height / 1.5 - 10,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen5 = () => {
+  //   Animated.timing(value5, {
+  //     toValue: 0,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
-  useEffect(() => {
-    if (open6) {
-      startOpen6();
-    } else {
-      closeOpen6();
-    }
-  }, [open6]);
+  // useEffect(() => {
+  //   if (open6) {
+  //     startOpen6();
+  //   } else {
+  //     closeOpen6();
+  //   }
+  // }, [open6]);
 
-  const startOpen6 = () => {
-    Animated.timing(value6, {
-      toValue: height + 20,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen6 = () => {
-    Animated.timing(value6, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen6 = () => {
+  //   Animated.timing(value6, {
+  //     toValue: height + 20,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen6 = () => {
+  //   Animated.timing(value6, {
+  //     toValue: 0,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
-  useEffect(() => {
-    if (open7) {
-      startOpen7();
-    } else {
-      closeOpen7();
-    }
-  }, [open7]);
+  // useEffect(() => {
+  //   if (open7) {
+  //     startOpen7();
+  //   } else {
+  //     closeOpen7();
+  //   }
+  // }, [open7]);
 
-  const startOpen7 = () => {
-    Animated.timing(value7, {
-      toValue: height / 1.3 + 10,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen7 = () => {
-    Animated.timing(value7, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen7 = () => {
+  //   Animated.timing(value7, {
+  //     toValue: height / 1.3 + 10,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen7 = () => {
+  //   Animated.timing(value7, {
+  //     toValue: 0,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
-  useEffect(() => {
-    if (open8) {
-      startOpen8();
-    } else {
-      closeOpen8();
-    }
-  }, [open8]);
+  // useEffect(() => {
+  //   if (open8) {
+  //     startOpen8();
+  //   } else {
+  //     closeOpen8();
+  //   }
+  // }, [open8]);
 
-  const startOpen8 = () => {
-    Animated.timing(value8, {
-      toValue: height / 2 - 20,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen8 = () => {
-    Animated.timing(value8, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen8 = () => {
+  //   Animated.timing(value8, {
+  //     toValue: height / 2 - 20,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen8 = () => {
+  //   Animated.timing(value8, {
+  //     toValue: 0,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
-  useEffect(() => {
-    if (open9) {
-      startOpen9();
-    } else {
-      closeOpen9();
-    }
-  }, [open9]);
+  // useEffect(() => {
+  //   if (open9) {
+  //     startOpen9();
+  //   } else {
+  //     closeOpen9();
+  //   }
+  // }, [open9]);
 
-  const startOpen9 = () => {
-    Animated.timing(value9, {
-      toValue: height / 2.5 - 20,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
-  const closeOpen9 = () => {
-    Animated.timing(value9, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false // Add This line
-    }).start();
-  };
+  // const startOpen9 = () => {
+  //   Animated.timing(value9, {
+  //     toValue: height / 2.5 - 20,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
+  // const closeOpen9 = () => {
+  //   Animated.timing(value9, {
+  //     toValue: 0,
+  //     duration: 1000,
+  //     useNativeDriver: false // Add This line
+  //   }).start();
+  // };
 
   function getLastTime(lastActivity) {
     Moment.locale('en');
@@ -791,7 +791,7 @@ const index = props => {
               <TouchableOpacity
                 onPress={() => {
                   setselected(1);
-                 // getMealComments();
+                  getMealComments();
                 }}
                 style={{ alignItems: 'center' }}>
                 <Text
@@ -939,201 +939,203 @@ const index = props => {
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
-                  <Animated.View
-                    style={{
-                      backgroundColor: CONFIGURATION.white,
-                      height: value1,
-                      overflow: 'hidden',
-                    }}>
+                  {open1 ?
                     <View
                       style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
+                        backgroundColor: CONFIGURATION.white,
+                        overflow: 'hidden',
                       }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Name :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {fullName}
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Name :
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {fullName}
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Email :
+                        </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {email}
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Birthday :
+                        </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {dob}
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Occupation :
+                        </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            Businessmen
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Country :
+                        </Text>
+                        <View style={style.textV}>
+                          <Image
+                            style={{ height: 15, width: 15, marginRight: 10 }}
+                            source={require('./../../assetss/usaflag.png')}
+                          />
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            USA
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Phone No. :
+                        </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {mobile}
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Landline No. :
+                        </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            +1 123 456 7890
+                          </Text>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Package start to end :
+                        </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            10 Mar, 20 - 20 Mar, 21
+                          </Text>
+                        </View>
                       </View>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Email :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {email}
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Birthday :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {dob}
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Occupation :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          Businessmen
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Country :
-                      </Text>
-                      <View style={style.textV}>
-                        <Image
-                          style={{ height: 15, width: 15, marginRight: 10 }}
-                          source={require('./../../assetss/usaflag.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          USA
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Phone No. :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {mobile}
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Landline No. :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          +1 123 456 7890
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Package start to end :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          10 Mar, 20 - 20 Mar, 21
-                        </Text>
-                      </View>
-                    </View>
-                  </Animated.View>
+                    : null
+                  }
                 </View>
                 <View
                   style={{
@@ -1196,47 +1198,102 @@ const index = props => {
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
-                  <Animated.View
-                    style={{
-                      backgroundColor: CONFIGURATION.white,
-                      height: value2,
-                      overflow: 'hidden',
-                    }}>
+                  {open2 ?
                     <View
                       style={{
-                        flexDirection: 'row',
-                        marginHorizontal: 20,
-                        justifyContent: 'space-between',
-                        marginTop: 10,
+                        backgroundColor: CONFIGURATION.white,
+                        overflow: 'hidden',
                       }}>
                       <View
                         style={{
                           flexDirection: 'row',
-                          alignItems: 'center',
-                          width: '48%',
+                          marginHorizontal: 20,
+                          justifyContent: 'space-between',
+                          marginTop: 10,
                         }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/weight.png')}
-                        />
-                        <View style={{ marginLeft: 10 }}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: '48%',
+                          }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/weight.png')}
+                          />
+                          <View style={{ marginLeft: 10 }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 20,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkBlack,
+                              }}>
+                              {currentWeight ? currentWeight : '0'}
+                            </Text>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 11,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              Current Weight
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: '48%',
+                          }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/weight.png')}
+                          />
+                          <View style={{ marginHorizontal: 10 }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 20,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkBlack,
+                              }}>
+                              {targetWeight}
+                            </Text>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 11,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              Target Weight
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Ideal body weight :
+                        </Text>
+                        <View style={style.textV}>
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 20,
+                              fontSize: 14,
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            {currentWeight ? currentWeight : '0'}
-                          </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={{
-                              fontSize: 11,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
-                            }}>
-                            Current Weight
+                            {currentWeight ? currentWeight : '0'}'{targetWeight} kg
                           </Text>
                         </View>
                       </View>
@@ -1244,309 +1301,199 @@ const index = props => {
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
-                          width: '48%',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
                         }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/weight.png')}
-                        />
-                        <View style={{ marginHorizontal: 10 }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Height :
+                        </Text>
+                        <View style={style.textV}>
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 20,
+                              fontSize: 14,
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            {targetWeight}
-                          </Text>
-                          <Text
-                            numberOfLines={1}
-                            style={{
-                              fontSize: 11,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
-                            }}>
-                            Target Weight
+                            {heightFeet}'{heightInches}
                           </Text>
                         </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Ideal body weight :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {currentWeight ? currentWeight : '0'}'{targetWeight} kg
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Thighs :
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {thighsCm} cm
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Height :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {heightFeet}'{heightInches}
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Arms :
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {armsCm} cm
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Thighs :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {thighsCm} cm
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Waist :
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {waistCm} cm
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Arms :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {armsCm} cm
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Hips :
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {hipsCm} cm
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Waist :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {waistCm} cm
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Abdomen :
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {abdomenCm} cm
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Hips :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {hipsCm} cm
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Chest :
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {chestCm} cm
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Abdomen :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {abdomenCm} cm
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Claves :
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {calvesCm} cm
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Chest :
+                      <Text
+                        style={{
+                          fontFamily: CONFIGURATION.TextBold,
+                          color: CONFIGURATION.blueBorder,
+                          textDecorationLine: 'underline',
+                          textAlign: 'center',
+                          marginVertical: 15,
+                        }}>
+                        View measurement history
                       </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {chestCm} cm
-                        </Text>
-                      </View>
                     </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Claves :
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {calvesCm} cm
-                        </Text>
-                      </View>
-                    </View>
-                    <Text
-                      style={{
-                        fontFamily: CONFIGURATION.TextBold,
-                        color: CONFIGURATION.blueBorder,
-                        textDecorationLine: 'underline',
-                        textAlign: 'center',
-                        marginVertical: 15,
-                      }}>
-                      View measurement history
-                    </Text>
-                    {/* <TouchableOpacity style={{width:"100%",backgroundColor:CONFIGURATION.white}}>
-                                    
-                                </TouchableOpacity> */}
-                    {/* <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginHorizontal: 20, marginVertical: 10 }}>
-                                                <Text numberOfLines={1} style={{ fontSize: 14, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>Body Images</Text>
-                                                <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", height: 35, borderColor: CONFIGURATION.primaryGreen, borderWidth: 1, borderRadius: 50, paddingHorizontal: 15 }}>
-                                                    <Text style={{ fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.primaryGreen, fontSize: 14 }}>+ Upload Image</Text>
-                                                </TouchableOpacity>
-                                            </View> */}
-                    {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginHorizontal: 20, marginTop: 10 }}>
-                                                <View style={{ width: width / 2 - 70, borderRadius: 5, overflow: "hidden" }}>
-                                                    <Image style={{ width: width / 2 - 70, height: width / 2 - 20 }} source={require("./../../assetss/fornt.png")} />
-                                                    <View style={{ flexDirection: "row", alignItems: "center", paddingVertical: 10, justifyContent: "space-between" }}>
-                                                        <View>
-                                                            <Text style={{ fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack, fontSize: 14 }}>Front View</Text>
-                                                            <Text style={{ fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray, fontSize: 10 }}>Front body Side</Text>
-                                                        </View>
-                                                        <Image resizeMode={"contain"} style={{ height: 20, width: 20, }} source={require("./../../assetss/edit.png")} />
-                                                    </View>
-                                                </View>
-                                                <View style={{ width: width / 2 - 70, borderRadius: 5, overflow: "hidden" }}>
-                                                    <Image style={{ width: width / 2 - 70, height: width / 2 - 20 }} source={require("./../../assetss/right.png")} />
-                                                    <View style={{ flexDirection: "row", alignItems: "center", paddingVertical: 10, justifyContent: "space-between" }}>
-                                                        <View>
-                                                            <Text style={{ fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack, fontSize: 14 }}>Right View</Text>
-                                                            <Text style={{ fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray, fontSize: 10 }}>Right body Side</Text>
-                                                        </View>
-                                                        <Image resizeMode={"contain"} style={{ height: 20, width: 20, }} source={require("./../../assetss/edit.png")} />
-                                                    </View>
-                                                </View>
-                                            </View> */}
-                    {/* <View style={{ flexDirection: "row", justifyContent: "space-between", marginHorizontal: 20, marginTop: 10 }}>
-                                                <View style={{ width: width / 2 - 70, borderRadius: 5, overflow: "hidden" }}>
-                                                    <Image style={{ width: width / 2 - 70, height: width / 2 - 20 }} source={require("./../../assetss/backs.png")} />
-                                                    <View style={{ flexDirection: "row", alignItems: "center", paddingVertical: 10, justifyContent: "space-between" }}>
-                                                        <View>
-                                                            <Text style={{ fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack, fontSize: 14 }}>Back view </Text>
-                                                            <Text style={{ fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray, fontSize: 10 }}>Front body Side</Text>
-                                                        </View>
-                                                        <Image resizeMode={"contain"} style={{ height: 20, width: 20, }} source={require("./../../assetss/edit.png")} />
-                                                    </View>
-                                                </View>
-                                                <View style={{ width: width / 2 - 70, borderRadius: 5, overflow: "hidden" }}>
-                                                    <Image style={{ width: width / 2 - 70, height: width / 2 - 20 }} source={require("./../../assetss/left.png")} />
-                                                    <View style={{ flexDirection: "row", alignItems: "center", paddingVertical: 10, justifyContent: "space-between" }}>
-                                                        <View>
-                                                            <Text style={{ fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack, fontSize: 14 }}>Left view</Text>
-                                                            <Text style={{ fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray, fontSize: 10 }}>Right body Side</Text>
-                                                        </View>
-                                                        <Image resizeMode={"contain"} style={{ height: 20, width: 20, }} source={require("./../../assetss/edit.png")} />
-                                                    </View>
-                                                </View>
-                                            </View>
-                                            <Text style={{ fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.blueBorder, textDecorationLine: "underline", textAlign: "center", marginVertical: 15 }}>View body history</Text> */}
-                    {/* <TouchableOpacity style={{width:"100%",backgroundColor:CONFIGURATION.white}}>
-                                    
-                                </TouchableOpacity> */}
-                  </Animated.View>
+                    : null}
+
                 </View>
                 <View
                   style={{
@@ -1609,119 +1556,120 @@ const index = props => {
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
-                  <Animated.View
-                    style={{
-                      backgroundColor: CONFIGURATION.white,
-                      height: value3,
-                      overflow: 'hidden',
-                      zIndex: 10,
-                    }}>
+                  {open3 ?
                     <View
                       style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
+                        backgroundColor: CONFIGURATION.white,
+                        overflow: 'hidden',
+                        zIndex: 10,
                       }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Fat mass(kg)
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {bodyFatMassKg ? bodyFatMassKg : ''} kg
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Fat mass(kg)
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {bodyFatMassKg ? bodyFatMassKg : ''} kg
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Body fat percentage(%)
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {bodyFatPercentage ? bodyFatPercentage : ''} %
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Body fat percentage(%)
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {bodyFatPercentage ? bodyFatPercentage : ''} %
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Muscle mass(kg)
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {muscleMassKg ? muscleMassKg : ''} Kg
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Muscle mass(kg)
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {muscleMassKg ? muscleMassKg : ''} Kg
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginVertical: 10,
-                        width: width - 80,
-                      }}>
-                      <Text numberOfLines={1} style={style.textx}>
-                        Muscle mass percentage(%)
-                      </Text>
-                      <View style={style.textV}>
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                          }}>
-                          {muscleMassPercentage ? muscleMassPercentage : ''} %
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginVertical: 10,
+                          width: width - 80,
+                        }}>
+                        <Text numberOfLines={1} style={style.textx}>
+                          Muscle mass percentage(%)
                         </Text>
+                        <View style={style.textV}>
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                            }}>
+                            {muscleMassPercentage ? muscleMassPercentage : ''} %
+                          </Text>
+                        </View>
                       </View>
+                      <Text
+                        style={{
+                          fontFamily: CONFIGURATION.TextBold,
+                          color: CONFIGURATION.blueBorder,
+                          textDecorationLine: 'underline',
+                          textAlign: 'center',
+                          marginVertical: 15,
+                        }}>
+                        View history
+                      </Text>
                     </View>
-                    <Text
-                      style={{
-                        fontFamily: CONFIGURATION.TextBold,
-                        color: CONFIGURATION.blueBorder,
-                        textDecorationLine: 'underline',
-                        textAlign: 'center',
-                        marginVertical: 15,
-                      }}>
-                      View history
-                    </Text>
-                    {/* <TouchableOpacity style={{width:"100%",zIndex:15,backgroundColor:CONFIGURATION.white}}>
-                                    
-                                </TouchableOpacity> */}
-                  </Animated.View>
+                    :
+                    null
+                  }
+
                 </View>
                 <View
                   style={{
@@ -1784,212 +1732,214 @@ const index = props => {
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
-                  <Animated.View
-                    style={{
-                      backgroundColor: CONFIGURATION.white,
-                      height: value4,
-                      overflow: 'hidden',
-                      zIndex: 10,
-                    }}>
+                  {open4 ?
                     <View
                       style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
+                        backgroundColor: CONFIGURATION.white,
+                        overflow: 'hidden',
+                        zIndex: 10,
                       }}>
                       <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/apple.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Preffered type of diet
-                        </Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                          }}>
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/apple.png')}
+                          />
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
                             }}>
-                            Pescatarian
+                            Preffered type of diet
                           </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                            marginLeft: 10,
-                          }}>
-                          <Text
-                            numberOfLines={1}
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                          <TouchableOpacity
                             style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
                             }}>
-                            Locavore
-                          </Text>
-                        </TouchableOpacity>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              Pescatarian
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                              marginLeft: 10,
+                            }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              Locavore
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
                       <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/alss.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Allergies
-                        </Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                          }}>
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/alss.png')}
+                          />
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
                             }}>
-                            Avocado
+                            Allergies
                           </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                            marginLeft: 10,
-                          }}>
-                          <Text
-                            numberOfLines={1}
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                          <TouchableOpacity
                             style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
                             }}>
-                            Garlic
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              Avocado
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                              marginLeft: 10,
+                            }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              Garlic
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
 
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 10,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/apple.png')}
-                        />
                         <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Food Intolerance
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          marginTop: 10,
-                          alignItems: 'center',
-                          backgroundColor: CONFIGURATION.lightGray,
-                          padding: 10,
-                          borderRadius: 10,
-                        }}>
-                        <Image
-                          resizeMode={'contain'}
-                          style={{ height: 40, width: 40 }}
-                          source={require('./../../assetss/PDF.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
                           style={{
                             fontSize: 14,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 15,
+                            marginTop: 10,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
                           }}>
-                          Diet plan.pdf
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
                         </Text>
                       </View>
-                      <Text
+                      <View
                         style={{
-                          fontFamily: CONFIGURATION.TextBold,
-                          color: CONFIGURATION.blueBorder,
-                          textDecorationLine: 'underline',
-                          textAlign: 'left',
-                          marginTop: 15,
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
                         }}>
-                        View More
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 15,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/apple.png')}
+                          />
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 16,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
+                            }}>
+                            Food Intolerance
+                          </Text>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 10,
+                            alignItems: 'center',
+                            backgroundColor: CONFIGURATION.lightGray,
+                            padding: 10,
+                            borderRadius: 10,
+                          }}>
+                          <Image
+                            resizeMode={'contain'}
+                            style={{ height: 40, width: 40 }}
+                            source={require('./../../assetss/PDF.png')}
+                          />
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 14,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 15,
+                            }}>
+                            Diet plan.pdf
+                          </Text>
+                        </View>
+                        <Text
+                          style={{
+                            fontFamily: CONFIGURATION.TextBold,
+                            color: CONFIGURATION.blueBorder,
+                            textDecorationLine: 'underline',
+                            textAlign: 'left',
+                            marginTop: 15,
+                          }}>
+                          View More
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 15,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
+                        </Text>
+                      </View>
                     </View>
-                  </Animated.View>
+                    : null}
+
                 </View>
                 <View
                   style={{
@@ -2052,214 +2002,216 @@ const index = props => {
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
-                  <Animated.View
-                    style={{
-                      backgroundColor: CONFIGURATION.white,
-                      height: value5,
-                      overflow: 'hidden',
-                      zIndex: 10,
-                    }}>
+                  {open5 ?
                     <View
                       style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
+                        backgroundColor: CONFIGURATION.white,
+                        overflow: 'hidden',
+                        zIndex: 10,
                       }}>
                       <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/Preg.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Pregnancy history
-                        </Text>
-                      </View>
-                      <View
                         style={{
-                          flexDirection: 'row',
-                          marginTop: 10,
-                          marginBottom: 10,
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
                         }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                          }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/Preg.png')}
+                          />
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
-                            }}>
-                            {pregnancyCount ? pregnancyCount : '0'} time pregnancy
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginVertical: 10,
-                          width: width - 80,
-                        }}>
-                        <Text numberOfLines={1} style={style.textx}>
-                          Begining of lactation :
-                        </Text>
-                        <View style={style.textV}>
-                          <Text
-                            numberOfLines={1}
-                            style={{
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
                             }}>
-                            {firstDayOfLactation}
+                            Pregnancy history
                           </Text>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 10,
+                            marginBottom: 10,
+                          }}>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                            }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              {pregnancyCount ? pregnancyCount : '0'} time pregnancy
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginVertical: 10,
+                            width: width - 80,
+                          }}>
+                          <Text numberOfLines={1} style={style.textx}>
+                            Begining of lactation :
+                          </Text>
+                          <View style={style.textV}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkBlack,
+                              }}>
+                              {firstDayOfLactation}
+                            </Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginVertical: 10,
+                            width: width - 80,
+                          }}>
+                          <Text numberOfLines={1} style={style.textx}>
+                            Duration of lactation :
+                          </Text>
+                          <View style={style.textV}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkBlack,
+                              }}>
+                              {lactationDurationMonths ? lactationDurationMonths : '0'} Months
+                            </Text>
+                          </View>
                         </View>
                       </View>
                       <View
                         style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginVertical: 10,
-                          width: width - 80,
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
                         }}>
-                        <Text numberOfLines={1} style={style.textx}>
-                          Duration of lactation :
-                        </Text>
-                        <View style={style.textV}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/corona.png')}
+                          />
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
                             }}>
-                            {lactationDurationMonths ? lactationDurationMonths : '0'} Months
+                            Ailments/ illnesses (if any)
                           </Text>
                         </View>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/corona.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Ailments/ illnesses (if any)
-                        </Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                          }}>
-                          <Text
-                            numberOfLines={1}
+                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                          <TouchableOpacity
                             style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
                             }}>
-                            Heart Disease
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              Heart Disease
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
 
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 10,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 10,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
+                        </Text>
+                      </View>
                       <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/corona.png')}
-                        />
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/corona.png')}
+                          />
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 16,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
+                            }}>
+                            Other
+                          </Text>
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 10,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
+                        </Text>
                         <Text
                           numberOfLines={1}
                           style={{
                             fontSize: 16,
                             fontFamily: CONFIGURATION.TextBold,
                             color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
+                            marginVertical: 10,
                           }}>
-                          Other
+                          Family History
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 0,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
                         </Text>
                       </View>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 10,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        style={{
-                          fontSize: 16,
-                          fontFamily: CONFIGURATION.TextBold,
-                          color: CONFIGURATION.TextDarkBlack,
-                          marginVertical: 10,
-                        }}>
-                        Family History
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 0,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
                     </View>
-                  </Animated.View>
+                    : null}
+
                 </View>
                 <View
                   style={{
@@ -2322,348 +2274,325 @@ const index = props => {
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
-                  <Animated.View
-                    style={{
-                      backgroundColor: CONFIGURATION.white,
-                      height: value6,
-                      overflow: 'hidden',
-                      zIndex: 10,
-                    }}>
+                  {open6 ?
                     <View
                       style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
+                        backgroundColor: CONFIGURATION.white,
+                        overflow: 'hidden',
+                        zIndex: 10,
                       }}>
                       <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/user.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Preferred type coaching type
-                        </Text>
-                      </View>
-                      <View
                         style={{
-                          flexDirection: 'row',
-                          marginTop: 10,
-                          marginBottom: 10,
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
                         }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                          }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/user.png')}
+                          />
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
-                            }}>
-                            {coachingType}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                      {/* <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginVertical: 10, width: width - 80 }}>
-                                        <Text numberOfLines={1} style={style.textx}>Begining of lactation :</Text>
-                                        <View style={style.textV}>
-                                            <Text numberOfLines={1} style={{ fontSize: 14, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>12th jan, 2020</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginVertical: 10, width: width - 80 }}>
-                                        <Text numberOfLines={1} style={style.textx}>Duration of lactation :</Text>
-                                        <View style={style.textV}>
-                                            <Text numberOfLines={1} style={{ fontSize: 14, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>2 Months</Text>
-                                        </View>
-                                    </View> */}
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/tree.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Activity Level
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          marginTop: 10,
-                          marginBottom: 10,
-                        }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                          }}>
-                          <Text
-                            numberOfLines={1}
-                            style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
-                            }}>
-                            {physicalActivityLevel}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                      {/* <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginVertical: 10, width: width - 80 }}>
-                                        <Text numberOfLines={1} style={style.textx}>Begining of lactation :</Text>
-                                        <View style={style.textV}>
-                                            <Text numberOfLines={1} style={{ fontSize: 14, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>12th jan, 2020</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginVertical: 10, width: width - 80 }}>
-                                        <Text numberOfLines={1} style={style.textx}>Duration of lactation :</Text>
-                                        <View style={style.textV}>
-                                            <Text numberOfLines={1} style={{ fontSize: 14, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>2 Months</Text>
-                                        </View>
-                                    </View> */}
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/boll.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Sport
-                        </Text>
-                      </View>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 10,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        {sportsDescription ? sportsDescription : ''}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginVertical: 10,
-                          width: width - 80,
-                        }}>
-                        <Text numberOfLines={1} style={style.textx}>
-                          Frequency :
-                        </Text>
-                        <View style={style.textV}>
-                          <Text
-                            numberOfLines={1}
-                            style={{
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
                             }}>
-                            {sportsFrequency ? sportsFrequency : ''}
+                            Preferred type coaching type
                           </Text>
                         </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 10,
+                            marginBottom: 10,
+                          }}>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                            }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              {coachingType}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
                       <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/walk.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Do you drink alcohol?
-                        </Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                          }}>
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/tree.png')}
+                          />
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
                             }}>
-                            {doYouDrink ? doYouDrink : ""}
+                            Activity Level
                           </Text>
-                        </TouchableOpacity>
+                        </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            marginTop: 10,
+                            marginBottom: 10,
+                          }}>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                            }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              {physicalActivityLevel}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
-
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 10,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
                       <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/spring.png')}
-                        />
-                        <Text
-                          numberOfLines={1}
-                          style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
-                          }}>
-                          Bowel movement
-                        </Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <TouchableOpacity
-                          style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
-                          }}>
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/boll.png')}
+                          />
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
                             }}>
-                            Constipation
+                            Sport
                           </Text>
-                        </TouchableOpacity>
-                      </View>
-
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 10,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
-                      <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image
-                          style={{ height: 35, width: 35 }}
-                          source={require('./../../assetss/bed.png')}
-                        />
+                        </View>
                         <Text
-                          numberOfLines={1}
                           style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.TextDarkBlack,
-                            marginLeft: 10,
+                            fontSize: 14,
+                            marginTop: 10,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
                           }}>
-                          Sleep pattern
+                          {sportsDescription ? sportsDescription : ''}
                         </Text>
-                      </View>
-                      <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        <TouchableOpacity
+                        <View
                           style={{
-                            backgroundColor: CONFIGURATION.lightGray,
-                            paddingVertical: 7,
-                            paddingHorizontal: 10,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginVertical: 10,
+                            width: width - 80,
                           }}>
+                          <Text numberOfLines={1} style={style.textx}>
+                            Frequency :
+                          </Text>
+                          <View style={style.textV}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkBlack,
+                              }}>
+                              {sportsFrequency ? sportsFrequency : ''}
+                            </Text>
+                          </View>
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/walk.png')}
+                          />
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 14,
+                              fontSize: 16,
                               fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkGray,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
                             }}>
-                            {/* About 5 hours / night */}
-                            {hoursOfSleep ? hoursOfSleep : ''} hours
+                            Do you drink alcohol?
                           </Text>
-                        </TouchableOpacity>
-                      </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                            }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              {doYouDrink ? doYouDrink : ""}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
 
-                      <Text
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 10,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
+                        </Text>
+                      </View>
+                      <View
                         style={{
-                          fontSize: 14,
-                          marginTop: 10,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
                         }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/spring.png')}
+                          />
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 16,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
+                            }}>
+                            Bowel movement
+                          </Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                            }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              Constipation
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 10,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Image
+                            style={{ height: 35, width: 35 }}
+                            source={require('./../../assetss/bed.png')}
+                          />
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 16,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.TextDarkBlack,
+                              marginLeft: 10,
+                            }}>
+                            Sleep pattern
+                          </Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: CONFIGURATION.lightGray,
+                              paddingVertical: 7,
+                              paddingHorizontal: 10,
+                            }}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkGray,
+                              }}>
+                              {hoursOfSleep ? hoursOfSleep : ''} hours
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 10,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
+                        </Text>
+                      </View>
                     </View>
-                  </Animated.View>
+                    : null}
+
                 </View>
                 <View
                   style={{
@@ -2726,233 +2655,224 @@ const index = props => {
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
-                  <Animated.View
-                    style={{
-                      backgroundColor: CONFIGURATION.white,
-                      height: value7,
-                      overflow: 'hidden',
-                      zIndex: 10,
-                    }}>
+                  {open7 ?
                     <View
                       style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
+                        backgroundColor: CONFIGURATION.white,
+                        overflow: 'hidden',
+                        zIndex: 10,
                       }}>
-                      <TouchableOpacity
-                        //onPress={showDatepicker}
-                        onPress={() => {
-                          showDatepicker();
-                        }}
-                        style={[
-                          style.InputBox,
-                          {
+                      <View
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <TouchableOpacity
+                          //onPress={showDatepicker}
+                          onPress={() => {
+                            showDatepicker();
+                          }}
+                          style={[
+                            style.InputBox,
+                            {
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              marginTop: 15,
+                            },
+                          ]}>
+                          <TextInput
+                            style={[style.textInput, { width: '85%' }]}
+                            placeholder="Select Date"
+                            value={selectDate}
+                            placeholderTextColor={CONFIGURATION.loginpalceholder}
+                            editable={false}
+                          />
+                          <Icon
+                            name="calendar"
+                            size={18}
+                            color={CONFIGURATION.loginIconeye}
+                          />
+                        </TouchableOpacity>
+                        <View
+                          style={[
+                            style.InputBox,
+                            {
+                              flexDirection: 'row',
+                              // alignItems: 'center',
+                              marginTop: 15,
+                            },
+                          ]}>
+                          <TextInput
+                            style={[
+                              style.textInput,
+                              { width: '90%', height: 100, textAlign: 'auto' },
+                            ]}
+                            placeholder="Write Notes"
+                            placeholderTextColor={CONFIGURATION.loginpalceholder}
+                            multiline={true}
+                          />
+                        </View>
+                        {show && (
+                          <DateTimePickerModal
+                            isVisible={isDate}
+                            mode="date"
+                            format="DD/MM/YYYY"
+                            maximumDate={new Date()}
+                            onConfirm={handleConfirm}
+                            onCancel={hideDatePicker}
+                          />
+                        )}
+                        <TouchableOpacity
+                          style={{
+                            alignSelf: 'center',
+                            height: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '40%',
+                            backgroundColor: CONFIGURATION.primaryGreen,
+                            marginVertical: 15,
+                            borderRadius: 50,
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.white,
+                            }}>
+                            Add
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View
+                        style={{
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
+                        }}>
+                        <View
+                          style={{
                             flexDirection: 'row',
                             alignItems: 'center',
-                            marginTop: 15,
-                          },
-                        ]}>
-                        <TextInput
-                          style={[style.textInput, { width: '85%' }]}
-                          placeholder="Select Date"
-                          value={selectDate}
-                          placeholderTextColor={CONFIGURATION.loginpalceholder}
-                          editable={false}
-                        />
-                        <Icon
-                          name="calendar"
-                          size={18}
-                          color={CONFIGURATION.loginIconeye}
-                        />
-                      </TouchableOpacity>
-                      <View
-                        style={[
-                          style.InputBox,
-                          {
-                            flexDirection: 'row',
-                            // alignItems: 'center',
-                            marginTop: 15,
-                          },
-                        ]}>
-                        <TextInput
-                          style={[
-                            style.textInput,
-                            { width: '90%', height: 100, textAlign: 'auto' },
-                          ]}
-                          placeholder="Write Notes"
-                          placeholderTextColor={CONFIGURATION.loginpalceholder}
-                          multiline={true}
-                        />
-                      </View>
-                      {show && (
-                        // <DateTimePicker
-                        //   style={{backgroundColor: CONFIGURATION.primaryDark}}
-                        //   testID="dateTimePicker"
-                        //   value={date}
-                        //   mode={mode}
-                        //   is24Hour={false}                         
-                        //   onChange={(date)=>{
-                        //     // onChange(da)
-                        //     Alert.alert(date)
-                        //   }}
-                        // />
-                        <DateTimePickerModal
-                          isVisible={isDate}
-                          mode="date"
-                          format="DD/MM/YYYY"
-                          maximumDate={new Date()}
-                          onConfirm={handleConfirm}
-                          onCancel={hideDatePicker}
-                        />
-                      )}
-                      <TouchableOpacity
-                        style={{
-                          alignSelf: 'center',
-                          height: 50,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '40%',
-                          backgroundColor: CONFIGURATION.primaryGreen,
-                          marginVertical: 15,
-                          borderRadius: 50,
-                        }}>
+                            justifyContent: 'space-between',
+                            marginVertical: 10,
+                            width: width - 80,
+                          }}>
+                          <View
+                            style={[style.textV, { justifyContent: 'flex-start' }]}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkBlack,
+                              }}>
+                              12 jan, 2021
+                            </Text>
+                          </View>
+                          <Image
+                            style={{ height: 30, width: 30 }}
+                            source={require('./../../assetss/more.png')}
+                          />
+                        </View>
                         <Text
                           style={{
-                            fontSize: 16,
-                            fontFamily: CONFIGURATION.TextBold,
-                            color: CONFIGURATION.white,
+                            fontSize: 14,
+                            marginTop: 0,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
                           }}>
-                          Add
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
                         </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
+                      </View>
                       <View
                         style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginVertical: 10,
-                          width: width - 80,
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
                         }}>
                         <View
-                          style={[style.textV, { justifyContent: 'flex-start' }]}>
-                          <Text
-                            numberOfLines={1}
-                            style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkBlack,
-                            }}>
-                            12 jan, 2021
-                          </Text>
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginVertical: 10,
+                            width: width - 80,
+                          }}>
+                          <View
+                            style={[style.textV, { justifyContent: 'flex-start' }]}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkBlack,
+                              }}>
+                              5 jan, 2021
+                            </Text>
+                          </View>
+                          <Image
+                            style={{ height: 30, width: 30 }}
+                            source={require('./../../assetss/more.png')}
+                          />
                         </View>
-                        <Image
-                          style={{ height: 30, width: 30 }}
-                          source={require('./../../assetss/more.png')}
-                        />
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 0,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
+                        </Text>
                       </View>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 0,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
                       <View
                         style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginVertical: 10,
-                          width: width - 80,
+                          paddingVertical: 15,
+                          borderColor: CONFIGURATION.lightGray,
+                          borderBottomWidth: 1,
                         }}>
                         <View
-                          style={[style.textV, { justifyContent: 'flex-start' }]}>
-                          <Text
-                            numberOfLines={1}
-                            style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkBlack,
-                            }}>
-                            5 jan, 2021
-                          </Text>
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginVertical: 10,
+                            width: width - 80,
+                          }}>
+                          <View
+                            style={[style.textV, { justifyContent: 'flex-start' }]}>
+                            <Text
+                              numberOfLines={1}
+                              style={{
+                                fontSize: 14,
+                                fontFamily: CONFIGURATION.TextBold,
+                                color: CONFIGURATION.TextDarkBlack,
+                              }}>
+                              25 Dec, 2021
+                            </Text>
+                          </View>
+                          <Image
+                            style={{ height: 30, width: 30 }}
+                            source={require('./../../assetss/more.png')}
+                          />
                         </View>
-                        <Image
-                          style={{ height: 30, width: 30 }}
-                          source={require('./../../assetss/more.png')}
-                        />
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 0,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          Lorem Ipsum is simply dummy text of the printing and
+                          typesetting industry
+                        </Text>
                       </View>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 0,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
                     </View>
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        borderColor: CONFIGURATION.lightGray,
-                        borderBottomWidth: 1,
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginVertical: 10,
-                          width: width - 80,
-                        }}>
-                        <View
-                          style={[style.textV, { justifyContent: 'flex-start' }]}>
-                          <Text
-                            numberOfLines={1}
-                            style={{
-                              fontSize: 14,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.TextDarkBlack,
-                            }}>
-                            25 Dec, 2021
-                          </Text>
-                        </View>
-                        <Image
-                          style={{ height: 30, width: 30 }}
-                          source={require('./../../assetss/more.png')}
-                        />
-                      </View>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          marginTop: 0,
-                          fontFamily: CONFIGURATION.TextRegular,
-                          color: CONFIGURATION.TextDarkGray,
-                        }}>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry
-                      </Text>
-                    </View>
-                  </Animated.View>
+                    : null}
+
                 </View>
               </>
             ) : null}
@@ -2970,37 +2890,7 @@ const index = props => {
                       props.navigation.navigate('CalenderView', { date });
                     }}
                   />
-                  {/* <View style={style.rowss}>
-                                            <Icon2 name="chevron-left" size={25} color={CONFIGURATION.TextDarkBlack} />
-                                            <Text style={style.dateText}>{moment(new Date()).format("MMMM, YYYY")}</Text>
-                                            <Icon2 name="chevron-right" size={25} color={CONFIGURATION.TextDarkBlack} />
-                                        </View>
-                                        <View style={[style.rowss, { marginVertical: 20, }]}>
-                                            <View style={style.boxDate2}>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextBold, fontSize: 16, color: CONFIGURATION.white }}>{moment(new Date()).format("DD")}</Text>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextRegular, fontSize: 14, color: CONFIGURATION.white }}>{moment(new Date()).format("ddd")}</Text>
-                                            </View>
-                                            <View style={style.boxDate}>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextBold, fontSize: 16, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 1).format("DD")}</Text>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextRegular, fontSize: 14, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 1).format("ddd")}</Text>
-                                            </View>
-                                            <View style={style.boxDate}>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextBold, fontSize: 16, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 2).format("DD")}</Text>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextRegular, fontSize: 14, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 2).format("ddd")}</Text>
-                                            </View>
-                                            <View style={style.boxDate}>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextBold, fontSize: 16, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 3).format("DD")}</Text>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextRegular, fontSize: 14, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 3).format("ddd")}</Text>
-                                            </View>
-                                            <View style={style.boxDate}>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextBold, fontSize: 16, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 4).format("DD")}</Text>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextRegular, fontSize: 14, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 4).format("ddd")}</Text>
-                                            </View>
-                                            <View style={style.boxDate}>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextBold, fontSize: 16, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 5).format("DD")}</Text>
-                                                <Text style={{ fontFamily: CONFIGURATION.TextRegular, fontSize: 14, color: CONFIGURATION.TextDarkGray }}>{moment(new Date()).add("days", 5).format("ddd")}</Text>
-                                            </View>
-                                        </View> */}
+
                   <TouchableOpacity
                     onPress={() => {
                       refRBSheet.current.open();
@@ -3317,27 +3207,118 @@ const index = props => {
                               09:00 AM
                             </Text>
                           </View>
-                          <Animated.View
-                            style={{
-                              backgroundColor: CONFIGURATION.white,
-                              height: value8,
-                              overflow: 'hidden',
-                              zIndex: 10,
-                            }}>
+                          {open8 ?
                             <View
                               style={{
-                                paddingVertical: 15,
-                                borderColor: CONFIGURATION.lightGray,
-                                borderBottomWidth: 1,
+                                backgroundColor: CONFIGURATION.white,
+                                overflow: 'hidden',
+                                zIndex: 10,
                               }}>
-                              <Text
+                              <View
                                 style={{
-                                  fontFamily: CONFIGURATION.TextRegular,
-                                  color: CONFIGURATION.TextDarkGray,
+                                  paddingVertical: 15,
+                                  borderColor: CONFIGURATION.lightGray,
+                                  borderBottomWidth: 1,
                                 }}>
-                                Lorem Ipsum is simply dummy text of the printing
-                                and typesetting industry.
-                              </Text>
+                                <Text
+                                  style={{
+                                    fontFamily: CONFIGURATION.TextRegular,
+                                    color: CONFIGURATION.TextDarkGray,
+                                  }}>
+                                  Lorem Ipsum is simply dummy text of the printing
+                                  and typesetting industry.
+                                </Text>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                  }}>
+                                  <Image
+                                    resizeMode={'contain'}
+                                    source={require('./../../assetss/masala.png')}
+                                    style={{ height: 40, width: 40 }}
+                                  />
+                                  <View
+                                    style={{
+                                      justifyContent: 'center',
+                                      paddingVertical: 20,
+                                      width: '63%',
+                                    }}>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                      }}>
+                                      <Text
+                                        style={{
+                                          fontSize: 16,
+                                          fontFamily: CONFIGURATION.TextBold,
+                                          color: CONFIGURATION.TextDarkBlack,
+                                        }}>
+                                        Masala fish curry
+                                      </Text>
+                                    </View>
+                                    <Text
+                                      style={{
+                                        fontFamily: CONFIGURATION.TextRegular,
+                                        color: CONFIGURATION.TextDarkGray,
+                                        fontSize: 12,
+                                      }}>
+                                      320 cals I 1 Standard serving
+                                    </Text>
+                                  </View>
+                                  <TouchableOpacity
+                                    style={{
+                                      backgroundColor: CONFIGURATION.lightGray,
+                                      paddingHorizontal: 10,
+                                      paddingVertical: 5,
+                                      borderRadius: 5,
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 12,
+                                        fontFamily: CONFIGURATION.TextRegular,
+                                        color: CONFIGURATION.TextDarkGray,
+                                      }}>
+                                      Info
+                                    </Text>
+                                  </TouchableOpacity>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    marginBottom: 10,
+                                  }}>
+                                  <Image
+                                    source={require('./../../assetss/food_1.png')}
+                                    style={{
+                                      height: 60,
+                                      width: 60,
+                                      borderRadius: 5,
+                                      marginRight: 10,
+                                    }}
+                                  />
+                                  <Image
+                                    source={require('./../../assetss/food_2.png')}
+                                    style={{
+                                      height: 60,
+                                      width: 60,
+                                      borderRadius: 5,
+                                      marginRight: 10,
+                                    }}
+                                  />
+                                  <Image
+                                    source={require('./../../assetss/food_3.png')}
+                                    style={{
+                                      height: 60,
+                                      width: 60,
+                                      borderRadius: 5,
+                                      marginRight: 10,
+                                    }}
+                                  />
+                                </View>
+                              </View>
                               <View
                                 style={{
                                   flexDirection: 'row',
@@ -3346,14 +3327,14 @@ const index = props => {
                                 }}>
                                 <Image
                                   resizeMode={'contain'}
-                                  source={require('./../../assetss/masala.png')}
+                                  source={require('./../../assetss/banana.png')}
                                   style={{ height: 40, width: 40 }}
                                 />
                                 <View
                                   style={{
                                     justifyContent: 'center',
                                     paddingVertical: 20,
-                                    width: '63%',
+                                    width: '82%',
                                   }}>
                                   <View
                                     style={{
@@ -3366,7 +3347,7 @@ const index = props => {
                                         fontFamily: CONFIGURATION.TextBold,
                                         color: CONFIGURATION.TextDarkBlack,
                                       }}>
-                                      Masala fish curry
+                                      Banana
                                     </Text>
                                   </View>
                                   <Text
@@ -3375,160 +3356,71 @@ const index = props => {
                                       color: CONFIGURATION.TextDarkGray,
                                       fontSize: 12,
                                     }}>
-                                    320 cals I 1 Standard serving
+                                    240 cals I 1 Standard serving
                                   </Text>
                                 </View>
-                                <TouchableOpacity
-                                  style={{
-                                    backgroundColor: CONFIGURATION.lightGray,
-                                    paddingHorizontal: 10,
-                                    paddingVertical: 5,
-                                    borderRadius: 5,
-                                  }}>
-                                  <Text
-                                    style={{
-                                      fontSize: 12,
-                                      fontFamily: CONFIGURATION.TextRegular,
-                                      color: CONFIGURATION.TextDarkGray,
-                                    }}>
-                                    Info
-                                  </Text>
-                                </TouchableOpacity>
                               </View>
                               <View
                                 style={{
                                   flexDirection: 'row',
-                                  marginBottom: 10,
-                                }}>
-                                <Image
-                                  source={require('./../../assetss/food_1.png')}
-                                  style={{
-                                    height: 60,
-                                    width: 60,
-                                    borderRadius: 5,
-                                    marginRight: 10,
-                                  }}
-                                />
-                                <Image
-                                  source={require('./../../assetss/food_2.png')}
-                                  style={{
-                                    height: 60,
-                                    width: 60,
-                                    borderRadius: 5,
-                                    marginRight: 10,
-                                  }}
-                                />
-                                <Image
-                                  source={require('./../../assetss/food_3.png')}
-                                  style={{
-                                    height: 60,
-                                    width: 60,
-                                    borderRadius: 5,
-                                    marginRight: 10,
-                                  }}
-                                />
-                              </View>
-                            </View>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                              }}>
-                              <Image
-                                resizeMode={'contain'}
-                                source={require('./../../assetss/banana.png')}
-                                style={{ height: 40, width: 40 }}
-                              />
-                              <View
-                                style={{
-                                  justifyContent: 'center',
-                                  paddingVertical: 20,
-                                  width: '82%',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
                                 }}>
                                 <View
                                   style={{
+                                    width: '50%',
+                                    backgroundColor: CONFIGURATION.lightGray,
+                                    height: 80,
                                     flexDirection: 'row',
                                     alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}>
+                                  <Image
+                                    resizeMode={'cover'}
+                                    source={require('./../../assetss/orenge.png')}
+                                    style={{ height: 50, width: 50 }}
+                                  />
+                                  <View style={{ marginRight: 10 }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 16,
+                                        fontFamily: CONFIGURATION.TextBold,
+                                        color: CONFIGURATION.TextDarkBlack,
+                                      }}>
+                                      Good
+                                    </Text>
+                                    <Text
+                                      style={{
+                                        fontFamily: CONFIGURATION.TextRegular,
+                                        color: CONFIGURATION.TextDarkGray,
+                                        fontSize: 12,
+                                      }}>
+                                      Client rate
+                                    </Text>
+                                  </View>
+                                </View>
+                                <TouchableOpacity
+                                  style={{
+                                    borderColor: CONFIGURATION.primaryGreen,
+                                    borderWidth: 1,
+                                    width: '45%',
+                                    height: 50,
+                                    borderRadius: 50,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
                                   }}>
                                   <Text
                                     style={{
-                                      fontSize: 16,
                                       fontFamily: CONFIGURATION.TextBold,
-                                      color: CONFIGURATION.TextDarkBlack,
+                                      color: CONFIGURATION.primaryGreen,
                                     }}>
-                                    Banana
+                                    Rate Meal
                                   </Text>
-                                </View>
-                                <Text
-                                  style={{
-                                    fontFamily: CONFIGURATION.TextRegular,
-                                    color: CONFIGURATION.TextDarkGray,
-                                    fontSize: 12,
-                                  }}>
-                                  240 cals I 1 Standard serving
-                                </Text>
+                                </TouchableOpacity>
                               </View>
                             </View>
-                            <View
-                              style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                              }}>
-                              <View
-                                style={{
-                                  width: '50%',
-                                  backgroundColor: CONFIGURATION.lightGray,
-                                  height: 80,
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                }}>
-                                <Image
-                                  resizeMode={'cover'}
-                                  source={require('./../../assetss/orenge.png')}
-                                  style={{ height: 50, width: 50 }}
-                                />
-                                <View style={{ marginRight: 10 }}>
-                                  <Text
-                                    style={{
-                                      fontSize: 16,
-                                      fontFamily: CONFIGURATION.TextBold,
-                                      color: CONFIGURATION.TextDarkBlack,
-                                    }}>
-                                    Good
-                                  </Text>
-                                  <Text
-                                    style={{
-                                      fontFamily: CONFIGURATION.TextRegular,
-                                      color: CONFIGURATION.TextDarkGray,
-                                      fontSize: 12,
-                                    }}>
-                                    Client rate
-                                  </Text>
-                                </View>
-                              </View>
-                              <TouchableOpacity
-                                style={{
-                                  borderColor: CONFIGURATION.primaryGreen,
-                                  borderWidth: 1,
-                                  width: '45%',
-                                  height: 50,
-                                  borderRadius: 50,
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                }}>
-                                <Text
-                                  style={{
-                                    fontFamily: CONFIGURATION.TextBold,
-                                    color: CONFIGURATION.primaryGreen,
-                                  }}>
-                                  Rate Meal
-                                </Text>
-                              </TouchableOpacity>
-                            </View>
-                          </Animated.View>
+                            : null}
+
                         </>
                       ) : null}
                       {mealDay == 1 ? (
@@ -3567,165 +3459,19 @@ const index = props => {
                             </TouchableOpacity>
                           </View>
 
-                      {/* <View style={{ flex: 1.0 }}>
-                        <FlatList
-                          data={clientMealCommentsData && clientMealCommentsData.length > 0 ? clientMealCommentsData : null}
-                         // inverted={true}
-                          showsVerticalScrollIndicator={false}
-                          extraData={clientMealCommentsData}
-                          keyExtractor={(item, index) => item.id}
-                          renderItem={({ item, index }) => {
-                            return <Comments item={item} />;
-                          }}
-                      
-                        />
-                      </View> */}
-                        <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderColor: CONFIGURATION.lightGray,
-        borderBottomWidth: 1,
-        paddingVertical: 20,
-      }}>
-      <Image
-        style={{
-          height: 60,
-          width: 60,
-          borderRadius: 60 / 2,
-        }}
-        source={{
-          uri: 'https://images.squarespace-cdn.com/content/v1/5ceafa407824f80001793b84/1617145105645-4JQVM5BOCNU2XD62M3UM/modal-verbs-passive-past.jpg',
-        }}
-      />
-      <View style={{width: '77%'}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <Text
-            style={{
-              fontFamily: CONFIGURATION.TextBold,
-              fontSize: 18,
-              color: CONFIGURATION.TextDarkBlack,
-            }}>
-            Jaeremy gaurkau
-          </Text>
-          <Text
-            style={{
-              fontFamily: CONFIGURATION.TextRegular,
-              fontSize: 12,
-              color: CONFIGURATION.TextDarkGray,
-            }}>
-            12:20 PM
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontFamily: CONFIGURATION.TextRegular,
-            color: CONFIGURATION.TextDarkGray,
-            marginVertical: 5,
-          }}>
-          Lorem ipsum is placeholder text commonly used in the graphic, print,
-          and publishing industries for previewing layouts and visual mockups.
-        </Text>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 10,
-          }}>
-          <Image
-            style={{height: 20, width: 20}}
-            source={require('../assetss/replay.png')}
-          />
-          <Text
-            style={{
-              fontFamily: CONFIGURATION.TextBold,
-              color: CONFIGURATION.TextDarkBlack,
-              fontSize: 12,
-            }}>
-            {' '}
-            Reply
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-      <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderColor: CONFIGURATION.lightGray,
-        borderBottomWidth: 1,
-        paddingVertical: 20,
-      }}>
-      <Image
-        style={{
-          height: 60,
-          width: 60,
-          borderRadius: 60 / 2,
-        }}
-        source={{
-          uri: 'https://images.squarespace-cdn.com/content/v1/5ceafa407824f80001793b84/1617145105645-4JQVM5BOCNU2XD62M3UM/modal-verbs-passive-past.jpg',
-        }}
-      />
-      <View style={{width: '77%'}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <Text
-            style={{
-              fontFamily: CONFIGURATION.TextBold,
-              fontSize: 18,
-              color: CONFIGURATION.TextDarkBlack,
-            }}>
-            Jaeremy gaurkau
-          </Text>
-          <Text
-            style={{
-              fontFamily: CONFIGURATION.TextRegular,
-              fontSize: 12,
-              color: CONFIGURATION.TextDarkGray,
-            }}>
-            12:20 PM
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontFamily: CONFIGURATION.TextRegular,
-            color: CONFIGURATION.TextDarkGray,
-            marginVertical: 5,
-          }}>
-          Lorem ipsum is placeholder text commonly used in the graphic, print,
-          and publishing industries for previewing layouts and visual mockups.
-        </Text>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 10,
-          }}>
-          <Image
-            style={{height: 20, width: 20}}
-            source={require('../assetss/replay.png')}
-          />
-          <Text
-            style={{
-              fontFamily: CONFIGURATION.TextBold,
-              color: CONFIGURATION.TextDarkBlack,
-              fontSize: 12,
-            }}>
-            {' '}
-            Reply
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+                          <View style={{ flex: 1.0 }}>
+                            <FlatList
+                              data={clientMealCommentsData && clientMealCommentsData.length > 0 ? clientMealCommentsData : null}
+                              // inverted={true}
+                              showsVerticalScrollIndicator={false}
+                              extraData={clientMealCommentsData}
+                              keyExtractor={(item, index) => item.id}
+                              renderItem={({ item, index }) => {
+                                return <Comments item={item} />;
+                              }}
+
+                            />
+                          </View>
 
                         </View>
                       ) : null}
@@ -4268,227 +4014,229 @@ const index = props => {
                               </Text>
                             </View>
                           </View>
-                          <Animated.View
-                            style={{
-                              backgroundColor: CONFIGURATION.white,
-                              height: value9,
-                              overflow: 'hidden',
-                              zIndex: 10,
-                            }}>
-                            <View style={{ paddingVertical: 15 }}>
-                              <Text
-                                style={{
-                                  fontFamily: CONFIGURATION.TextRegular,
-                                  color: CONFIGURATION.TextDarkGray,
-                                }}>
-                                Lorem Ipsum is simply dummy text of the printing
-                                and typesetting industry.
-                              </Text>
-                              <View
-                                style={{
-                                  width: '100%',
-                                  backgroundColor: CONFIGURATION.lightGray,
-                                  paddingTop: 20,
-                                  paddingHorizontal: 20,
-                                  marginVertical: 20,
-                                }}>
+                          {open9 ?
+                            <View
+                              style={{
+                                backgroundColor: CONFIGURATION.white,
+                                overflow: 'hidden',
+                                zIndex: 10,
+                              }}>
+                              <View style={{ paddingVertical: 15 }}>
+                                <Text
+                                  style={{
+                                    fontFamily: CONFIGURATION.TextRegular,
+                                    color: CONFIGURATION.TextDarkGray,
+                                  }}>
+                                  Lorem Ipsum is simply dummy text of the printing
+                                  and typesetting industry.
+                                </Text>
                                 <View
                                   style={{
-                                    flexDirection: 'row',
-                                    marginBottom: 30,
+                                    width: '100%',
+                                    backgroundColor: CONFIGURATION.lightGray,
+                                    paddingTop: 20,
+                                    paddingHorizontal: 20,
+                                    marginVertical: 20,
                                   }}>
                                   <View
                                     style={{
                                       flexDirection: 'row',
-                                      alignItems: 'center',
-                                      width: '50%',
+                                      marginBottom: 30,
                                     }}>
-                                    <Image
-                                      style={{ height: 40, width: 40 }}
-                                      source={require('./../../assetss/Reps.png')}
-                                    />
-                                    <View style={{ marginLeft: 10 }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                          fontSize: 18,
-                                        }}>
-                                        12
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextRegular,
-                                          color: CONFIGURATION.TextDarkGray,
-                                          fontSize: 14,
-                                        }}>
-                                        Reps
-                                      </Text>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        width: '50%',
+                                      }}>
+                                      <Image
+                                        style={{ height: 40, width: 40 }}
+                                        source={require('./../../assetss/Reps.png')}
+                                      />
+                                      <View style={{ marginLeft: 10 }}>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextBold,
+                                            color: CONFIGURATION.TextDarkBlack,
+                                            fontSize: 18,
+                                          }}>
+                                          12
+                                        </Text>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextRegular,
+                                            color: CONFIGURATION.TextDarkGray,
+                                            fontSize: 14,
+                                          }}>
+                                          Reps
+                                        </Text>
+                                      </View>
+                                    </View>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        width: '50%',
+                                      }}>
+                                      <Image
+                                        style={{ height: 40, width: 40 }}
+                                        source={require('./../../assetss/Sets.png')}
+                                      />
+                                      <View style={{ marginLeft: 10 }}>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextBold,
+                                            color: CONFIGURATION.TextDarkBlack,
+                                            fontSize: 18,
+                                          }}>
+                                          10
+                                        </Text>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextRegular,
+                                            color: CONFIGURATION.TextDarkGray,
+                                            fontSize: 14,
+                                          }}>
+                                          Sets
+                                        </Text>
+                                      </View>
                                     </View>
                                   </View>
                                   <View
                                     style={{
                                       flexDirection: 'row',
-                                      alignItems: 'center',
-                                      width: '50%',
+                                      marginBottom: 30,
                                     }}>
-                                    <Image
-                                      style={{ height: 40, width: 40 }}
-                                      source={require('./../../assetss/Sets.png')}
-                                    />
-                                    <View style={{ marginLeft: 10 }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                          fontSize: 18,
-                                        }}>
-                                        10
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextRegular,
-                                          color: CONFIGURATION.TextDarkGray,
-                                          fontSize: 14,
-                                        }}>
-                                        Sets
-                                      </Text>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        width: '50%',
+                                      }}>
+                                      <Image
+                                        style={{ height: 40, width: 40 }}
+                                        source={require('./../../assetss/Duration.png')}
+                                      />
+                                      <View style={{ marginLeft: 10 }}>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextBold,
+                                            color: CONFIGURATION.TextDarkBlack,
+                                            fontSize: 18,
+                                          }}>
+                                          10 Min
+                                        </Text>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextRegular,
+                                            color: CONFIGURATION.TextDarkGray,
+                                            fontSize: 14,
+                                          }}>
+                                          Duration
+                                        </Text>
+                                      </View>
                                     </View>
-                                  </View>
-                                </View>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    marginBottom: 30,
-                                  }}>
-                                  <View
-                                    style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                      width: '50%',
-                                    }}>
-                                    <Image
-                                      style={{ height: 40, width: 40 }}
-                                      source={require('./../../assetss/Duration.png')}
-                                    />
-                                    <View style={{ marginLeft: 10 }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                          fontSize: 18,
-                                        }}>
-                                        10 Min
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextRegular,
-                                          color: CONFIGURATION.TextDarkGray,
-                                          fontSize: 14,
-                                        }}>
-                                        Duration
-                                      </Text>
-                                    </View>
-                                  </View>
-                                  <View
-                                    style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                      width: '50%',
-                                    }}>
-                                    <Image
-                                      style={{ height: 40, width: 40 }}
-                                      source={require('./../../assetss/Distance.png')}
-                                    />
-                                    <View style={{ marginLeft: 10 }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                          fontSize: 18,
-                                        }}>
-                                        01 Km
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextRegular,
-                                          color: CONFIGURATION.TextDarkGray,
-                                          fontSize: 14,
-                                        }}>
-                                        Distance
-                                      </Text>
-                                    </View>
-                                  </View>
-                                </View>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    marginBottom: 20,
-                                  }}>
-                                  <View
-                                    style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                      width: '50%',
-                                    }}>
-                                    <Image
-                                      style={{ height: 40, width: 40 }}
-                                      source={require('./../../assetss/Speed.png')}
-                                    />
-                                    <View style={{ marginLeft: 10 }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                          fontSize: 18,
-                                        }}>
-                                        120
-                                      </Text>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextRegular,
-                                          color: CONFIGURATION.TextDarkGray,
-                                          fontSize: 14,
-                                        }}>
-                                        Speed
-                                      </Text>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        width: '50%',
+                                      }}>
+                                      <Image
+                                        style={{ height: 40, width: 40 }}
+                                        source={require('./../../assetss/Distance.png')}
+                                      />
+                                      <View style={{ marginLeft: 10 }}>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextBold,
+                                            color: CONFIGURATION.TextDarkBlack,
+                                            fontSize: 18,
+                                          }}>
+                                          01 Km
+                                        </Text>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextRegular,
+                                            color: CONFIGURATION.TextDarkGray,
+                                            fontSize: 14,
+                                          }}>
+                                          Distance
+                                        </Text>
+                                      </View>
                                     </View>
                                   </View>
                                   <View
                                     style={{
                                       flexDirection: 'row',
-                                      alignItems: 'center',
-                                      width: '50%',
+                                      marginBottom: 20,
                                     }}>
-                                    <Image
-                                      style={{ height: 40, width: 40 }}
-                                      source={require('./../../assetss/Sets.png')}
-                                    />
-                                    <View style={{ marginLeft: 10 }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                          fontSize: 18,
-                                        }}>
-                                        750 Cal
-                                      </Text>
-                                      <Text
-                                        numberOfLines={1}
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextRegular,
-                                          color: CONFIGURATION.TextDarkGray,
-                                          fontSize: 14,
-                                          width: '90%',
-                                        }}>
-                                        Calories burnt
-                                      </Text>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        width: '50%',
+                                      }}>
+                                      <Image
+                                        style={{ height: 40, width: 40 }}
+                                        source={require('./../../assetss/Speed.png')}
+                                      />
+                                      <View style={{ marginLeft: 10 }}>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextBold,
+                                            color: CONFIGURATION.TextDarkBlack,
+                                            fontSize: 18,
+                                          }}>
+                                          120
+                                        </Text>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextRegular,
+                                            color: CONFIGURATION.TextDarkGray,
+                                            fontSize: 14,
+                                          }}>
+                                          Speed
+                                        </Text>
+                                      </View>
+                                    </View>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        width: '50%',
+                                      }}>
+                                      <Image
+                                        style={{ height: 40, width: 40 }}
+                                        source={require('./../../assetss/Sets.png')}
+                                      />
+                                      <View style={{ marginLeft: 10 }}>
+                                        <Text
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextBold,
+                                            color: CONFIGURATION.TextDarkBlack,
+                                            fontSize: 18,
+                                          }}>
+                                          750 Cal
+                                        </Text>
+                                        <Text
+                                          numberOfLines={1}
+                                          style={{
+                                            fontFamily: CONFIGURATION.TextRegular,
+                                            color: CONFIGURATION.TextDarkGray,
+                                            fontSize: 14,
+                                            width: '90%',
+                                          }}>
+                                          Calories burnt
+                                        </Text>
+                                      </View>
                                     </View>
                                   </View>
                                 </View>
                               </View>
                             </View>
-                          </Animated.View>
+                            : null}
+
                         </View>
                         <View
                           style={{
@@ -4577,7 +4325,7 @@ const index = props => {
                               </Text>
                             </View>
                           </View>
-                          <Animated.View
+                          {/* <Animated.View
                             style={{
                               backgroundColor: CONFIGURATION.white,
                               height: value9,
@@ -4797,7 +4545,7 @@ const index = props => {
                                 </View>
                               </View>
                             </View>
-                          </Animated.View>
+                          </Animated.View> */}
                         </View>
                       </>
                     ) : null}
@@ -5710,7 +5458,7 @@ const index = props => {
           <TouchableOpacity
             onPress={() => {
               setselectedNames('Meal of the day');
-             // getMealComments();
+              getMealComments();
               refRBSheet.current.close();
             }}
             style={{
