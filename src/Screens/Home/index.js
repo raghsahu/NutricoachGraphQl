@@ -112,7 +112,7 @@ const index = (props) => {
                             <View style={[style.cardround, { backgroundColor: CONFIGURATION.primaryGreen, }]}>
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_1.png')} />
                             </View>
-                            <Text style={style.numbetTextr}>05 <Text style={style.numbertext}>/10</Text></Text>
+                            <Text style={style.numbetTextr}>0 <Text style={style.numbertext}>/10</Text></Text>
                             <Text style={style.titleCardText}>New Clients this month</Text>
                         </View>
                         <View style={style.card}>
@@ -120,7 +120,7 @@ const index = (props) => {
                             <View style={[style.cardround, { backgroundColor: CONFIGURATION.primaryYellow, }]}>
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_2.png')} />
                             </View>
-                            <Text style={style.numbetTextr}>10</Text>
+                            <Text style={style.numbetTextr}>0</Text>
                             <Text style={style.titleCardText}>Struggling Clients</Text>
                         </View>
                     </View>
@@ -130,7 +130,7 @@ const index = (props) => {
                             <View style={[style.cardround, { backgroundColor: CONFIGURATION.primaryBlue, }]}>
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_3.png')} />
                             </View>
-                            <Text style={style.numbetTextr}>20</Text>
+                            <Text style={style.numbetTextr}>0</Text>
                             <Text style={style.titleCardText}>Ending Clients this month</Text>
                         </View>
                         <View style={style.card}>
@@ -138,7 +138,7 @@ const index = (props) => {
                             <View style={[style.cardround, { backgroundColor: CONFIGURATION.primaryRed, }]}>
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_4.png')} />
                             </View>
-                            <Text style={style.numbetTextr}>12</Text>
+                            <Text style={style.numbetTextr}>0</Text>
                             <Text style={style.titleCardText}>Pending App Invites</Text>
                         </View>
                     </View>
