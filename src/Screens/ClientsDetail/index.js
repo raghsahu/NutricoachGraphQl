@@ -165,7 +165,7 @@ const index = props => {
 
   useEffect(() => {
     getClientData();
-    getMealComments();
+   // getMealComments();
   });
 
   const handleConfirm = (date) => {
@@ -791,7 +791,7 @@ const index = props => {
               <TouchableOpacity
                 onPress={() => {
                   setselected(1);
-                  getMealComments();
+                 // getMealComments();
                 }}
                 style={{ alignItems: 'center' }}>
                 <Text
@@ -3459,7 +3459,7 @@ const index = props => {
                             </TouchableOpacity>
                           </View>
 
-                          <View style={{ flex: 1.0 }}>
+                          {/* <View style={{ flex: 1.0 }}>
                             <FlatList
                               data={clientMealCommentsData && clientMealCommentsData.length > 0 ? clientMealCommentsData : null}
                               // inverted={true}
@@ -3471,7 +3471,153 @@ const index = props => {
                               }}
 
                             />
-                          </View>
+                          </View> */}
+                           <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderColor: CONFIGURATION.lightGray,
+        borderBottomWidth: 1,
+        paddingVertical: 20,
+      }}>
+      <Image
+        style={{
+          height: 60,
+          width: 60,
+          borderRadius: 60 / 2,
+        }}
+        source={{
+          uri: 'https://images.squarespace-cdn.com/content/v1/5ceafa407824f80001793b84/1617145105645-4JQVM5BOCNU2XD62M3UM/modal-verbs-passive-past.jpg',
+        }}
+      />
+      <View style={{width: '77%'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <Text
+            style={{
+              fontFamily: CONFIGURATION.TextBold,
+              fontSize: 18,
+              color: CONFIGURATION.TextDarkBlack,
+            }}>
+            Jaeremy gaurkau
+          </Text>
+          <Text
+            style={{
+              fontFamily: CONFIGURATION.TextRegular,
+              fontSize: 12,
+              color: CONFIGURATION.TextDarkGray,
+            }}>
+            12:20 PM
+          </Text>
+        </View>
+        <Text
+          style={{
+            fontFamily: CONFIGURATION.TextRegular,
+            color: CONFIGURATION.TextDarkGray,
+            marginVertical: 5,
+          }}>
+          Lorem ipsum is placeholder text commonly used in the graphic, print,
+          and publishing industries for previewing layouts and visual mockups.
+        </Text>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Image
+            style={{height: 20, width: 20}}
+            source={require('./../../assetss/replay.png')}
+          />
+          <Text
+            style={{
+              fontFamily: CONFIGURATION.TextBold,
+              color: CONFIGURATION.TextDarkBlack,
+              fontSize: 12,
+            }}>
+            {' '}
+            Reply
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+     <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderColor: CONFIGURATION.lightGray,
+        borderBottomWidth: 1,
+        paddingVertical: 20,
+      }}>
+      <Image
+        style={{
+          height: 60,
+          width: 60,
+          borderRadius: 60 / 2,
+        }}
+        source={{
+          uri: 'https://images.squarespace-cdn.com/content/v1/5ceafa407824f80001793b84/1617145105645-4JQVM5BOCNU2XD62M3UM/modal-verbs-passive-past.jpg',
+        }}
+      />
+      <View style={{width: '77%'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <Text
+            style={{
+              fontFamily: CONFIGURATION.TextBold,
+              fontSize: 18,
+              color: CONFIGURATION.TextDarkBlack,
+            }}>
+            Jaeremy gaurkau
+          </Text>
+          <Text
+            style={{
+              fontFamily: CONFIGURATION.TextRegular,
+              fontSize: 12,
+              color: CONFIGURATION.TextDarkGray,
+            }}>
+            12:20 PM
+          </Text>
+        </View>
+        <Text
+          style={{
+            fontFamily: CONFIGURATION.TextRegular,
+            color: CONFIGURATION.TextDarkGray,
+            marginVertical: 5,
+          }}>
+          Lorem ipsum is placeholder text commonly used in the graphic, print,
+          and publishing industries for previewing layouts and visual mockups.
+        </Text>
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <Image
+            style={{height: 20, width: 20}}
+            source={require('./../../assetss/replay.png')}
+          />
+          <Text
+            style={{
+              fontFamily: CONFIGURATION.TextBold,
+              color: CONFIGURATION.TextDarkBlack,
+              fontSize: 12,
+            }}>
+            {' '}
+            Reply
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
 
                         </View>
                       ) : null}
@@ -5458,7 +5604,7 @@ const index = props => {
           <TouchableOpacity
             onPress={() => {
               setselectedNames('Meal of the day');
-              getMealComments();
+              //getMealComments();
               refRBSheet.current.close();
             }}
             style={{
