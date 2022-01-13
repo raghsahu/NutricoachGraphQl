@@ -17,6 +17,7 @@ import GeneralStatusBar from './../../Components/GeneralStatusBar';
 import LinearGradient from 'react-native-linear-gradient';
 import style from './style';
 import MassageBox from '../../Components/MessageBox';
+import Comments from '../../Components/Comments';
 import Pogress from './../../Components/progressbar';
 import { identifier } from '@babel/types';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -123,8 +124,9 @@ const index = props => {
   const [numberX, setnumberX] = useState([20, 21, 22, 23, 24, 25, 26]);
   const [values, setvalues] = useState([110, 140, 140, 105, 135, 130, 130]);
 
-  const { getClientsDetails } = useContext(APPContext);
+  const {getClientsDetails, getClientsMealComments} = useContext(APPContext);
   const [clientData, setClientData] = useState('');
+  const [clientMealCommentsData, setClientMealCommentsData] = useState([]);
 
   const [fullName, setFullName] = useState('');
   const [gender, setGender] = useState('');
@@ -163,6 +165,7 @@ const index = props => {
 
   useEffect(() => {
     getClientData();
+    getMealComments();
   });
 
   const handleConfirm = (date) => {  
@@ -230,6 +233,19 @@ const index = props => {
 
       }, 100);
     } else {
+      Toast.show(result.error, 2000);
+    }
+  };
+
+  const getMealComments = async () => {
+       const result = await getClientsMealComments(customerId);
+       console.log('mealdata ', JSON.stringify(result));
+    if (result.status == true && result.data && result.data.data.me.customer.meals.nodes != null) {
+      setTimeout(() => {
+        setClientMealCommentsData(result.data.data.me.customer.meals.nodes);
+         }, 100);
+    } else {
+      setClientMealCommentsData([]);
       Toast.show(result.error, 2000);
     }
   };
@@ -775,6 +791,7 @@ const index = props => {
               <TouchableOpacity
                 onPress={() => {
                   setselected(1);
+                  getMealComments();
                 }}
                 style={{ alignItems: 'center' }}>
                 <Text
@@ -3549,154 +3566,21 @@ const index = props => {
                               </Text>
                             </TouchableOpacity>
                           </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              borderColor: CONFIGURATION.lightGray,
-                              borderBottomWidth: 1,
-                              paddingVertical: 20,
-                            }}>
-                            <Image
-                              style={{
-                                height: 60,
-                                width: 60,
-                                borderRadius: 60 / 2,
-                              }}
-                              source={{
-                                uri: 'https://images.squarespace-cdn.com/content/v1/5ceafa407824f80001793b84/1617145105645-4JQVM5BOCNU2XD62M3UM/modal-verbs-passive-past.jpg',
-                              }}
-                            />
-                            <View style={{ width: '77%' }}>
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                  justifyContent: 'space-between',
-                                }}>
-                                <Text
-                                  style={{
-                                    fontFamily: CONFIGURATION.TextBold,
-                                    fontSize: 18,
-                                    color: CONFIGURATION.TextDarkBlack,
-                                  }}>
-                                  Jaeremy gaurkau
-                                </Text>
-                                <Text
-                                  style={{
-                                    fontFamily: CONFIGURATION.TextRegular,
-                                    fontSize: 12,
-                                    color: CONFIGURATION.TextDarkGray,
-                                  }}>
-                                  12:20 PM
-                                </Text>
-                              </View>
-                              <Text
-                                style={{
-                                  fontFamily: CONFIGURATION.TextRegular,
-                                  color: CONFIGURATION.TextDarkGray,
-                                  marginVertical: 5,
-                                }}>
-                                Lorem ipsum is placeholder text commonly used in
-                                the graphic, print, and publishing industries
-                                for previewing layouts and visual mockups.
-                              </Text>
-                              <TouchableOpacity
-                                style={{
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                  marginTop: 10,
-                                }}>
-                                <Image
-                                  style={{ height: 20, width: 20 }}
-                                  source={require('./../../assetss/replay.png')}
-                                />
-                                <Text
-                                  style={{
-                                    fontFamily: CONFIGURATION.TextBold,
-                                    color: CONFIGURATION.TextDarkBlack,
-                                    fontSize: 12,
-                                  }}>
-                                  {' '}
-                                  Reply
-                                </Text>
-                              </TouchableOpacity>
-                            </View>
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              borderColor: CONFIGURATION.lightGray,
-                              borderBottomWidth: 1,
-                              paddingVertical: 20,
-                            }}>
-                            <Image
-                              style={{
-                                height: 60,
-                                width: 60,
-                                borderRadius: 60 / 2,
-                              }}
-                              source={{
-                                uri: 'https://www.jqueryscript.net/images/masonry-lightbox-slider-ws-lisli.jpg',
-                              }}
-                            />
-                            <View style={{ width: '77%' }}>
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                  justifyContent: 'space-between',
-                                }}>
-                                <Text
-                                  style={{
-                                    fontFamily: CONFIGURATION.TextBold,
-                                    fontSize: 18,
-                                    color: CONFIGURATION.TextDarkBlack,
-                                  }}>
-                                  {' '}
-                                </Text>
-                                <Text
-                                  style={{
-                                    fontFamily: CONFIGURATION.TextRegular,
-                                    fontSize: 12,
-                                    color: CONFIGURATION.TextDarkGray,
-                                  }}>
-                                  12:20 PM
-                                </Text>
-                              </View>
-                              <Text
-                                style={{
-                                  fontFamily: CONFIGURATION.TextRegular,
-                                  color: CONFIGURATION.TextDarkGray,
-                                  marginVertical: 5,
-                                }}>
-                                Lorem ipsum is placeholder text commonly used in
-                                the graphic, print, and publishing industries
-                                for previewing layouts and visual mockups.
-                              </Text>
-                              <TouchableOpacity
-                                style={{
-                                  flexDirection: 'row',
-                                  alignItems: 'center',
-                                  marginTop: 10,
-                                }}>
-                                <Image
-                                  style={{ height: 20, width: 20 }}
-                                  source={require('./../../assetss/replay.png')}
-                                />
-                                <Text
-                                  style={{
-                                    fontFamily: CONFIGURATION.TextBold,
-                                    color: CONFIGURATION.TextDarkBlack,
-                                    fontSize: 12,
-                                  }}>
-                                  {' '}
-                                  Reply
-                                </Text>
-                              </TouchableOpacity>
-                            </View>
-                          </View>
+
+                      <View style={{ flex: 1.0 }}>
+                        <FlatList
+                          data={clientMealCommentsData && clientMealCommentsData.length > 0 ? clientMealCommentsData : null}
+                         // inverted={true}
+                          showsVerticalScrollIndicator={false}
+                          extraData={clientMealCommentsData}
+                          keyExtractor={(item, index) => item.id}
+                          renderItem={({ item, index }) => {
+                            return <Comments item={item} />;
+                          }}
+                      
+                        />
+                      </View>
+
                         </View>
                       ) : null}
                       {mealDay == 2 ? (
@@ -5680,6 +5564,7 @@ const index = props => {
           <TouchableOpacity
             onPress={() => {
               setselectedNames('Meal of the day');
+              getMealComments();
               refRBSheet.current.close();
             }}
             style={{

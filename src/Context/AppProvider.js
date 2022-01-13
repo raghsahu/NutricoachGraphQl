@@ -197,10 +197,19 @@ export const APPProvider = props => {
                       id,
                       body,
                       createdAt
+                      seenAt
                       from{
                         id
                       }
                    }
+                    channelMessages(channel: APPOINTMENTS)
+                    {
+                      body
+                      channel
+                      from{
+                        id
+                      }
+                    }
                    messagesWithCoach{id, body, createdAt}
                   }
                 }
@@ -428,6 +437,7 @@ export const APPProvider = props => {
                     ) {
                       body,
                       createdAt,
+                      seenAt,
                       channel
                       from{
                         id
@@ -437,6 +447,34 @@ export const APPProvider = props => {
                 }
               }
             
+          }`,
+    };
+    return await request('get', graphqlQuery);
+  };
+
+  
+  const getClientsMealComments = async customerId => {
+    const graphqlQuery = {
+      query: `{
+              me {
+                ... on Coach {
+                  customer(id: "${customerId}" ),
+                  {
+                   meals(where: {
+                    customerId: "${customerId}"
+                  })
+                    {
+                    nodes{
+                      id
+                      description
+                      mealType
+                      rating
+                      commentCount
+                    }
+                  }
+                }
+              }
+            }
           }`,
     };
     return await request('get', graphqlQuery);
@@ -579,6 +617,7 @@ export const APPProvider = props => {
         getClientsDetails,
         sendFileToMessage,
         getClientsUnreadMessage,
+        getClientsMealComments,
       }}>
       {props.children}
     </APPContext.Provider>

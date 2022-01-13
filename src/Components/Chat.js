@@ -24,20 +24,6 @@ const Chat = props => {
     return Moment(localDate).format('DD MMM, yyyy hh:mm a');
   }
 
-  // async function getThumbnail(uri) {
-  //   // uri is the local path of the video
-  //   try {
-  //     RNThumbnail.get(uri).then((result) => {
-  //        console.log("Thumbnail path: " + result.path); // thumbnail path
-  //       // this.setState({ thumbUri: result.path });
-  //         return result.path
-  //     });
-  //   } catch (exp) {
-  //     console.log(exp);
-  //     return '';
-  //   }
-  // }
-
   if (item.from.id != loginId) {
     if (item.attachments && item.attachments.length > 0) {
       if (item.attachments[0].resource_type == 'image') {
@@ -54,6 +40,7 @@ const Chat = props => {
                 borderBottomRightRadius: 20,
                 padding: 5,
                 overflow: 'hidden',
+                alignSelf: 'flex-start',
               }}>
               <View
                 style={{
@@ -129,7 +116,7 @@ const Chat = props => {
                 borderRadius: 20,
                 padding: 5,
                 overflow: 'hidden',
-                alignSelf: 'flex-end',
+                alignSelf: 'flex-start',
               }}>
               <ImageBackground
                 style={{
@@ -158,7 +145,8 @@ const Chat = props => {
             </View>
           );
         }
-      } else if (item.attachments[0].resource_type == 'video') {
+       } 
+      else if (item.attachments[0].resource_type == 'video') {
         //VIDEO
         return (
           <View
@@ -172,6 +160,7 @@ const Chat = props => {
               borderBottomRightRadius: 20,
               padding: 5,
               overflow: 'hidden',
+              alignSelf: 'flex-start',
             }}>
             <ImageBackground
               style={{
@@ -257,6 +246,7 @@ const Chat = props => {
               borderBottomRightRadius: 20,
               padding: 5,
               overflow: 'hidden',
+              alignSelf: 'flex-start',
             }}>
             <View
               style={{
@@ -328,13 +318,13 @@ const Chat = props => {
         style={{
           width: width / 2 + 50,
           backgroundColor: CONFIGURATION.messageBack,
-          marginRight: 20,
+          marginLeft: 20,
           marginVertical: 10,
-          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           padding: 20,
-          alignSelf: 'flex-end',
+          alignSelf: 'flex-start',
         }}>
         {item.body ? (
           <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>

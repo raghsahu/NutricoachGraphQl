@@ -32,7 +32,10 @@ const MessageBox = props => {
     if (item && item.unreadMessages && item.unreadMessages.length > 0) {
       for (let i = 0; i < item.unreadMessages.length; i++) {
         if (item.unreadMessages[i].from.id != loginId) {
-              countMessage = countMessage + 1 
+          if (item.unreadMessages[i].seenAt == null) {
+            countMessage = countMessage + 1 
+          }
+              
         }
       }
     
@@ -44,8 +47,8 @@ const MessageBox = props => {
   }
 
   function getLastMessage() {
-    if (item && item.unreadMessages && item.unreadMessages.length > 0) {
-      const array = item.unreadMessages.map((item) => item.body)
+    if (item && item.channelMessages && item.channelMessages.length > 0) {
+      const array = item.channelMessages.map((item) => item.body)
       return array[0] //get last message
     }
     else {
