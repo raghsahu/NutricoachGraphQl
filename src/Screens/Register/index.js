@@ -226,7 +226,9 @@ const index = (props) => {
                             }
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity onPress={showDatepicker} style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15, }]}>
+                    <TouchableOpacity
+                     onPress={showDatepicker}
+                      style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15, }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="Birthdate*"
