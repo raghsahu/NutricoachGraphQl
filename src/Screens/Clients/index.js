@@ -28,6 +28,7 @@ const index = () => {
   const [client, setClient] = useState([]);
   const [searchText, setSearchText] = useState('')
   const [filterData, setFilterData] = useState([])
+  const [openMenu,setOpenMenu] = useState(false)
 
   const {getClients} = useContext(APPContext);
 
@@ -75,7 +76,9 @@ const index = () => {
           </TouchableOpacity>
         </View>
       </LinearGradient>
+
       <View style={style.whiteView}>
+ 
         <View style={style.profileView}>
           <Image
             source={require('./../../assetss/Search.png')}
@@ -90,10 +93,21 @@ const index = () => {
             }}
             value={searchText}
           />
+           <TouchableOpacity
+            onPress={() => {
+              openMenu ? 
+               setOpenMenu(false)
+               :
+                setOpenMenu(true)
+              
+              }}
+            >
           <Image
             source={require('./../../assetss/Filter.png')}
             style={style.searchIcoN}
           />
+          </TouchableOpacity>
+
         </View>
 
         {isLoading ? (
@@ -115,7 +129,9 @@ const index = () => {
             </ScrollView>
           </View>
         )}
+
       </View>
+      
       <TouchableOpacity style={{position: 'absolute', bottom: 20, right: 20}}>
         <Image
           resizeMode={'contain'}
@@ -123,6 +139,43 @@ const index = () => {
           source={require('./../../assetss/add.png')}
         />
       </TouchableOpacity>
+
+      {openMenu ? (
+        <View style={{alignSelf: 'flex-end', height: 110, width:100, marginTop: 150, backgroundColor: CONFIGURATION.lightGray, position: 'absolute'}}>
+         <Text style={{color: CONFIGURATION.TextDarkGray, marginTop: 10, fontSize:16, alignSelf:'center', }}>Sort by</Text>
+         <TouchableOpacity style={{ alignSelf:'center',}} 
+          onPress={() => {
+            let sortData;
+            if (filterData && filterData.length > 0 ){
+            sortData = filterData.sort((a, b) => a.profile.fullName.localeCompare(b.profile.fullName)) 
+              setFilterData(sortData);
+            } else{
+              sortData =  client.sort((a, b) => a.profile.fullName.localeCompare(b.profile.fullName))
+              setFilterData(sortData);
+            }
+
+            }}>
+         <Text style={{color: CONFIGURATION.black, fontSize:16,  marginTop: 10}}>Ascending</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ alignSelf:'center',}} 
+        onPress={() => {
+           let sortData;
+              if (filterData && filterData.length > 0 ){
+              sortData = filterData.sort((a, b) => b.profile.fullName.localeCompare(a.profile.fullName))
+              setFilterData(sortData);
+            } else{
+              sortData =  client.sort((a, b) => b.profile.fullName.localeCompare(a.profile.fullName))
+              setFilterData(sortData);
+            }
+              
+              }}>
+         <Text style={{color: CONFIGURATION.black, fontSize:16, alignSelf:'center', marginTop: 10, marginBottom: 10}}>Descending</Text>
+        </TouchableOpacity>
+      </View>
+        ):(
+        null
+        )}
+
     </View>
   );
 };

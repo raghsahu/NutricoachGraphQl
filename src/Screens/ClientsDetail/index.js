@@ -135,6 +135,7 @@ const index = props => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [lastActivity, setlastActivity] = useState('');
+   const [isGhost, setisGhost] = useState(false);
   const [heightFeet, setHeightFeet] = useState('');
   const [heightInches, setHeightInches] = useState('');
   const [currentWeight, setCurrentWeight] = useState('');
@@ -201,6 +202,7 @@ const index = props => {
         setEmail(result.data.data.me.customer.email);
         setMobile(result.data.data.me.customer.profile.mobileNum);
         setlastActivity(result.data.data.me.customer.lastActivity);
+        setisGhost(result.data.data.me.customer.isGhost);
         setHeightFeet(result.data.data.me.customer.healthProfile.height.feet);
         setHeightInches(result.data.data.me.customer.healthProfile.height.inches);
         setCurrentWeight(result.data.data.me.customer.healthProfile.weight.currentWeight);
@@ -689,7 +691,8 @@ const index = props => {
               marginVertical: 10,
               justifyContent: 'space-between',
             }}>
-            <TouchableOpacity
+            {isGhost != true ?
+              <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -713,7 +716,10 @@ const index = props => {
                 Invite to download app
               </Text>
             </TouchableOpacity>
-
+            :
+            null
+            }
+          
             <TouchableOpacity
               style={{
                 flexDirection: 'row',

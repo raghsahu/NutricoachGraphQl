@@ -142,6 +142,7 @@ export const APPProvider = props => {
         id: id,
       },
     };
+    
   }
 
   async function getStrugglingClients() {
@@ -156,6 +157,7 @@ export const APPProvider = props => {
                       fullName,
                       profileImg
                     }
+                    lastActivity
                   plans{id,name}
                     healthProfile {
                       medicalCondition
@@ -370,6 +372,7 @@ export const APPProvider = props => {
                     profileImg
                     mobileNum
                     }  
+                    isGhost
                     lastActivity
                     healthProfile{
                       height{

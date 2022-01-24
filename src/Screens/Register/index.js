@@ -72,9 +72,11 @@ const index = (props) => {
             Toast.show('Please enter first name', 5000)
         } else if (!lastname.trim()) {
             Toast.show('Please enter last name', 5000)
-        } else if (!middleName.trim()) {
-            Toast.show('Please enter middle name', 5000)
-        } else if (!email.trim()) {
+        }
+        //  else if (!middleName.trim()) {
+        //     Toast.show('Please enter middle name', 5000)
+        // }
+         else if (!email.trim()) {
             Toast.show('Please enter email', 5000)
         } else if (reg.test(email) == false) {
             Toast.show('Please enter valid email', 5000)
@@ -83,10 +85,12 @@ const index = (props) => {
         } else if (password.length < 6) {
             Toast.show('Password must contains 6 or more characters', 5000)
         } else if (!selectDate.trim()) {
-            Toast.show('Please slect date', 5000)
-        } else if (!mobile.trim()) {
-            Toast.show('Please enter mobile number', 5000)
-        } else {
+            Toast.show('Please slect date of birth', 5000)
+        } 
+        else if (!gender.trim()) {
+            Toast.show('Please select gender', 5000)
+        } 
+        else {
             setLoading(true)
             const result = await register(firstname, lastname, middleName, email, password, selectDate, gender, mobile, referalCode)
             setLoading(false)
@@ -177,7 +181,7 @@ const index = (props) => {
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
-                            placeholder="Middle Name*"
+                            placeholder="Middle Name"
                             value={middleName}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             onSubmitEditing={() => ref_input4.current.focus()}
