@@ -168,10 +168,14 @@ const index = props => {
   const [isDate, setDatePicker] = useState(false)
 
   useEffect(() => {
-   // getClientData();
+    getClientData();
    // //getMealComments();
-   getNotesList();
+  
   });
+
+  useEffect(() => {
+   getNotesList();
+  },[]);
 
   const handleConfirm = (date) => {
     // const currentDate = isDate || date;
@@ -232,8 +236,8 @@ const index = props => {
 
         if (result.data.data.me.customer.healthProfile && result.data.data.me.customer.healthProfile.latestBodyComposition != null) {
           setbodyFatMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatMassKg);
-          setmuscleMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatPercentage);
-          setbodyFatPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassKg);
+          setmuscleMassKg(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassKg);
+          setbodyFatPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.bodyFatPercentage);
           setmuscleMassPercentage(result.data.data.me.customer.healthProfile.latestBodyComposition.muscleMassPercentage);
         }
 

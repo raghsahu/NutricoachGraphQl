@@ -528,6 +528,34 @@ export const APPProvider = props => {
        return await request('post', graphqlQuery);
   };
 
+  const createNewClient = async (firstname, lastname, email, selectDate, gender, mobile) => {
+    const graphqlQuery = {
+      query: `mutation createClient($input: CreateClientInput!) {
+                createClient(input: $input){
+                  client{
+                    id
+                  }    
+                  errors{
+                    path
+                    message
+                  }               
+                }
+            }`,
+      variables: {
+        input: {
+          email: email,
+          firstName: firstname,
+          lastName: lastname,
+          dateOfBirth: selectDate,
+          gender: gender,
+          mobileNum: null,
+          sendInvite: false,
+        },
+      },
+    };
+    return await request('post', graphqlQuery);
+  };
+
   const request = async (method, params) => {
     try {
       console.log('===================');
@@ -668,6 +696,7 @@ export const APPProvider = props => {
         getClientsMealComments,
         AddNotes,
         getNotesListData,
+        createNewClient,
       }}>
       {props.children}
     </APPContext.Provider>

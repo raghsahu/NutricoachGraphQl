@@ -23,7 +23,7 @@ import {APPContext} from '../../Context/AppProvider';
 //PACKAGES
 import LinearGradient from 'react-native-linear-gradient';
 
-const index = () => {
+const index = (props) => {
   const [isLoading, setLoading] = useState(true);
   const [client, setClient] = useState([]);
   const [searchText, setSearchText] = useState('')
@@ -32,10 +32,21 @@ const index = () => {
 
   const {getClients} = useContext(APPContext);
 
-  useEffect(() => {
-    getClientData();
-    return () => {};
-  }, []);
+  // useEffect(() => {
+  //   getClientData();
+  //   return () => {};
+  // }, []);
+
+   useEffect(() => {
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      // The screen is focused
+      // Call any action and update data
+         getClientData();
+    });
+
+    // Return the function to unsubscribe from the event so it gets removed on unmount
+    return unsubscribe;
+  }, [props.navigation]);
 
   async function getClientData() {
     const result = await getClients();
@@ -132,7 +143,11 @@ const index = () => {
 
       </View>
       
-      <TouchableOpacity style={{position: 'absolute', bottom: 20, right: 20}}>
+      <TouchableOpacity style={{position: 'absolute', bottom: 20, right: 20}}
+        onPress={() => {
+               props.navigation.navigate("AddClient") 
+            }}
+      >
         <Image
           resizeMode={'contain'}
           style={{height: 50, width: 50}}

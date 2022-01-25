@@ -34,11 +34,8 @@ const index = (props) => {
     const [endingClientsCount, setendingClientsCount] = useState(0)
     const [id, setId] = useState('')
 
-    useEffect(() => {
-        getStrugglingClientData()
-        fetchProfile()
-        return () => { }
-    }, [])
+    const [fullName, setFullName] = useState('')
+    const [image, setImage] = useState('')
 
     useEffect(() => {
         AsyncStorage.getItem('login_user_details', (err, result) => {
@@ -52,6 +49,12 @@ const index = (props) => {
             }
         })
     })
+
+    useEffect(() => {
+        getStrugglingClientData()
+        fetchProfile()
+        return () => { }
+    }, [])
 
     async function getStrugglingClientData() {
         const result = await getStrugglingClients()
@@ -69,7 +72,17 @@ const index = (props) => {
 
     async function fetchProfile() {
         const result = await getUserProfile(id)
-        
+         if (result && result.data && result.data.data.user != null) {
+      setTimeout(() => {
+        let full_name = result.data.data.user.profile.fullName;
+        setFullName(full_name)
+
+        setImage(result.data.data.user.profile.profileImg)
+
+      }, 100);
+    } else {
+      //Toast.show(result.error, 2000);
+    }
     }
 
     return (
@@ -236,10 +249,10 @@ const index = (props) => {
                     <View style={style.centeredView}>
                         <View style={{ width: width - 40, backgroundColor: CONFIGURATION.white, borderRadius: 10, overflow: "hidden" }}>
                             <View style={[style.appView, { borderBottomWidth: 0, padding: 20, }]}>
-                                <Image resizeMode={"cover"} style={style.imagesa} source={{ uri: "https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80" }} />
+                                <Image resizeMode={"cover"} style={style.imagesa} source={image == '' ? null : { uri: image }} />
                                 <View style={{ width: "75%" }}>
                                     <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkBlack }}>Hello,</Text>
-                                    <Text style={{ fontSize: 18, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>Haylie Schleifer</Text>
+                                    <Text style={{ fontSize: 18, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{fullName}</Text>
                                 </View>
                             </View>
 
