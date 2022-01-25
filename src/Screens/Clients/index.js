@@ -160,6 +160,7 @@ const index = (props) => {
          <Text style={{color: CONFIGURATION.TextDarkGray, marginTop: 10, fontSize:16, alignSelf:'center', }}>Sort by</Text>
          <TouchableOpacity style={{ alignSelf:'center',}} 
           onPress={() => {
+            setOpenMenu(false)
             let sortData;
             if (filterData && filterData.length > 0 ){
             sortData = filterData.sort((a, b) => a.profile.fullName.localeCompare(b.profile.fullName)) 
@@ -174,6 +175,7 @@ const index = (props) => {
         </TouchableOpacity>
         <TouchableOpacity style={{ alignSelf:'center',}} 
         onPress={() => {
+          setOpenMenu(false)
            let sortData;
               if (filterData && filterData.length > 0 ){
               sortData = filterData.sort((a, b) => b.profile.fullName.localeCompare(a.profile.fullName))
