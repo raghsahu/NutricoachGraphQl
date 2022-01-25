@@ -64,16 +64,16 @@ const index = () => {
       <LinearGradient
         colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]}
         style={style.yellowView}>
-        <View style={style.menuView}>
-          <View style={{width: 35}}></View>
+        <View style={[style.menuView, {justifyContent: 'center'}]}>
+          {/* <View style={{width: 35}}></View> */}
           <Text style={style.titleText}>Clients</Text>
-          <TouchableOpacity style={style.bellBg}>
+          {/* <TouchableOpacity style={style.bellBg}>
             <Image
               resizeMode={'contain'}
               style={style.bellIcon}
               source={require('./../../assetss/Download.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </LinearGradient>
 

@@ -18,6 +18,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import style from './style';
 import MassageBox from '../../Components/MessageBox';
 import Comments from '../../Components/Comments';
+import Notes from '../../Components/Notes';
 import Pogress from './../../Components/progressbar';
 import { identifier } from '@babel/types';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -99,6 +100,7 @@ const index = props => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [selectDate, setselectDate] = useState("");
+  const [writeNotes, setwriteNotes] = useState("");
   const [selected, setselected] = useState(0);
   const [mealDay, setmealDay] = useState(0);
   const [mealDay2, setmealDay2] = useState(0);
@@ -124,9 +126,10 @@ const index = props => {
   const [numberX, setnumberX] = useState([20, 21, 22, 23, 24, 25, 26]);
   const [values, setvalues] = useState([110, 140, 140, 105, 135, 130, 130]);
 
-  const { getClientsDetails, getClientsMealComments } = useContext(APPContext);
+  const { getClientsDetails, getClientsMealComments, AddNotes, getNotesListData } = useContext(APPContext);
   const [clientData, setClientData] = useState('');
   const [clientMealCommentsData, setClientMealCommentsData] = useState([]);
+  const [notesData, setNotesData] = useState([]);
 
   const [fullName, setFullName] = useState('');
   const [gender, setGender] = useState('');
@@ -135,7 +138,7 @@ const index = props => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [lastActivity, setlastActivity] = useState('');
-   const [isGhost, setisGhost] = useState(false);
+  const [isGhost, setisGhost] = useState(false);
   const [heightFeet, setHeightFeet] = useState('');
   const [heightInches, setHeightInches] = useState('');
   const [currentWeight, setCurrentWeight] = useState('');
@@ -165,8 +168,9 @@ const index = props => {
   const [isDate, setDatePicker] = useState(false)
 
   useEffect(() => {
-    getClientData();
-   // getMealComments();
+   // getClientData();
+   // //getMealComments();
+   getNotesList();
   });
 
   const handleConfirm = (date) => {
@@ -174,7 +178,7 @@ const index = props => {
     // setShow(Platform.OS === 'ios' ? true : false);
     // setDate(currentDate);
     //console.log(moment(currentDate).format("DD-MM-YYYY"));
-    setselectDate(moment(date).format('DD-MM-YYYY'))
+    setselectDate(moment(date).format('YYYY-MM-DD'))
     hideDatePicker();
   };
 
@@ -252,12 +256,25 @@ const index = props => {
     }
   };
 
+   const getNotesList = async () => {
+    const result = await getNotesListData(customerId);
+    console.log('Notedata ', JSON.stringify(result));
+    if (result.status == true && result.data && result.data.data.allCustomerRemark != null) {
+      setTimeout(() => {
+        setNotesData(result.data.data.allCustomerRemark);
+      }, 100);
+    } else {
+      setNotesData([]);
+     // Toast.show(result.error, 2000);
+    }
+  };
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios' ? true : false);
     setDate(currentDate);
     //console.log(moment(currentDate).format("DD-MM-YYYY"));
-    setselectDate(moment(currentDate).format('DD-MM-YYYY'))
+    setselectDate(moment(currentDate).format('YYYY-MM-DD'))
   };
 
   const showMode = currentMode => {
@@ -270,212 +287,33 @@ const index = props => {
     showMode('date');
   };
 
-  // useEffect(() => {
-  //   if (open1) {
-  //     startOpen1();
-  //   } else {
-  //     closeOpen1();
-  //   }
-  // }, [open1]);
 
-  // const startOpen1 = () => {
-  //   Animated.timing(value1, {
-  //     toValue: height / 3 + 23,
-  //     duration: 1,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen1 = () => {
-  //   Animated.timing(value1, {
-  //     toValue: 0,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
 
-  // useEffect(() => {
-  //   if (open2) {
-  //     startOpen2();
-  //   } else {
-  //     closeOpen2();
-  //   }
-  // }, [open2]);
+      const WriteNotesData = async () => {
+        if (!selectDate) {
+            Toast.show('Please select date')
+        } else if (!writeNotes) {
+            Toast.show('Please enter Notes')
+        } else {
+            setLoading(true)
+            const result = await AddNotes(customerId, selectDate, writeNotes)
+            setLoading(false)
+          //  console.log("LoginUser", result)
+            if (result.data && result.data.data.createRemark != null) {
+                setTimeout(() => {
+                   Toast.show('Notes add successfully!', 2000);
+                   setselectDate("")
+                   setwriteNotes("")
+                    getNotesList()
+                  
+                }, 100);
+            } else {
+               // Toast.show('invalid credential', 2000);
+            }
 
-  // const startOpen2 = () => {
-  //   Animated.timing(value2, {
-  //     toValue: height / 2 + 30,
-  //     duration: 1500,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen2 = () => {
-  //   Animated.timing(value2, {
-  //     toValue: 0,
-  //     duration: 1500,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
+        }
 
-  // useEffect(() => {
-  //   if (open3) {
-  //     startOpen3();
-  //   } else {
-  //     closeOpen3();
-  //   }
-  // }, [open3]);
-
-  // const startOpen3 = () => {
-  //   Animated.timing(value3, {
-  //     toValue: width / 2 + 20,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen3 = () => {
-  //   Animated.timing(value3, {
-  //     toValue: 0,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-
-  // useEffect(() => {
-  //   if (open4) {
-  //     startOpen4();
-  //   } else {
-  //     closeOpen4();
-  //   }
-  // }, [open4]);
-
-  // const startOpen4 = () => {
-  //   Animated.timing(value4, {
-  //     toValue: height / 1.7,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen4 = () => {
-  //   Animated.timing(value4, {
-  //     toValue: 0,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-
-  // useEffect(() => {
-  //   if (open5) {
-  //     startOpen5();
-  //   } else {
-  //     closeOpen5();
-  //   }
-  // }, [open5]);
-
-  // const startOpen5 = () => {
-  //   Animated.timing(value5, {
-  //     toValue: height / 1.5 - 10,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen5 = () => {
-  //   Animated.timing(value5, {
-  //     toValue: 0,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-
-  // useEffect(() => {
-  //   if (open6) {
-  //     startOpen6();
-  //   } else {
-  //     closeOpen6();
-  //   }
-  // }, [open6]);
-
-  // const startOpen6 = () => {
-  //   Animated.timing(value6, {
-  //     toValue: height + 20,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen6 = () => {
-  //   Animated.timing(value6, {
-  //     toValue: 0,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-
-  // useEffect(() => {
-  //   if (open7) {
-  //     startOpen7();
-  //   } else {
-  //     closeOpen7();
-  //   }
-  // }, [open7]);
-
-  // const startOpen7 = () => {
-  //   Animated.timing(value7, {
-  //     toValue: height / 1.3 + 10,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen7 = () => {
-  //   Animated.timing(value7, {
-  //     toValue: 0,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-
-  // useEffect(() => {
-  //   if (open8) {
-  //     startOpen8();
-  //   } else {
-  //     closeOpen8();
-  //   }
-  // }, [open8]);
-
-  // const startOpen8 = () => {
-  //   Animated.timing(value8, {
-  //     toValue: height / 2 - 20,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen8 = () => {
-  //   Animated.timing(value8, {
-  //     toValue: 0,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-
-  // useEffect(() => {
-  //   if (open9) {
-  //     startOpen9();
-  //   } else {
-  //     closeOpen9();
-  //   }
-  // }, [open9]);
-
-  // const startOpen9 = () => {
-  //   Animated.timing(value9, {
-  //     toValue: height / 2.5 - 20,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
-  // const closeOpen9 = () => {
-  //   Animated.timing(value9, {
-  //     toValue: 0,
-  //     duration: 1000,
-  //     useNativeDriver: false // Add This line
-  //   }).start();
-  // };
+    }
 
   function getLastTime(lastActivity) {
     Moment.locale('en');
@@ -2621,6 +2459,7 @@ const index = props => {
                     <TouchableOpacity
                       onPress={() => {
                         setopen7(!open7);
+                        
                       }}
                       style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
@@ -2715,15 +2554,19 @@ const index = props => {
                               { width: '90%', height: 100, textAlign: 'auto' },
                             ]}
                             placeholder="Write Notes"
+                            value={writeNotes}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             multiline={true}
+                             onChangeText={(text) => {
+                            setwriteNotes(text)
+                        }}
                           />
-                        </View>
+                      </View>
                         {show && (
                           <DateTimePickerModal
                             isVisible={isDate}
                             mode="date"
-                            format="DD/MM/YYYY"
+                            format="YYYY-MM-DD"
                             maximumDate={new Date()}
                             onConfirm={handleConfirm}
                             onCancel={hideDatePicker}
@@ -2739,7 +2582,9 @@ const index = props => {
                             backgroundColor: CONFIGURATION.primaryGreen,
                             marginVertical: 15,
                             borderRadius: 50,
-                          }}>
+                          }}
+                          onPress={() => { WriteNotesData() }}
+                          >
                           <Text
                             style={{
                               fontSize: 16,
@@ -2750,132 +2595,21 @@ const index = props => {
                           </Text>
                         </TouchableOpacity>
                       </View>
-                      <View
-                        style={{
-                          paddingVertical: 15,
-                          borderColor: CONFIGURATION.lightGray,
-                          borderBottomWidth: 1,
-                        }}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            marginVertical: 10,
-                            width: width - 80,
-                          }}>
-                          <View
-                            style={[style.textV, { justifyContent: 'flex-start' }]}>
-                            <Text
-                              numberOfLines={1}
-                              style={{
-                                fontSize: 14,
-                                fontFamily: CONFIGURATION.TextBold,
-                                color: CONFIGURATION.TextDarkBlack,
-                              }}>
-                              12 jan, 2021
-                            </Text>
-                          </View>
-                          <Image
-                            style={{ height: 30, width: 30 }}
-                            source={require('./../../assetss/more.png')}
-                          />
-                        </View>
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            marginTop: 0,
-                            fontFamily: CONFIGURATION.TextRegular,
-                            color: CONFIGURATION.TextDarkGray,
-                          }}>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry
-                        </Text>
+                      
+                       <View style={{ flex: 1.0 }}>
+                            <FlatList
+                              data={notesData && notesData.length > 0 ? notesData : null}
+                              // inverted={true}
+                              showsVerticalScrollIndicator={false}
+                              extraData={notesData}
+                              keyExtractor={(item, index) => item.id}
+                              renderItem={({ item, index }) => {
+                                return <Notes item={item} />;
+                              }}
+
+                            />
                       </View>
-                      <View
-                        style={{
-                          paddingVertical: 15,
-                          borderColor: CONFIGURATION.lightGray,
-                          borderBottomWidth: 1,
-                        }}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            marginVertical: 10,
-                            width: width - 80,
-                          }}>
-                          <View
-                            style={[style.textV, { justifyContent: 'flex-start' }]}>
-                            <Text
-                              numberOfLines={1}
-                              style={{
-                                fontSize: 14,
-                                fontFamily: CONFIGURATION.TextBold,
-                                color: CONFIGURATION.TextDarkBlack,
-                              }}>
-                              5 jan, 2021
-                            </Text>
-                          </View>
-                          <Image
-                            style={{ height: 30, width: 30 }}
-                            source={require('./../../assetss/more.png')}
-                          />
-                        </View>
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            marginTop: 0,
-                            fontFamily: CONFIGURATION.TextRegular,
-                            color: CONFIGURATION.TextDarkGray,
-                          }}>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          paddingVertical: 15,
-                          borderColor: CONFIGURATION.lightGray,
-                          borderBottomWidth: 1,
-                        }}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            marginVertical: 10,
-                            width: width - 80,
-                          }}>
-                          <View
-                            style={[style.textV, { justifyContent: 'flex-start' }]}>
-                            <Text
-                              numberOfLines={1}
-                              style={{
-                                fontSize: 14,
-                                fontFamily: CONFIGURATION.TextBold,
-                                color: CONFIGURATION.TextDarkBlack,
-                              }}>
-                              25 Dec, 2021
-                            </Text>
-                          </View>
-                          <Image
-                            style={{ height: 30, width: 30 }}
-                            source={require('./../../assetss/more.png')}
-                          />
-                        </View>
-                        <Text
-                          style={{
-                            fontSize: 14,
-                            marginTop: 0,
-                            fontFamily: CONFIGURATION.TextRegular,
-                            color: CONFIGURATION.TextDarkGray,
-                          }}>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry
-                        </Text>
-                      </View>
+
                     </View>
                     : null}
 

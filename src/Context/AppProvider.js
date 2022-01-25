@@ -135,14 +135,15 @@ export const APPProvider = props => {
                   mobileNum,
                   profileImg,
                   joinedDate,
-                  }                    
+                  }    
+                                 
                 }
             }`,
       variables: {
         id: id,
       },
     };
-    
+       return await request('post', graphqlQuery);
   }
 
   async function getStrugglingClients() {
@@ -158,7 +159,7 @@ export const APPProvider = props => {
                       profileImg
                     }
                     lastActivity
-                  plans{id,name}
+                    plans{id,name}
                     healthProfile {
                       medicalCondition
                       goals,
@@ -166,6 +167,11 @@ export const APPProvider = props => {
                      
                     }
                   }
+                  businessMetrics{
+                    newUsersCount
+                    pendingInvitesCount
+                    endingClientsCount
+                  } 
                 }
               }
             }`,
@@ -483,6 +489,45 @@ export const APPProvider = props => {
     return await request('get', graphqlQuery);
   };
 
+
+  const AddNotes = async (customerId, date, notes) => {
+    const graphqlQuery = {
+      query: `mutation createRemark($input: AddRemarksInput!) {
+                createRemark(input: $input){
+                   id,
+                                     
+                }
+            }`,
+      variables: {
+        input: {
+          customerId: customerId,
+          date: date,
+          body: notes,
+        },
+      },
+    };
+    return await request('post', graphqlQuery);
+  };
+
+   const getNotesListData = async customerId => {
+    const graphqlQuery = {
+      query: `query allCustomerRemark($customerId: ID!) {
+                allCustomerRemark(customerId: $customerId){
+                   id,
+                   customerId
+                   date
+                   body
+                  
+                }    
+ 
+              }`,
+      variables: {
+        customerId: customerId,
+      },
+    };
+       return await request('post', graphqlQuery);
+  };
+
   const request = async (method, params) => {
     try {
       console.log('===================');
@@ -621,6 +666,8 @@ export const APPProvider = props => {
         sendFileToMessage,
         getClientsUnreadMessage,
         getClientsMealComments,
+        AddNotes,
+        getNotesListData,
       }}>
       {props.children}
     </APPContext.Provider>

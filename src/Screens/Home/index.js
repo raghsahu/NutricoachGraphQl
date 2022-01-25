@@ -29,6 +29,9 @@ const index = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [isStrugglingClientLoading, setStrugglingClientLoading] = useState(true)
     const [strugglingClient, setStrugglingClient] = useState([])
+    const [newUserCount, setNewUserCount] = useState(0)
+    const [pendingInvitesCount, setpendingInvitesCount] = useState(0)
+    const [endingClientsCount, setendingClientsCount] = useState(0)
     const [id, setId] = useState('')
 
     useEffect(() => {
@@ -55,12 +58,18 @@ const index = (props) => {
         setStrugglingClientLoading(false)
         if (result && result.data && result.data.data && result.data.data.me) {
             setStrugglingClient(result.data.data.me.strugglingClients)
+         
+           setNewUserCount(result.data.data.me.businessMetrics.newUsersCount)
+           setpendingInvitesCount(result.data.data.me.businessMetrics.pendingInvitesCount)
+           setendingClientsCount(result.data.data.me.businessMetrics.endingClientsCount)
+        
         }
     }
 
 
     async function fetchProfile() {
         const result = await getUserProfile(id)
+        
     }
 
     return (
@@ -112,7 +121,8 @@ const index = (props) => {
                             <View style={[style.cardround, { backgroundColor: CONFIGURATION.primaryGreen, }]}>
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_1.png')} />
                             </View>
-                            <Text style={style.numbetTextr}>0 <Text style={style.numbertext}>/10</Text></Text>
+                            <Text style={style.numbetTextr}>{newUserCount ? newUserCount : 0} </Text>
+                            {/* <Text style={style.numbertext}>/10</Text></Text> */}
                             <Text style={style.titleCardText}>New Clients this month</Text>
                         </View>
                         <View style={style.card}>
@@ -120,7 +130,7 @@ const index = (props) => {
                             <View style={[style.cardround, { backgroundColor: CONFIGURATION.primaryYellow, }]}>
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_2.png')} />
                             </View>
-                            <Text style={style.numbetTextr}>0</Text>
+                            <Text style={style.numbetTextr}>{strugglingClient ? strugglingClient.length : 0}</Text>
                             <Text style={style.titleCardText}>Struggling Clients</Text>
                         </View>
                     </View>
@@ -130,7 +140,7 @@ const index = (props) => {
                             <View style={[style.cardround, { backgroundColor: CONFIGURATION.primaryBlue, }]}>
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_3.png')} />
                             </View>
-                            <Text style={style.numbetTextr}>0</Text>
+                            <Text style={style.numbetTextr}>{endingClientsCount ? endingClientsCount : 0}</Text>
                             <Text style={style.titleCardText}>Ending Clients this month</Text>
                         </View>
                         <View style={style.card}>
@@ -138,7 +148,7 @@ const index = (props) => {
                             <View style={[style.cardround, { backgroundColor: CONFIGURATION.primaryRed, }]}>
                                 <Image resizeMode={"contain"} style={style.cardImage} source={require('./../../assetss/card_4.png')} />
                             </View>
-                            <Text style={style.numbetTextr}>0</Text>
+                            <Text style={style.numbetTextr}>{pendingInvitesCount ? pendingInvitesCount : 0}</Text>
                             <Text style={style.titleCardText}>Pending App Invites</Text>
                         </View>
                     </View>
