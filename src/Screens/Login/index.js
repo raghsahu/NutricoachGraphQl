@@ -59,8 +59,6 @@ const index = (props) => {
 
     }
 
-
-
     return (
         <SafeAreaView style={style.container}>
             <GeneralStatusBar backgroundColor={'#fff'} barStyle="dark-content" />

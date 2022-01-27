@@ -115,10 +115,10 @@ const index = (props) => {
             } else {
                 if (result.error) {
                     Toast.show(result.error, 2000);
-                }else{
+                } else {
                     Toast.show('Somthing went wrong')
                 }
-               
+
                 // if (result.errors.length > 0) {
                 //     Toast.show(result.errors[0].message)
                 // } else {
