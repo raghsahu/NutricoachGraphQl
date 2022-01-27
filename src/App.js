@@ -16,6 +16,7 @@ import ResetPassword from './Screens/ResetPassword/index'
 import Register from './Screens/Register/index'
 import Home from './Screens/Home/index'
 import Clients from './Screens/Clients/index'
+import AddClient from './Screens/Clients/AddClient'
 import Messages from './Screens/Message/index'
 import ChatView from './Screens/ChatView/index'
 import ClientsDetail from './Screens/ClientsDetail/index'
@@ -92,6 +93,11 @@ function MyStack() {
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
         name="ClientsDetail"
         component={ClientsDetail}
+      />
+       <Stack.Screen
+        options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}
+        name="AddClient"
+        component={AddClient}
       />
       <Stack.Screen
         options={{ cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS }}

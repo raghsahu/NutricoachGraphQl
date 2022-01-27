@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native'
 import CONFIGURATION from './Config/index'
 const { height, width } = Dimensions.get("screen")
+import Moment from 'moment';
 
 const TodayAppointment = (props) => {
 
@@ -28,6 +29,23 @@ const TodayAppointment = (props) => {
         }
         else {
             return null
+        }
+    }
+
+       function getLastActivity() {
+        Moment.locale('en');
+        if (item && item.lastActivity) {
+            var date1 = new Date(Moment().format('MM/DD/YYYY'));
+            var date2 = new Date(Moment(item.lastActivity).format('MM/DD/YYYY'));
+            // To calculate the time difference of two dates
+            var Difference_In_Time = date1.getTime() - date2.getTime();
+            // To calculate the no. of days between two dates
+            var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+            return Difference_In_Days
+            //return item.lastActivity == '' ? '' : Moment(item.lastActivity).format('d MMM, YYYY | hh:mm a')
+        }
+        else {
+            return "0"
         }
     }
 
@@ -70,7 +88,7 @@ const TodayAppointment = (props) => {
                     source={getImage() ? { uri: getImage() } : null} />
                 <View style={{ width: "60%" }}>
                     <Text style={{ fontSize: 18, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{item.profile ? item.profile.fullName : ""}</Text>
-                    <Text style={{ fontSize: 14, fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray }}>{getPlans()}</Text>
+                    <Text style={{ fontSize: 14, fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray }}>Last Activity was {getLastActivity()} days ago</Text>
                 </View>
                 <Image style={{ height: 30, width: 30 }} source={require("./../assetss/more.png")} />
             </View>

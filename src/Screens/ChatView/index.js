@@ -648,11 +648,12 @@ const index = props => {
             </View>
             <TouchableOpacity
               onPress={() => {
-                sendMessages(message);
+              sendMessages(message);
+                
               }}
               style={{
                 width: '20%',
-                backgroundColor: CONFIGURATION.primaryGreen,
+                backgroundColor: message ? CONFIGURATION.primaryGreen : CONFIGURATION.TextDarkGray,
                 paddingVertical: 12,
                 alignItems: 'center',
                 justifyContent: 'center',

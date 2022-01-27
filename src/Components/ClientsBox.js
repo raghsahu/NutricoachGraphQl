@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, Dimensions, Image } from 'react-native'
+import { View, Text, Dimensions, Image , TouchableOpacity} from 'react-native'
 import CONFIGURATION from './Config'
 const { height, width } = Dimensions.get("screen")
 import Moment from 'moment';
@@ -15,10 +15,11 @@ const ClientsBox = (props) => {
     function getPlans() {
         if (item && item.plans && item.plans.length > 0) {
             const array = item.plans.map((item) => item.name)
-            return array.join(',')
+           // return array.join(',')
+               return array[0] //display only current meal plan.
         }
         else {
-            return ""
+            return "No plan"
         }
     }
 
@@ -44,10 +45,17 @@ const ClientsBox = (props) => {
 
 
     return (
-        <View style={{ width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2 }}>
+     <TouchableOpacity
+      onPress={props.click}
+      style={{
+      width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2
+      }}>
+        <View
+        //  style={{ width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2 }}
+         >
             <View style={{
                 padding: 20,
-                borderColor: CONFIGURATION.loginInputBorder,
+                borderColor:  getPlans() != 'No plan' ?  CONFIGURATION.loginInputBorder : CONFIGURATION.white ,
                 borderBottomWidth: 1,
                 flexDirection: "row",
                 alignItems: "center",
@@ -73,12 +81,16 @@ const ClientsBox = (props) => {
                 </View>
                 } */}
             </View>
+            { getPlans() != 'No plan' ? 
             <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 20 }}>
                 <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkGray }}>Last Activity :</Text>
                 <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{getLastActivity()}</Text>
-
             </View>
+            : null 
+            }
+            
         </View>
+      </TouchableOpacity>
     )
 }
 

@@ -1,5 +1,5 @@
 import React , { useState, useContext }from 'react'
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, SafeAreaView } from 'react-native'
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, SafeAreaView, Alert } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
 import style from './style'
@@ -9,6 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 const { height, width } = Dimensions.get("screen")
 import { APPContext } from '../../Context/AppProvider'
 import Toast from "react-native-simple-toast";
+import { CommonActions } from '@react-navigation/native';
 
 const index = (props) => {
     const { forgot } = useContext(APPContext);
@@ -26,7 +27,22 @@ const index = (props) => {
             if (result.data && result.data.data.forgotPassword != null) {
                 if (result.data.data.forgotPassword == true) {
                       setTimeout(() => {
-                  props.navigation.navigate("ResetPassword")
+                   Alert.alert(
+                    '',
+                    'Check your email for reset password link.',
+                    [
+                        {
+                            text: 'OK', onPress: () => props.navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 0,
+                                    routes: [
+                                        { name: 'Login' }
+                                    ],
+                                })
+                            )
+                        },
+                    ]
+                );
                 }, 100);
                 }
               

@@ -1,8 +1,7 @@
-import React, { useState, useRef, useContext } from 'react'
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Platform, Alert } from 'react-native'
+import React, { useState, useRef, useContext, useEffect } from 'react'
+import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Platform, Alert, StyleSheet } from 'react-native'
 import CONFIGURATION from '../../Components/Config'
 import GeneralStatusBar from './../../Components/GeneralStatusBar'
-import style from './style'
 
 import ProgressView from '../../Components/ProgressView'
 import Button from './../../Components/Button'
@@ -20,14 +19,11 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment"
 import RBSheet from "react-native-raw-bottom-sheet";
 import Toast from "react-native-simple-toast";
-import { assertLeafType } from 'graphql'
-import { CommonActions } from '@react-navigation/native';
 
-const index = (props) => {
+const AddClient = (props) => {
 
-    const { register } = useContext(APPContext);
-    const { setLoggedInUser } = useContext(AuthContext);
-
+    const { createNewClient } = useContext(APPContext);
+   
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
@@ -38,23 +34,19 @@ const index = (props) => {
     const ref_input4 = useRef();
     const ref_input5 = useRef();
     const ref_input6 = useRef();
-    const ref_input7 = useRef();
     const [firstname, setFirstName] = useState('')
     const [lastname, setlastname] = useState('')
-    const [middleName, setMiddleName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState(null)
     const [selectDate, setselectDate] = useState("")
     const [gender, setgender] = useState("")
-    const [mobile, setMobile] = useState('')
-    const [referalCode, setReferalCode] = useState('')
+    const [mobile, setMobile] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);
-        setselectDate(moment(currentDate).format("DD-MM-YYYY"))
+        setselectDate(moment(currentDate).format("YYYY-MM-DD"))
     };
 
     const showMode = (currentMode) => {
@@ -66,64 +58,39 @@ const index = (props) => {
         showMode('date');
     };
 
-    const onRegister = async () => {
+    const onUpdate = async () => {
         const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!firstname.trim()) {
             Toast.show('Please enter first name', 5000)
         } else if (!lastname.trim()) {
             Toast.show('Please enter last name', 5000)
-        }
-        //  else if (!middleName.trim()) {
-        //     Toast.show('Please enter middle name', 5000)
-        // }
-         else if (!email.trim()) {
-            Toast.show('Please enter email', 5000)
-        } else if (reg.test(email) == false) {
-            Toast.show('Please enter valid email', 5000)
-        } else if (!password.trim()) {
-            Toast.show('Please enter password', 5000)
-        } else if (password.length < 6) {
-            Toast.show('Password must contains 6 or more characters', 5000)
-        } else if (!selectDate.trim()) {
-            Toast.show('Please slect date of birth', 5000)
         } 
-        else if (!gender.trim()) {
+        else if (!selectDate.trim()) {
+            Toast.show('Please select date', 5000)
+        }else if (!gender.trim()) {
             Toast.show('Please select gender', 5000)
-        } 
-        else {
+        }else {
+              let number= '+1' + mobile
             setLoading(true)
-            const result = await register(firstname, lastname, middleName, email, password, selectDate, gender, mobile, referalCode)
+            const result = await createNewClient(firstname, lastname, email, selectDate, gender, number)
             setLoading(false)
             console.log("RESULRvccsdcds", JSON.stringify(result))
-            if (result.data && result.data.data && result.data.data.createCoach != null) {
+            if (result.data.data && result.data.data.createClient.client != null) {
                 Alert.alert(
                     '',
-                    'Thanks for you registration, log in here',
+                    'New client added successfully',
                     [
                         {
-                            text: 'OK', onPress: () => props.navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 0,
-                                    routes: [
-                                        { name: 'Login' }
-                                    ],
-                                })
-                            )
+                            text: 'OK', onPress: () =>  props.navigation.goBack()
                         },
                     ]
                 );
             } else {
-                if (result.error) {
-                    Toast.show(result.error, 2000);
+                if (result.data.error!=null) {
+                    Toast.show(result.data.error)
                 } else {
                     Toast.show('Somthing went wrong')
                 }
-
-                // if (result.errors.length > 0) {
-                //     Toast.show(result.errors[0].message)
-                // } else {
-                //     Toast.show('Somthing went wrong')
-                // }
             }
 
         }
@@ -138,7 +105,7 @@ const index = (props) => {
                 }} style={style.backarrView}>
                     <Image resizeMode={"contain"} source={require("./../../assetss/backArr.png")} style={style.backArr} />
                 </TouchableOpacity>
-                <Text style={style.registerText}>Register</Text>
+                <Text style={style.registerText}>Add a new client</Text>
                 <View style={{ width: 25 }}></View>
             </View>
             <ScrollView>
@@ -178,65 +145,46 @@ const index = (props) => {
                             }}
                         />
                     </View>
+                   
                     <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
-                            placeholder="Middle Name"
-                            value={middleName}
+                            placeholder="Email"
+                            value={email}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             onSubmitEditing={() => ref_input4.current.focus()}
                             ref={ref_input3}
-                            onChangeText={(text) => {
-                                if (text.length <= 30) {
-                                    var RegExpression = /^[a-zA-Z\s]*$/;
-                                    if (RegExpression.test(text)) {
-                                        setMiddleName(text)
-                                    }
-                                }
-                            }}
-                        />
-                    </View>
-                    <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
-                        <TextInput
-                            style={[style.textInput, { width: "80%" }]}
-                            placeholder="Email*"
-                            value={email}
-                            placeholderTextColor={CONFIGURATION.loginpalceholder}
-                            onSubmitEditing={() => ref_input5.current.focus()}
-                            ref={ref_input4}
                             onChangeText={(text) => {
                                 setEmail(text)
                             }}
                         />
                     </View>
-                    <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15, }]}>
+                  
+                  <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
-                            placeholder="Password"
-                            value={password}
+                            placeholder="Mobile Number"
+                            keyboardType={"number-pad"}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
-                            secureTextEntry={show2}
-                            onSubmitEditing={() => ref_input6.current.focus()}
-                            ref={ref_input5}
-                            onChangeText={(text) => {
-                                setPassword(text)
+                           // onSubmitEditing={() => ref_input6.current.focus()}
+                            ref={ref_input4}
+                            value={mobile}
+                            onChangeText={text => {
+                                if (text.length <= 10) {
+                                    var RegExpression = /^[0-9\s]*$/;
+                                    if (RegExpression.test(text)) {
+                                      
+                                        setMobile(text)
+                                    }
+                                }
                             }}
                         />
-                        <TouchableOpacity onPress={() => { setshow2(!show2) }} style={{}}>
-                            {
-                                show2 ?
-                                    <Icon2 name="eye" size={18} color={CONFIGURATION.loginIconeye} /> :
-                                    <Icon2 name="eye-off" size={18} color={CONFIGURATION.loginIconeye} />
-                            }
-                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                     onPress={showDatepicker}
-                      style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15, }]}>
+
+                    <TouchableOpacity onPress={showDatepicker} style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15, }]}>
                         <TextInput
                             style={[style.textInput, { width: "80%" }]}
                             placeholder="Birthdate*"
-                            pointerEvents='none'
                             value={selectDate}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             editable={false}
@@ -247,47 +195,17 @@ const index = (props) => {
                         <TextInput
                             style={[style.textInput, { width: "81%" }]}
                             placeholder="Select Gender*"
-                            pointerEvents='none'
                             value={gender}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
                             editable={false}
                         />
                         <Icon name="down" size={12} color={CONFIGURATION.loginIconeye} />
                     </TouchableOpacity>
-                    <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
-                        <TextInput
-                            style={[style.textInput, { width: "80%" }]}
-                            placeholder="Mobile Number"
-                            keyboardType={"number-pad"}
-                            placeholderTextColor={CONFIGURATION.loginpalceholder}
-                            onSubmitEditing={() => ref_input7.current.focus()}
-                            ref={ref_input6}
-                            value={mobile}
-                            onChangeText={text => {
-                                if (text.length <= 10) {
-                                    var RegExpression = /^[0-9\s]*$/;
-                                    if (RegExpression.test(text)) {
-                                        setMobile(text)
-                                    }
-                                }
-                            }}
-                        />
-                    </View>
-                    <View style={[style.InputBox, { flexDirection: "row", alignItems: "center", marginTop: 15 }]}>
-                        <TextInput
-                            style={[style.textInput, { width: "80%" }]}
-                            placeholder="Referral Code"
-                            value={referalCode}
-                            placeholderTextColor={CONFIGURATION.loginpalceholder}
-                            ref={ref_input7}
-                            onChangeText={(text) => {
-                                setReferalCode(text)
-                            }}
-                        />
-                    </View>
+                    
+                   
                 </View>
                 <View style={style.btnView}>
-                    <Button onPress={onRegister} btnText={"Register"} />
+                    <Button onPress={onUpdate} btnText={"Add Client"} />
                 </View>
                 <View style={{ height: 50 }} />
                 {show && (
@@ -328,4 +246,56 @@ const index = (props) => {
     )
 }
 
-export default index
+const style = StyleSheet.create({
+    container: {
+      flex:1,
+      backgroundColor: CONFIGURATION.white,
+    },
+    backArr:{
+      height:25,
+      width:25
+    },
+    backarrView:{
+      marginVertical:50
+    },
+    imageView:{
+      height:width/4,
+      width:width,
+    },
+    forgottext:{
+      fontFamily: CONFIGURATION.TextBold,
+      fontSize:30,
+      textAlign:"center",
+      marginVertical:20,
+      marginTop:50,
+      color:CONFIGURATION.TextDarkBlack
+    },
+    des:{
+      fontFamily:CONFIGURATION.TextRegular,
+      color:CONFIGURATION.TextDarkGray,
+      paddingHorizontal:20,
+      textAlign:"center"
+    },
+    InputBox:{
+      borderColor:CONFIGURATION.loginInputBorder,
+      borderWidth:1,
+    },
+    textInput:{
+      marginHorizontal:20,
+      fontFamily:CONFIGURATION.TextRegular,
+      color:CONFIGURATION.TextDarkBlack,
+      height: 44,
+    },
+    mainView:{
+      marginHorizontal:20,
+    },
+    btnView:{
+      marginTop:50
+    },
+    registerText:{
+      fontFamily:CONFIGURATION.TextBold,
+      fontSize:25
+    }
+});
+
+export default AddClient

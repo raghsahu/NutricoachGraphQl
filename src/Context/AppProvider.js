@@ -135,13 +135,15 @@ export const APPProvider = props => {
                   mobileNum,
                   profileImg,
                   joinedDate,
-                  }                    
+                  }    
+                                 
                 }
             }`,
       variables: {
         id: id,
       },
     };
+       return await request('post', graphqlQuery);
   }
 
   async function getStrugglingClients() {
@@ -156,7 +158,8 @@ export const APPProvider = props => {
                       fullName,
                       profileImg
                     }
-                  plans{id,name}
+                    lastActivity
+                    plans{id,name}
                     healthProfile {
                       medicalCondition
                       goals,
@@ -164,6 +167,11 @@ export const APPProvider = props => {
                      
                     }
                   }
+                  businessMetrics{
+                    newUsersCount
+                    pendingInvitesCount
+                    endingClientsCount
+                  } 
                 }
               }
             }`,
@@ -370,6 +378,7 @@ export const APPProvider = props => {
                     profileImg
                     mobileNum
                     }  
+                    isGhost
                     lastActivity
                     healthProfile{
                       height{
@@ -478,6 +487,73 @@ export const APPProvider = props => {
           }`,
     };
     return await request('get', graphqlQuery);
+  };
+
+
+  const AddNotes = async (customerId, date, notes) => {
+    const graphqlQuery = {
+      query: `mutation createRemark($input: AddRemarksInput!) {
+                createRemark(input: $input){
+                   id,
+                                     
+                }
+            }`,
+      variables: {
+        input: {
+          customerId: customerId,
+          date: date,
+          body: notes,
+        },
+      },
+    };
+    return await request('post', graphqlQuery);
+  };
+
+   const getNotesListData = async customerId => {
+    const graphqlQuery = {
+      query: `query allCustomerRemark($customerId: ID!) {
+                allCustomerRemark(customerId: $customerId){
+                   id,
+                   customerId
+                   date
+                   body
+                  
+                }    
+ 
+              }`,
+      variables: {
+        customerId: customerId,
+      },
+    };
+       return await request('post', graphqlQuery);
+  };
+
+  const createNewClient = async (firstname, lastname, email, selectDate, gender, mobile) => {
+    const graphqlQuery = {
+      query: `mutation createClient($input: CreateClientInput!) {
+                createClient(input: $input){
+                  client{
+                    id
+                  }    
+                  errors{
+                    path
+                    message
+                  }               
+                }
+            }`,
+      variables: {
+        input: {
+          email: email,
+          firstName: firstname,
+          lastName: lastname,
+          dateOfBirth: selectDate,
+          gender: gender,
+          mobileNum: null,
+          sendInvite: true,
+        },
+      },
+    };
+    return await request('post', graphqlQuery);
   };
 
   const request = async (method, params) => {
@@ -618,6 +694,9 @@ export const APPProvider = props => {
         sendFileToMessage,
         getClientsUnreadMessage,
         getClientsMealComments,
+        AddNotes,
+        getNotesListData,
+        createNewClient,
       }}>
       {props.children}
     </APPContext.Provider>

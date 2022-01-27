@@ -47,21 +47,33 @@ const MessageBox = props => {
   }
 
   function getLastMessage() {
-    if (item && item.channelMessages && item.channelMessages.length > 0) {
-      const array = item.channelMessages.map((item) => item.body)
-      return array[0] //get last message
+    let lastMessage = 'No unread message';
+    if (item && item.unreadMessages && item.unreadMessages.length > 0) {
+       for (let i = 0; i < item.unreadMessages.length; i++) {
+        if (item.unreadMessages[i].from.id != loginId) {
+          lastMessage = item.unreadMessages[0].body
+       }
+      }
+     // const array = item.unreadMessages.map((item) => item.body)
+      return lastMessage //get last message
     }
     else {
-      return "No message"
+      return "No unread message"
     }
   }
 
   function getLastMessageTime() {
+     let lastUnreadTime = '';
     Moment.locale('en');
     if (item && item.unreadMessages && item.unreadMessages.length > 0) {
-      const array = item.unreadMessages.map((item) => item.createdAt)
-      var localDate = new Date(array[0]);
-      return Moment(localDate).format('hh:mm a')
+       for (let i = 0; i < item.unreadMessages.length; i++) {
+        if (item.unreadMessages[i].from.id != loginId) {
+          lastUnreadTime = item.unreadMessages[0].createdAt
+       }
+      }
+     // const array = item.unreadMessages.map((item) => item.createdAt)
+     // var localDate = new Date(array[0]);
+      return lastUnreadTime ? Moment(new Date(lastUnreadTime)).format('hh:mm a') : ''
     }
     else {
       return ""
