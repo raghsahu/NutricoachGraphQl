@@ -13,7 +13,7 @@ import {
   Alert,
   Modal,
   StyleSheet,
- 
+  SafeAreaView
 } from 'react-native';
 import Button from './../../Components/Button'
 import CONFIGURATION from '../../Components/Config';
@@ -447,7 +447,7 @@ const index = props => {
       <LinearGradient
         colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]}
         style={style.yellowView}>
-        <View style={style.menuView}>
+        <SafeAreaView style={style.menuView}>
           <TouchableOpacity
             onPress={() => {
               props.navigation.goBack();
@@ -461,7 +461,7 @@ const index = props => {
           </TouchableOpacity>
           <Text style={style.titleText}>Clients detail</Text>
           <View style={{width: 35}}></View>
-        </View>
+        </SafeAreaView>
       </LinearGradient>
       <View style={style.whiteView}>
         <ScrollView>
