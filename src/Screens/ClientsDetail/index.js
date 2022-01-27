@@ -11,7 +11,11 @@ import {
   FlatList,
   Animated,
   Alert,
+  Modal,
+  StyleSheet,
+ 
 } from 'react-native';
+import Button from './../../Components/Button'
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
 import LinearGradient from 'react-native-linear-gradient';
@@ -94,6 +98,11 @@ const index = props => {
   const customerId = props.route.params.toUser;
   const [isLoading, setLoading] = useState(true);
 
+    // This is to manage Modal State
+    const [isModalVisible, setModalVisible] = useState(false);
+    // This is to manage TextInput State
+    const [emailInputValue, setEmailInputValue] = useState("");
+
   const refRBSheet = useRef();
   const [selectedNames, setselectedNames] = useState('Meal of the day');
   const [date, setDate] = useState(new Date());
@@ -131,6 +140,7 @@ const index = props => {
     getClientsMealComments,
     AddNotes,
     getNotesListData,
+    inviteClientEmail,
   } = useContext(APPContext);
   const [clientData, setClientData] = useState('');
   const [clientMealCommentsData, setClientMealCommentsData] = useState([]);
@@ -143,7 +153,7 @@ const index = props => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [lastActivity, setlastActivity] = useState('');
-  const [isGhost, setisGhost] = useState(false);
+  const [isGhost, setisGhost] = useState(true);
   const [heightFeet, setHeightFeet] = useState('');
   const [heightInches, setHeightInches] = useState('');
   const [currentWeight, setCurrentWeight] = useState('');
@@ -181,6 +191,11 @@ const index = props => {
     getClientData();
     getNotesList();
   }, []);
+
+    // Open and close modal upon button clicks.
+    const toggleModalVisibility = () => {
+        setModalVisible(!isModalVisible);
+    };
 
   const handleConfirm = date => {
     // const currentDate = isDate || date;
@@ -386,6 +401,36 @@ const index = props => {
       }
     }
   };
+
+  // SendInviteLink
+  const SendInviteLink = async () => {
+    const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailInputValue.trim()) {
+      Toast.show('Please enter email');
+    } else if (reg.test(emailInputValue) == false) {
+            Toast.show('Please enter valid email', 5000)
+    } else {
+      setLoading(true);
+      const result = await inviteClientEmail(customerId, emailInputValue);
+      setLoading(false);
+      //  console.log("LoginUser", result)
+      if (result.data && result.data.data.inviteClient && result.data.data.inviteClient.client != null) {
+        setTimeout(() => {
+           toggleModalVisibility();
+          Toast.show('Client was sent an invite to use mobile app', 2000);
+          setEmailInputValue('');
+          
+        }, 100);
+      } else {
+         if (result.data && result.data.data.inviteClient && result.data.data.inviteClient.errors.length > 0) {
+         Toast.show( result.data.data.inviteClient.errors[0].path + ' ' + result.data.data.inviteClient.errors[0].message, 2000);
+         }else{
+            Toast.show('Something went wrong', 2000);
+         }
+      }
+    }
+  };
+
 
   function getLastTime(lastActivity) {
     Moment.locale('en');
@@ -600,7 +645,7 @@ const index = props => {
               marginVertical: 10,
               justifyContent: 'space-between',
             }}>
-            {isGhost != true ? (
+            {isGhost  ? (
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -611,7 +656,12 @@ const index = props => {
                   borderWidth: 1,
                   borderRadius: 50,
                   paddingHorizontal: 15,
-                }}>
+                }}              
+                 onPress={() => {
+                  toggleModalVisibility()
+                  
+                 }}
+                >
                 <Image
                   style={{height: 15, width: 15, marginRight: 10}}
                   source={require('./../../assetss/invite.png')}
@@ -629,6 +679,7 @@ const index = props => {
 
             <TouchableOpacity
               style={{
+                alignSelf: 'flex-end',
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -5486,8 +5537,116 @@ const index = props => {
           </TouchableOpacity>
         </ScrollView>
       </RBSheet>
+
+       {/** This is our modal component containing textinput and a button */}
+            <Modal animationType="slide" 
+                   transparent visible={isModalVisible} 
+                   presentationStyle="overFullScreen" 
+                   onDismiss={toggleModalVisibility}>
+                <View style={styles.viewWrapper}>
+               
+                    <View style={styles.modalView}>
+                    <TouchableOpacity
+                          style={{
+                            alignSelf: 'flex-end',                          
+                            alignItems: 'center',                           
+                          }}
+                          onPress={() => {                          
+                             toggleModalVisibility();
+                          }}>
+                          <Image
+                            resizeMode={'contain'}
+                            style={{height: 30, width: 30, marginRight: 10,}}
+                            source={require('./../../assetss/closes.png')}
+                            tintColor={CONFIGURATION.TextDarkGray}
+                          />
+                       </TouchableOpacity>   
+                     <Text
+                        style={{
+                          fontSize: 16,
+                          marginBottom: 20,
+                          marginLeft:10, 
+                          marginRight: 10,
+                          fontFamily: CONFIGURATION.TextBold,
+                          color: CONFIGURATION.TextDarkBlack,
+                        }}>
+                        Invite your client to use the mobile app
+                      </Text>
+                        <TextInput placeholder="Email" 
+                                   value={emailInputValue} style={styles.textInput} 
+                                   onChangeText={(value) => setEmailInputValue(value)} />
+  
+                         <TouchableOpacity
+                          style={{
+                            alignSelf: 'center',
+                            height: 50,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: '40%',
+                            backgroundColor: CONFIGURATION.primaryGreen,
+                            marginVertical: 15,
+                            borderRadius: 50,
+                          }}
+                          onPress={() => {
+                           
+                            SendInviteLink();
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                              fontFamily: CONFIGURATION.TextBold,
+                              color: CONFIGURATION.white,
+                            }}>
+                            Send
+                          </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
     </View>
   );
 };
+
+// These are user defined styles
+const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#fff",
+    },
+    viewWrapper: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.2)",
+    },
+    modalView: {
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        elevation: 5,
+        transform: [{ translateX: -(width * 0.4) }, 
+                    { translateY: -90 }],
+        height: 250,
+        width: width * 0.85,
+        backgroundColor: "#fff",
+        borderRadius: 7,
+    },
+    textInput: {
+        width: "80%",
+        borderRadius: 5,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderColor: "rgba(0, 0, 0, 0.2)",
+        borderWidth: 1,
+        marginBottom: 8,
+    },
+     btnView:{
+      width: 100,
+    },
+});
 
 export default index;
