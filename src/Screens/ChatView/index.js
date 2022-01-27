@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -22,33 +22,33 @@ import Chat from '../../Components/Chat';
 import ProgressView from '../../Components/ProgressView';
 
 //CONTEXT
-import {APPContext} from '../../Context/AppProvider';
-import {AuthContext} from '../../Context/AuthProvider';
+import { APPContext } from '../../Context/AppProvider';
+import { AuthContext } from '../../Context/AuthProvider';
 
 // PACKAGES
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PagerView from 'react-native-pager-view';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import LinearGradient from 'react-native-linear-gradient';
 
 //const DATA = [{}];
-const {height, width} = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
 
 const index = props => {
   const toUser = props.route.params.toUser;
   const toFullName = props.route.params.fullName;
   const profileImage = props.route.params.profileImage;
 
-  const {authDetails} = useContext(AuthContext);
+  const { authDetails } = useContext(AuthContext);
 
   let loginId =
     authDetails &&
-    authDetails.data &&
-    authDetails.data.logInCoach &&
-    authDetails.data.logInCoach.id
+      authDetails.data &&
+      authDetails.data.logInCoach &&
+      authDetails.data.logInCoach.id
       ? authDetails.data.logInCoach.id
       : '';
   const {
@@ -79,12 +79,12 @@ const index = props => {
     readMessage();
     getMessages();
 
-    return () => {};
+    return () => { };
   }, [selectedChannel]);
 
   useEffect(() => {
     getMessages();
-    return () => {};
+    return () => { };
   }, [selectedChannel]);
 
   const MINUTE_MS = 5 * 1000; //Logs every 5 sec
@@ -181,7 +181,7 @@ const index = props => {
   }
 
   const chooseFile = () => {
-    launchCamera({mediaType: 'mixed'}, response => {
+    launchCamera({ mediaType: 'mixed' }, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -192,9 +192,7 @@ const index = props => {
         const file = {
           uri: response.assets[0].uri,
           name: response.assets[0].fileName,
-          type: response.assets[0].type
-            ? response.assets[0].type
-            : 'image/jpeg',
+          type: response.assets[0].type ? response.assets[0].type : 'image/jpeg',
         };
         setTimeout(() => {
           setModalVisible(false);
@@ -208,7 +206,7 @@ const index = props => {
 
   const image = () => {
     try {
-      launchImageLibrary({mediaType: 'photo'}, response => {
+      launchImageLibrary({ mediaType: 'photo' }, response => {
         console.log('Response = ', response);
         if (response.didCancel) {
           console.log('User cancelled image picker');
@@ -245,7 +243,7 @@ const index = props => {
     let options = {
       mediaType: 'photo',
     };
-    launchImageLibrary({mediaType: 'video'}, response => {
+    launchImageLibrary({ mediaType: 'video' }, response => {
       console.log('Response = ', response);
 
       if (response.didCancel) {
@@ -308,9 +306,9 @@ const index = props => {
     } else {
       let loginId =
         authDetails &&
-        authDetails.data &&
-        authDetails.data.logInCoach &&
-        authDetails.data.logInCoach.id
+          authDetails.data &&
+          authDetails.data.logInCoach &&
+          authDetails.data.logInCoach.id
           ? authDetails.data.logInCoach.id
           : '';
 
@@ -343,9 +341,9 @@ const index = props => {
       setImageLoading(true);
       let loginId =
         authDetails &&
-        authDetails.data &&
-        authDetails.data.logInCoach &&
-        authDetails.data.logInCoach.id
+          authDetails.data &&
+          authDetails.data.logInCoach &&
+          authDetails.data.logInCoach.id
           ? authDetails.data.logInCoach.id
           : '';
 
@@ -398,7 +396,7 @@ const index = props => {
                 props.navigation.goBack();
               }}>
               <Image
-                style={{height: 20, width: 20}}
+                style={{ height: 20, width: 20 }}
                 source={require('./../../assetss/back.png')}
               />
             </TouchableOpacity>
@@ -407,7 +405,7 @@ const index = props => {
               style={style.userImage}
               source={
                 //{{
-                getImage() ? {uri: getImage()} : null
+                getImage() ? { uri: getImage() } : null
               }
             />
             <TouchableOpacity
@@ -416,7 +414,7 @@ const index = props => {
                   toUser: toUser,
                 });
               }}
-              style={{width: '70%'}}>
+              style={{ width: '70%' }}>
               <Text
                 style={{
                   fontSize: 18,
@@ -449,8 +447,8 @@ const index = props => {
                 setselected(0);
                 setselectedChannel('APPOINTMENTS');
               }}
-              style={{alignItems: 'center'}}>
-              <View style={{flexDirection: 'row', marginTop: 12}}>
+              style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', marginTop: 12 }}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -487,8 +485,8 @@ const index = props => {
                 setselected(1);
                 setselectedChannel('MEAL_PLAN');
               }}
-              style={{alignItems: 'center'}}>
-              <View style={{flexDirection: 'row', marginTop: 12}}>
+              style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', marginTop: 12 }}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -526,8 +524,8 @@ const index = props => {
                 setselected(2);
                 setselectedChannel('PROGRESS');
               }}
-              style={{alignItems: 'center'}}>
-              <View style={{flexDirection: 'row', marginTop: 12}}>
+              style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', marginTop: 12 }}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -564,8 +562,8 @@ const index = props => {
                 setselected(3);
                 setselectedChannel('QUESTIONS');
               }}
-              style={{alignItems: 'center'}}>
-              <View style={{flexDirection: 'row', marginTop: 12}}>
+              style={{ alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row', marginTop: 12 }}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -601,7 +599,7 @@ const index = props => {
           </View>
         </LinearGradient>
         <View style={style.whiteView}>
-          <View style={{flex: 1.0}}>
+          <View style={{ flex: 1.0 }}>
             <FlatList
               data={chatData && chatData.length > 0 ? chatData : null}
               inverted={true}
@@ -611,7 +609,7 @@ const index = props => {
               ListFooterComponent={() => {
                 if (isLoading) {
                   return (
-                    <View style={{height: 100, justifyContent: 'center'}}>
+                    <View style={{ height: 100, justifyContent: 'center' }}>
                       <ActivityIndicator
                         color={'#000'}
                         animating={true}></ActivityIndicator>
@@ -621,7 +619,7 @@ const index = props => {
                   return null;
                 }
               }}
-              renderItem={({item, index}) => {
+              renderItem={({ item, index }) => {
                 return <Chat item={item} selectedChannel={selectedChannel} />;
               }}
               keyExtractor={(item, index) => index.toString()}
@@ -643,7 +641,7 @@ const index = props => {
                 }}
                 style={{}}>
                 <Image
-                  style={{height: 20, width: 20}}
+                  style={{ height: 20, width: 20 }}
                   source={require('./../../assetss/paperClip.png')}
                 />
               </TouchableOpacity>
@@ -673,13 +671,13 @@ const index = props => {
           </View>
         </View>
         <Modal
-          style={{flex: 1.0}}
+          style={{ flex: 1.0 }}
           animationType="slide"
           visible={isModalVisible}
           transparent={true}>
-          <View style={{flex: 1.0, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <View style={{ flex: 1.0, backgroundColor: 'rgba(0,0,0,0.5)' }}>
             <TouchableOpacity
-              style={{flex: 1.0}}
+              style={{ flex: 1.0 }}
               onPress={() => {
                 setModalVisible(false);
               }}></TouchableOpacity>
@@ -706,7 +704,7 @@ const index = props => {
                   }}>
                   <Image
                     source={require('./../../assetss/Cameras.png')}
-                    style={{height: 30, width: 30}}
+                    style={{ height: 30, width: 30 }}
                   />
                   <Text
                     style={{
@@ -729,7 +727,7 @@ const index = props => {
                   }}>
                   <Image
                     source={require('./../../assetss/File.png')}
-                    style={{height: 30, width: 30}}
+                    style={{ height: 30, width: 30 }}
                   />
                   <Text
                     style={{
@@ -752,7 +750,7 @@ const index = props => {
                   }}>
                   <Image
                     source={require('./../../assetss/Photo.png')}
-                    style={{height: 30, width: 30}}
+                    style={{ height: 30, width: 30 }}
                   />
                   <Text
                     style={{
@@ -775,7 +773,7 @@ const index = props => {
                   }}>
                   <Image
                     source={require('./../../assetss/Video.png')}
-                    style={{height: 30, width: 30}}
+                    style={{ height: 30, width: 30 }}
                   />
                   <Text
                     style={{
