@@ -78,7 +78,7 @@ const AddClient = (props) => {
             if (result.data.data && result.data.data.createClient.client != null) {
                 Alert.alert(
                     '',
-                    'New client added successful.',
+                    'New client added successfully',
                     [
                         {
                             text: 'OK', onPress: () =>  props.navigation.goBack()

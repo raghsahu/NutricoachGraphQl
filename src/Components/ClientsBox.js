@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, Dimensions, Image } from 'react-native'
+import { View, Text, Dimensions, Image , TouchableOpacity} from 'react-native'
 import CONFIGURATION from './Config'
 const { height, width } = Dimensions.get("screen")
 import Moment from 'moment';
@@ -45,7 +45,14 @@ const ClientsBox = (props) => {
 
 
     return (
-        <View style={{ width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2 }}>
+     <TouchableOpacity
+      onPress={props.click}
+      style={{
+      width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2
+      }}>
+        <View
+        //  style={{ width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2 }}
+         >
             <View style={{
                 padding: 20,
                 borderColor:  getPlans() != 'No plan' ?  CONFIGURATION.loginInputBorder : CONFIGURATION.white ,
@@ -83,6 +90,7 @@ const ClientsBox = (props) => {
             }
             
         </View>
+      </TouchableOpacity>
     )
 }
 

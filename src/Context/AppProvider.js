@@ -549,7 +549,7 @@ export const APPProvider = props => {
           dateOfBirth: selectDate,
           gender: gender,
           mobileNum: null,
-          sendInvite: false,
+          sendInvite: true,
         },
       },
     };

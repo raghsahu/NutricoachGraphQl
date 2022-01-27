@@ -23,12 +23,12 @@ import {APPContext} from '../../Context/AppProvider';
 //PACKAGES
 import LinearGradient from 'react-native-linear-gradient';
 
-const index = (props) => {
+const index = props => {
   const [isLoading, setLoading] = useState(true);
   const [client, setClient] = useState([]);
-  const [searchText, setSearchText] = useState('')
-  const [filterData, setFilterData] = useState([])
-  const [openMenu,setOpenMenu] = useState(false)
+  const [searchText, setSearchText] = useState('');
+  const [filterData, setFilterData] = useState([]);
+  const [openMenu, setOpenMenu] = useState(false);
 
   const {getClients} = useContext(APPContext);
 
@@ -37,11 +37,11 @@ const index = (props) => {
   //   return () => {};
   // }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
       // The screen is focused
       // Call any action and update data
-         getClientData();
+      getClientData();
     });
 
     // Return the function to unsubscribe from the event so it gets removed on unmount
@@ -56,14 +56,14 @@ const index = (props) => {
     }
   }
 
-    const search = (searchText) => {
-    setSearchText(searchText)
+  const search = searchText => {
+    setSearchText(searchText);
     let filteredData = client.filter(item => {
       if (item.profile.fullName.toLowerCase().match(searchText.toLowerCase())) {
-        return item
+        return item;
       }
-    })
-    setFilterData(filteredData)
+    });
+    setFilterData(filteredData);
   };
 
   return (
@@ -89,7 +89,6 @@ const index = (props) => {
       </LinearGradient>
 
       <View style={style.whiteView}>
- 
         <View style={style.profileView}>
           <Image
             source={require('./../../assetss/Search.png')}
@@ -99,26 +98,20 @@ const index = (props) => {
             style={{width: '80%', fontFamily: CONFIGURATION.TextRegular}}
             placeholder="Search Client"
             placeholderTextColor={CONFIGURATION.loginpalceholder}
-             onChangeText={text => {
+            onChangeText={text => {
               search(text);
             }}
             value={searchText}
           />
-           <TouchableOpacity
+          <TouchableOpacity
             onPress={() => {
-              openMenu ? 
-               setOpenMenu(false)
-               :
-                setOpenMenu(true)
-              
-              }}
-            >
-          <Image
-            source={require('./../../assetss/Filter.png')}
-            style={style.searchIcoN}
-          />
+              openMenu ? setOpenMenu(false) : setOpenMenu(true);
+            }}>
+            <Image
+              source={require('./../../assetss/Filter.png')}
+              style={style.searchIcoN}
+            />
           </TouchableOpacity>
-
         </View>
 
         {isLoading ? (
@@ -128,26 +121,110 @@ const index = (props) => {
         ) : (
           <View style={{flex: 1.0, marginTop: 35}}>
             <ScrollView showsVerticalScrollIndicator={false}>
-              {filterData && filterData.length > 0 ? 
-              filterData.map((data, index) => {
-                return <ClientsBox key={index} item={data} />; 
-                })
-              :
-               client.map((data, index) => {
-                return <ClientsBox key={index} item={data} />;
-              })
-              }
+              {filterData && filterData.length > 0
+                ? filterData.map((data, index) => {
+                    return <ClientsBox
+                    click={() => {
+                          props.navigation.navigate('ClientsDetail', {
+                            toUser: data.id,
+                          });
+                        }}
+                     key={index} item={data} />;
+                  })
+                : client.map((data, index) => {
+                    return (
+                      <ClientsBox
+                        click={() => {
+                          props.navigation.navigate('ClientsDetail', {
+                            toUser: data.id,
+                          });
+                        }}
+                        key={index}
+                        item={data}
+                      />
+                    );
+                  })}
             </ScrollView>
           </View>
         )}
-
       </View>
-      
-      <TouchableOpacity style={{position: 'absolute', bottom: 20, right: 20}}
+   {openMenu ? (
+        <View
+          style={{
+            alignSelf: 'flex-end',
+            height: 110,
+            width: 100,
+            marginTop: 150,
+            backgroundColor: CONFIGURATION.lightGray,
+            position: 'absolute',
+          }}>
+          <Text
+            style={{
+              color: CONFIGURATION.TextDarkGray,
+             // marginTop: 10,
+              fontSize: 16,
+              alignSelf: 'center',
+            }}>
+            Sort by
+          </Text>
+          <TouchableOpacity
+            style={{alignSelf: 'center'}}
+            onPress={() => {
+              setOpenMenu(false);
+              let sortData;
+              if (filterData && filterData.length > 0) {
+                sortData = filterData.sort((a, b) =>
+                  a.profile.fullName.localeCompare(b.profile.fullName),
+                );
+                setFilterData(sortData);
+              } else {
+                sortData = client.sort((a, b) =>
+                  a.profile.fullName.localeCompare(b.profile.fullName),
+                );
+                setFilterData(sortData);
+              }
+            }}>
+            <Text
+              style={{color: CONFIGURATION.black, fontSize: 16, marginTop: 10}}>
+              Ascending
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{alignSelf: 'center'}}
+            onPress={() => {
+              setOpenMenu(false);
+              let sortData;
+              if (filterData && filterData.length > 0) {
+                sortData = filterData.sort((a, b) =>
+                  b.profile.fullName.localeCompare(a.profile.fullName),
+                );
+                setFilterData(sortData);
+              } else {
+                sortData = client.sort((a, b) =>
+                  b.profile.fullName.localeCompare(a.profile.fullName),
+                );
+                setFilterData(sortData);
+              }
+            }}>
+            <Text
+              style={{
+                color: CONFIGURATION.black,
+                fontSize: 16,
+                alignSelf: 'center',
+                marginTop: 10,
+                marginBottom: 10,
+              }}>
+              Descending
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : null}
+
+      <TouchableOpacity
+        style={{position: 'absolute', bottom: 20, right: 20}}
         onPress={() => {
-               props.navigation.navigate("AddClient") 
-            }}
-      >
+          props.navigation.navigate('AddClient');
+        }}>
         <Image
           resizeMode={'contain'}
           style={{height: 50, width: 50}}
@@ -155,44 +232,7 @@ const index = (props) => {
         />
       </TouchableOpacity>
 
-      {openMenu ? (
-        <View style={{alignSelf: 'flex-end', height: 110, width:100, marginTop: 150, backgroundColor: CONFIGURATION.lightGray, position: 'absolute'}}>
-         <Text style={{color: CONFIGURATION.TextDarkGray, marginTop: 10, fontSize:16, alignSelf:'center', }}>Sort by</Text>
-         <TouchableOpacity style={{ alignSelf:'center',}} 
-          onPress={() => {
-            setOpenMenu(false)
-            let sortData;
-            if (filterData && filterData.length > 0 ){
-            sortData = filterData.sort((a, b) => a.profile.fullName.localeCompare(b.profile.fullName)) 
-              setFilterData(sortData);
-            } else{
-              sortData =  client.sort((a, b) => a.profile.fullName.localeCompare(b.profile.fullName))
-              setFilterData(sortData);
-            }
-
-            }}>
-         <Text style={{color: CONFIGURATION.black, fontSize:16,  marginTop: 10}}>Ascending</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{ alignSelf:'center',}} 
-        onPress={() => {
-          setOpenMenu(false)
-           let sortData;
-              if (filterData && filterData.length > 0 ){
-              sortData = filterData.sort((a, b) => b.profile.fullName.localeCompare(a.profile.fullName))
-              setFilterData(sortData);
-            } else{
-              sortData =  client.sort((a, b) => b.profile.fullName.localeCompare(a.profile.fullName))
-              setFilterData(sortData);
-            }
-              
-              }}>
-         <Text style={{color: CONFIGURATION.black, fontSize:16, alignSelf:'center', marginTop: 10, marginBottom: 10}}>Descending</Text>
-        </TouchableOpacity>
-      </View>
-        ):(
-        null
-        )}
-
+   
     </View>
   );
 };
