@@ -25,7 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyProfile = (props) => {
 
-   // const { register } = useContext(APPContext);
+    // const { register } = useContext(APPContext);
     const { setLoggedInUser } = useContext(AuthContext);
 
     const [date, setDate] = useState(new Date());
@@ -50,19 +50,21 @@ const MyProfile = (props) => {
     // const [referalCode, setReferalCode] = useState('')
     const [isLoading, setLoading] = useState(false)
 
- useEffect(() => {
+    useEffect(() => {
         AsyncStorage.getItem('login_user_details', (err, result) => {
             if (result) {
                 let obj = JSON.parse(result)
-        //id  610a670d8b19f845efde959f
+                //id  610a670d8b19f845efde959f
 
 
             } else {
-             
+
             }
         })
 
     })
+
+  
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -92,7 +94,7 @@ const MyProfile = (props) => {
             Toast.show('Please enter email', 5000)
         } else if (reg.test(email) == false) {
             Toast.show('Please enter valid email', 5000)
-        } 
+        }
         // else if (!password.trim()) {
         //     Toast.show('Please enter password', 5000)
         // } else if (password.length < 6) {
@@ -228,7 +230,7 @@ const MyProfile = (props) => {
                                 setPassword(text)
                             }}
                         /> */}
-                        {/* <TouchableOpacity onPress={() => { setshow2(!show2) }} style={{}}>
+                    {/* <TouchableOpacity onPress={() => { setshow2(!show2) }} style={{}}>
                             {
                                 show2 ?
                                     <Icon2 name="eye" size={18} color={CONFIGURATION.loginIconeye} /> :
@@ -262,7 +264,7 @@ const MyProfile = (props) => {
                             placeholder="Mobile Number"
                             keyboardType={"number-pad"}
                             placeholderTextColor={CONFIGURATION.loginpalceholder}
-                           // onSubmitEditing={() => ref_input6.current.focus()}
+                            // onSubmitEditing={() => ref_input6.current.focus()}
                             ref={ref_input5}
                             value={mobile}
                             onChangeText={text => {
@@ -332,53 +334,53 @@ const MyProfile = (props) => {
 
 const style = StyleSheet.create({
     container: {
-      flex:1,
-      backgroundColor: CONFIGURATION.white,
+        flex: 1,
+        backgroundColor: CONFIGURATION.white,
     },
-    backArr:{
-      height:25,
-      width:25
+    backArr: {
+        height: 25,
+        width: 25
     },
-    backarrView:{
-      marginVertical:50
+    backarrView: {
+        marginVertical: 50
     },
-    imageView:{
-      height:width/4,
-      width:width,
+    imageView: {
+        height: width / 4,
+        width: width,
     },
-    forgottext:{
-      fontFamily: CONFIGURATION.TextBold,
-      fontSize:30,
-      textAlign:"center",
-      marginVertical:20,
-      marginTop:50,
-      color:CONFIGURATION.TextDarkBlack
+    forgottext: {
+        fontFamily: CONFIGURATION.TextBold,
+        fontSize: 30,
+        textAlign: "center",
+        marginVertical: 20,
+        marginTop: 50,
+        color: CONFIGURATION.TextDarkBlack
     },
-    des:{
-      fontFamily:CONFIGURATION.TextRegular,
-      color:CONFIGURATION.TextDarkGray,
-      paddingHorizontal:20,
-      textAlign:"center"
+    des: {
+        fontFamily: CONFIGURATION.TextRegular,
+        color: CONFIGURATION.TextDarkGray,
+        paddingHorizontal: 20,
+        textAlign: "center"
     },
-    InputBox:{
-      borderColor:CONFIGURATION.loginInputBorder,
-      borderWidth:1,
+    InputBox: {
+        borderColor: CONFIGURATION.loginInputBorder,
+        borderWidth: 1,
     },
-    textInput:{
-      marginHorizontal:20,
-      fontFamily:CONFIGURATION.TextRegular,
-      color:CONFIGURATION.TextDarkBlack,
-      height: 44,
+    textInput: {
+        marginHorizontal: 20,
+        fontFamily: CONFIGURATION.TextRegular,
+        color: CONFIGURATION.TextDarkBlack,
+        height: 44,
     },
-    mainView:{
-      marginHorizontal:20,
+    mainView: {
+        marginHorizontal: 20,
     },
-    btnView:{
-      marginTop:50
+    btnView: {
+        marginTop: 50
     },
-    registerText:{
-      fontFamily:CONFIGURATION.TextBold,
-      fontSize:25
+    registerText: {
+        fontFamily: CONFIGURATION.TextBold,
+        fontSize: 25
     }
 });
 

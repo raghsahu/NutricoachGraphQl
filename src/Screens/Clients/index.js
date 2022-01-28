@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   Image,
   TextInput,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import style from './style';
 
@@ -18,7 +19,7 @@ import ClientsBox from '../../Components/ClientsBox';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
 
 //CONTEXT
-import {APPContext} from '../../Context/AppProvider';
+import { APPContext } from '../../Context/AppProvider';
 
 //PACKAGES
 import LinearGradient from 'react-native-linear-gradient';
@@ -30,7 +31,7 @@ const index = props => {
   const [filterData, setFilterData] = useState([]);
   const [openMenu, setOpenMenu] = useState(false);
 
-  const {getClients} = useContext(APPContext);
+  const { getClients } = useContext(APPContext);
 
   // useEffect(() => {
   //   getClientData();
@@ -50,7 +51,8 @@ const index = props => {
 
   async function getClientData() {
     const result = await getClients();
-    setLoading(false);
+    console.log('RESULT=======>',JSON.stringify(result))
+    setLoading(false);  
     if (result && result.data && result.data.data && result.data.data.me) {
       setClient(result.data.data.me.customers);
     }
@@ -66,8 +68,8 @@ const index = props => {
     setFilterData(filteredData);
   };
 
-  return (
-    <View style={style.container}>
+  return (    
+    <View style={style.container}>      
       <GeneralStatusBar
         backgroundColor={CONFIGURATION.statusbarColor}
         barStyle="light-content"
@@ -75,7 +77,7 @@ const index = props => {
       <LinearGradient
         colors={[CONFIGURATION.lightYellow, CONFIGURATION.DarkYellow]}
         style={style.yellowView}>
-        <View style={[style.menuView, {justifyContent: 'center'}]}>
+        <View style={[style.menuView, { justifyContent: 'center' }]}>
           {/* <View style={{width: 35}}></View> */}
           <Text style={style.titleText}>Clients</Text>
           {/* <TouchableOpacity style={style.bellBg}>
@@ -95,7 +97,7 @@ const index = props => {
             style={style.searchIcoN}
           />
           <TextInput
-            style={{width: '80%', fontFamily: CONFIGURATION.TextRegular}}
+            style={{ width: '80%', fontFamily: CONFIGURATION.TextRegular }}
             placeholder="Search Client"
             placeholderTextColor={CONFIGURATION.loginpalceholder}
             onChangeText={text => {
@@ -115,40 +117,40 @@ const index = props => {
         </View>
 
         {isLoading ? (
-          <View style={{height: 100, justifyContent: 'center'}}>
-            <ActivityIndicator style={{alignSelf: 'center'}} />
+          <View style={{ height: 100, justifyContent: 'center'}}>
+            <ActivityIndicator style={{ alignSelf: 'center' }} />
           </View>
         ) : (
-          <View style={{flex: 1.0, marginTop: 35}}>
+          <View style={{ flex: 1.0, marginTop: 35 }}>
             <ScrollView showsVerticalScrollIndicator={false}>
               {filterData && filterData.length > 0
                 ? filterData.map((data, index) => {
-                    return <ClientsBox
+                  return <ClientsBox
                     click={() => {
-                          props.navigation.navigate('ClientsDetail', {
-                            toUser: data.id,
-                          });
-                        }}
-                     key={index} item={data} />;
-                  })
+                      props.navigation.navigate('ClientsDetail', {
+                        toUser: data.id,
+                      });
+                    }}
+                    key={index} item={data} />;
+                })
                 : client.map((data, index) => {
-                    return (
-                      <ClientsBox
-                        click={() => {
-                          props.navigation.navigate('ClientsDetail', {
-                            toUser: data.id,
-                          });
-                        }}
-                        key={index}
-                        item={data}
-                      />
-                    );
-                  })}
+                  return (
+                    <ClientsBox
+                      click={() => {
+                        props.navigation.navigate('ClientsDetail', {
+                          toUser: data.id,
+                        });
+                      }}
+                      key={index}
+                      item={data}
+                    />
+                  );
+                })}
             </ScrollView>
           </View>
         )}
       </View>
-   {openMenu ? (
+      {openMenu ? (
         <View
           style={{
             alignSelf: 'flex-end',
@@ -161,14 +163,14 @@ const index = props => {
           <Text
             style={{
               color: CONFIGURATION.TextDarkGray,
-             // marginTop: 10,
+              // marginTop: 10,
               fontSize: 16,
               alignSelf: 'center',
             }}>
             Sort by
           </Text>
           <TouchableOpacity
-            style={{alignSelf: 'center'}}
+            style={{ alignSelf: 'center' }}
             onPress={() => {
               setOpenMenu(false);
               let sortData;
@@ -185,12 +187,12 @@ const index = props => {
               }
             }}>
             <Text
-              style={{color: CONFIGURATION.black, fontSize: 16, marginTop: 10}}>
+              style={{ color: CONFIGURATION.black, fontSize: 16, marginTop: 10 }}>
               Ascending
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{alignSelf: 'center'}}
+            style={{ alignSelf: 'center' }}
             onPress={() => {
               setOpenMenu(false);
               let sortData;
@@ -221,18 +223,16 @@ const index = props => {
       ) : null}
 
       <TouchableOpacity
-        style={{position: 'absolute', bottom: 20, right: 20}}
+        style={{ position: 'absolute', bottom: 20, right: 20 }}
         onPress={() => {
           props.navigation.navigate('AddClient');
         }}>
         <Image
           resizeMode={'contain'}
-          style={{height: 50, width: 50}}
+          style={{ height: 50, width: 50 }}
           source={require('./../../assetss/add.png')}
         />
       </TouchableOpacity>
-
-   
     </View>
   );
 };

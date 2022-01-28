@@ -1,20 +1,20 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native';
 import CONFIGURATION from './Config';
 const { height, width } = Dimensions.get('screen');
 import Moment from 'moment';
 //CONTEXT
-import {AuthContext} from '../Context/AuthProvider';
+import { AuthContext } from '../Context/AuthProvider';
 
 const MessageBox = props => {
   const item = props.item;
-  const {authDetails} = useContext(AuthContext);
+  const { authDetails } = useContext(AuthContext);
 
   let loginId =
     authDetails &&
-    authDetails.data &&
-    authDetails.data.logInCoach &&
-    authDetails.data.logInCoach.id
+      authDetails.data &&
+      authDetails.data.logInCoach &&
+      authDetails.data.logInCoach.id
       ? authDetails.data.logInCoach.id
       : '';
 
@@ -33,12 +33,12 @@ const MessageBox = props => {
       for (let i = 0; i < item.unreadMessages.length; i++) {
         if (item.unreadMessages[i].from.id != loginId) {
           if (item.unreadMessages[i].seenAt == null) {
-            countMessage = countMessage + 1 
+            countMessage = countMessage + 1
           }
-              
+
         }
       }
-    
+
       return countMessage
     }
     else {
@@ -49,12 +49,12 @@ const MessageBox = props => {
   function getLastMessage() {
     let lastMessage = 'No unread message';
     if (item && item.unreadMessages && item.unreadMessages.length > 0) {
-       for (let i = 0; i < item.unreadMessages.length; i++) {
+      for (let i = 0; i < item.unreadMessages.length; i++) {
         if (item.unreadMessages[i].from.id != loginId) {
           lastMessage = item.unreadMessages[0].body
-       }
+        }
       }
-     // const array = item.unreadMessages.map((item) => item.body)
+      // const array = item.unreadMessages.map((item) => item.body)
       return lastMessage //get last message
     }
     else {
@@ -63,16 +63,16 @@ const MessageBox = props => {
   }
 
   function getLastMessageTime() {
-     let lastUnreadTime = '';
+    let lastUnreadTime = '';
     Moment.locale('en');
     if (item && item.unreadMessages && item.unreadMessages.length > 0) {
-       for (let i = 0; i < item.unreadMessages.length; i++) {
+      for (let i = 0; i < item.unreadMessages.length; i++) {
         if (item.unreadMessages[i].from.id != loginId) {
           lastUnreadTime = item.unreadMessages[0].createdAt
-       }
+        }
       }
-     // const array = item.unreadMessages.map((item) => item.createdAt)
-     // var localDate = new Date(array[0]);
+      // const array = item.unreadMessages.map((item) => item.createdAt)
+      // var localDate = new Date(array[0]);
       return lastUnreadTime ? Moment(new Date(lastUnreadTime)).format('hh:mm a') : ''
     }
     else {

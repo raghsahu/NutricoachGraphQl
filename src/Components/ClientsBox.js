@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, Text, Dimensions, Image , TouchableOpacity} from 'react-native'
+import { View, Text, Dimensions, Image, TouchableOpacity } from 'react-native'
 import CONFIGURATION from './Config'
 const { height, width } = Dimensions.get("screen")
 import Moment from 'moment';
@@ -15,8 +15,8 @@ const ClientsBox = (props) => {
     function getPlans() {
         if (item && item.plans && item.plans.length > 0) {
             const array = item.plans.map((item) => item.name)
-           // return array.join(',')
-               return array[0] //display only current meal plan.
+            // return array.join(',')
+            return array[0] //display only current meal plan.
         }
         else {
             return "No plan"
@@ -45,32 +45,35 @@ const ClientsBox = (props) => {
 
 
     return (
-     <TouchableOpacity
-      onPress={props.click}
-      style={{
-      width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2
-      }}>
-        <View
-        //  style={{ width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2 }}
-         >
-            <View style={{
-                padding: 20,
-                borderColor:  getPlans() != 'No plan' ?  CONFIGURATION.loginInputBorder : CONFIGURATION.white ,
-                borderBottomWidth: 1,
-                flexDirection: "row",
-                alignItems: "center",
-                // justifyContent: "space-between",
+        <TouchableOpacity
+            onPress={props.click}
+            style={{
+                width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2
             }}>
-                <Image resizeMode={"cover"} style={{
-                    height: 50,
-                    width: 50,
-                    borderRadius: 50 / 2
-                }} source={getImage() ? { uri: getImage() } : null} />
-                <View style={{ width: "60%", marginLeft: 20 }}>
-                    <Text numberOfLines={1} style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{item.profile ? item.profile.fullName : ""}</Text>
-                    <Text numberOfLines={1} style={{ fontSize: 14, fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray }}>{getPlans()}</Text>
-                </View>
-                {/* {
+            <View
+            //  style={{ width: width - 40, marginVertical: 5, backgroundColor: CONFIGURATION.white, marginHorizontal: 20, elevation: 2 }}
+            >
+                <View style={{
+                    padding: 20,
+                    borderColor: getPlans() != 'No plan' ? CONFIGURATION.loginInputBorder : CONFIGURATION.white,
+                    borderBottomWidth: 1,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    // justifyContent: "space-between",
+                }}>
+                    <Image resizeMode={"cover"} style={{
+                        height: 50,
+                        width: 50,
+                        borderRadius: 50 / 2
+                    }} source={getImage() ? { uri: getImage() } : null} />
+                    <View style={{ width: "60%", marginLeft: 20 }}>
+                        <Text numberOfLines={1} style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{item.profile ? item.profile.fullName : ""}</Text>
+                        {getPlans() != 'No plan' &&
+                            <Text numberOfLines={1} style={{ fontSize: 14, fontFamily: CONFIGURATION.TextRegular, color: CONFIGURATION.TextDarkGray }}>{getPlans()}</Text>
+                        }
+
+                    </View>
+                    {/* {
                     props.new == "1" ?
                 <View style={{padding: 10,backgroundColor:CONFIGURATION.lightGreen,borderRadius:10}}>
                     <Text style={{fontFamily: CONFIGURATION.TextBold,color:CONFIGURATION.primaryGreen}}>Active</Text>
@@ -80,17 +83,17 @@ const ClientsBox = (props) => {
                     <Text style={{fontFamily: CONFIGURATION.TextBold,color:CONFIGURATION.DarkYellow}}>New</Text>
                 </View>
                 } */}
+                </View>
+                {getPlans() != 'No plan' ?
+                    <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 20 }}>
+                        <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkGray }}>Last Activity :</Text>
+                        <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{getLastActivity()}</Text>
+                    </View>
+                    : null
+                }
+
             </View>
-            { getPlans() != 'No plan' ? 
-            <View style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 20 }}>
-                <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkGray }}>Last Activity :</Text>
-                <Text style={{ fontSize: 16, fontFamily: CONFIGURATION.TextBold, color: CONFIGURATION.TextDarkBlack }}>{getLastActivity()}</Text>
-            </View>
-            : null 
-            }
-            
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
     )
 }
 

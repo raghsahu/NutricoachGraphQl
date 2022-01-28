@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   Modal,
   FlatList,
+  Alert,
 } from 'react-native';
 import style from './style';
 
 //ASSET & CONFIG
 import CONFIGURATION from '../../Components/Config';
+import ProgressView from '../../Components/ProgressView'
 
 //COMMON COMPONENTS
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
@@ -20,6 +22,7 @@ import GeneralStatusBar from './../../Components/GeneralStatusBar';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { APPContext } from '../../Context/AppProvider';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 
 const index = (props) => {
 
@@ -29,12 +32,13 @@ const index = (props) => {
   const [mobile, setMobile] = useState('***** *****')
   const [image, setImage] = useState('')
   const [idLogin, setId] = useState('')
+  const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     AsyncStorage.getItem('login_user_details', (err, result) => {
       if (result) {
         let obj = JSON.parse(result)
-        console.log("auth_token "+ obj.data.logInCoach.token);
+        console.log("auth_token " + obj.data.logInCoach.token);
 
         let id = obj.data.logInCoach.id;
         if (id != null) {
@@ -44,11 +48,13 @@ const index = (props) => {
       } else {
       }
     })
+
   })
 
-
   const getProfile = async () => {
+    // setLoading(true)
     const result = await getUserProfile(idLogin);
+    // setLoading(false)
 
     if (result && result.data && result.data.data.user != null) {
       setTimeout(() => {
@@ -99,11 +105,11 @@ const index = (props) => {
               width: '91%',
             }}>
             <Image source={image == '' ? null : { uri: image }} style={{ width: 70, height: 70, borderRadius: 35, backgroundColor: '#f2f2f2' }} />
-            <View>
+            <View style={{ flex: 1.0, flexDirection: 'column', marginHorizontal: 16 }}>
               <Text style={{ fontFamily: CONFIGURATION.TextBold, fontSize: 18 }}>
                 {fullName}
               </Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{ flexDirection: 'row' }}>
                 <Image
                   style={{ height: 15, width: 15 }}
                   source={require('./../../assetss/phone.png')}
@@ -118,7 +124,7 @@ const index = (props) => {
                 </Text>
               </View>
             </View>
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 borderColor: CONFIGURATION.loginInputBorder,
@@ -141,9 +147,9 @@ const index = (props) => {
                 }}>
                 Verify
               </Text>
-            </View>
+            </View> */}
           </View>
-          <Text
+          {/* <Text
             style={{
               fontFamily: CONFIGURATION.TextRegular,
               color: CONFIGURATION.TextDarkGray,
@@ -152,7 +158,7 @@ const index = (props) => {
             }}>
             Lorem ipsum is placeholder text commonly used in the graphic, print,
             and publishing industries for previewing layouts and visual mockups.
-          </Text>
+          </Text> */}
         </View>
         <View
           style={{
@@ -249,7 +255,7 @@ const index = (props) => {
               source={require('./../../assetss/Vector.png')}
             />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -288,13 +294,14 @@ const index = (props) => {
               style={{ height: 15, width: 15 }}
               source={require('./../../assetss/Vector.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
-      {/* {loading && <ProgressView />} */}
+      {isLoading && <ProgressView />}
     </View>
     // </ScrollView>
   );
 };
+
 
 export default index;
