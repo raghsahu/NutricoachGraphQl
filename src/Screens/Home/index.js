@@ -44,6 +44,7 @@ const index = (props) => {
                 let id = obj.data.logInCoach.id;
                 if (id != null) {
                     setId(id)
+                     fetchProfile()
                 }
             } else {
             }
@@ -52,7 +53,7 @@ const index = (props) => {
 
     useEffect(() => {
         getStrugglingClientData()
-        fetchProfile()
+       
         return () => { }
     }, [])
 

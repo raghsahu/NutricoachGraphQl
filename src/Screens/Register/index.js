@@ -25,8 +25,8 @@ import { CommonActions } from '@react-navigation/native';
 
 const index = (props) => {
 
-    const { register } = useContext(APPContext);
-    const { setLoggedInUser } = useContext(AuthContext);
+    const { register, login } = useContext(APPContext);
+    const { setLoggedInUser, setUserEmail } = useContext(AuthContext);
 
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -101,14 +101,16 @@ const index = (props) => {
                     'Thanks for you registration, log in here',
                     [
                         {
-                            text: 'OK', onPress: () => props.navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 0,
-                                    routes: [
-                                        { name: 'Login' }
-                                    ],
-                                })
-                            )
+                            text: 'OK', onPress: () =>
+                             onPressLogin()
+                            // props.navigation.dispatch(
+                            //     CommonActions.reset({
+                            //         index: 0,
+                            //         routes: [
+                            //             { name: 'Login' }
+                            //         ],
+                            //     })
+                            // )
                         },
                     ]
                 );
@@ -127,6 +129,37 @@ const index = (props) => {
             }
 
         }
+    }
+
+     const onPressLogin = async () => {
+        // if (!email) {
+        //     Toast.show('Please enter email')
+        // } else if (!password) {
+        //     Toast.show('Please enter password')
+        // } else {
+            setLoading(true)
+            const result = await login(email, password)
+            setLoading(false)
+          //  console.log("LoginUser", result)
+            if (result.data && result.data.data.logInCoach != null) {
+                setTimeout(() => {
+                    setLoggedInUser(result.data)
+                    setUserEmail(email)
+                    props.navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [
+                                { name: 'Home' }
+                            ],
+                        })
+                    );
+                }, 100);
+            } else {
+                Toast.show('invalid credential', 2000);
+            }
+
+       // }
+
     }
 
     return (

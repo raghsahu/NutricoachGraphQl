@@ -90,6 +90,8 @@ const index = props => {
         </View>
       </LinearGradient>
 
+    
+
       <View style={style.whiteView}>
         <View style={style.profileView}>
           <Image
@@ -150,15 +152,34 @@ const index = props => {
           </View>
         )}
       </View>
+
+
+      <TouchableOpacity
+        style={{position: 'absolute', bottom: 20, right: 20}}
+        onPress={() => {
+          props.navigation.navigate('AddClient');
+        }}>
+        <Image
+          resizeMode={'contain'}
+          style={{height: 50, width: 50}}
+          source={require('./../../assetss/add.png')}
+        />
+      </TouchableOpacity>
+
       {openMenu ? (
-        <View
+         <View
           style={{
             alignSelf: 'flex-end',
-            height: 110,
-            width: 100,
-            marginTop: 150,
-            backgroundColor: CONFIGURATION.lightGray,
+             height: 110,         
+            marginTop: 200,
             position: 'absolute',
+            }}>
+        <View
+          style={{          
+            marginEnd: 10,
+            width: 110,          
+            backgroundColor: CONFIGURATION.lightGray,
+            
           }}>
           <Text
             style={{
@@ -220,19 +241,9 @@ const index = props => {
             </Text>
           </TouchableOpacity>
         </View>
+        </View>
       ) : null}
-
-      <TouchableOpacity
-        style={{ position: 'absolute', bottom: 20, right: 20 }}
-        onPress={() => {
-          props.navigation.navigate('AddClient');
-        }}>
-        <Image
-          resizeMode={'contain'}
-          style={{ height: 50, width: 50 }}
-          source={require('./../../assetss/add.png')}
-        />
-      </TouchableOpacity>
+   
     </View>
   );
 };

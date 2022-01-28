@@ -556,6 +556,32 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
+  //inviteClientEmail
+  const inviteClientEmail = async (customerId, email) => {
+    const graphqlQuery = {
+      query: `mutation inviteClient($input: InviteClientInput!) {
+                inviteClient(input: $input){
+                  client{
+                    id
+                  }    
+                  errors{
+                    path
+                    message
+                  } 
+                                     
+                }
+            }`,
+      variables: {
+        input: {
+          clientId: customerId,
+          email: email,
+          
+        },
+      },
+    };
+    return await request('post', graphqlQuery);
+  };
+
   const request = async (method, params) => {
     try {
       console.log('===================');
@@ -697,6 +723,7 @@ export const APPProvider = props => {
         AddNotes,
         getNotesListData,
         createNewClient,
+        inviteClientEmail,
       }}>
       {props.children}
     </APPContext.Provider>
