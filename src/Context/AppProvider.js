@@ -377,9 +377,16 @@ export const APPProvider = props => {
                     gender
                     profileImg
                     mobileNum
+                    landlineNum
                     }  
                     isGhost
                     lastActivity
+                    dailyWeights{
+                      nodes{
+                         value
+                         date     
+                      }
+                    }
                     healthProfile{
                       height{
                       inches
@@ -403,6 +410,7 @@ export const APPProvider = props => {
                           pregnancyCount
                           firstDayOfLactation
                           lactationDurationMonths
+                          observation
                         }
                           coachingType
                           physicalActivityLevel
@@ -421,7 +429,8 @@ export const APPProvider = props => {
                           bodyFatPercentage
                           muscleMassKg
                           muscleMassPercentage
-                        }
+                          }
+                          medicalCondition
                   }
                 }
               }

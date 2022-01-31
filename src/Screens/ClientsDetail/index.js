@@ -134,6 +134,7 @@ const index = props => {
     getNotesListData,
   } = useContext(APPContext);
   const [profile, setProfile] = useState({});
+   const [dailyWeights, setDailyWeights] = useState({});
   const [healthProfile, setHealthProfile] = useState({});
   const [clientMealCommentsData, setClientMealCommentsData] = useState([]);
   const [notesData, setNotesData] = useState([]);
@@ -177,7 +178,7 @@ const index = props => {
 
         setProfile(result.data.data.me.customer.profile);
         setHealthProfile(result.data.data.me.customer.healthProfile);
-
+        setDailyWeights(result.data.data.me.customer.dailyWeights);
 
         if (
           result.data.data.me.customer.healthProfile &&
@@ -206,6 +207,19 @@ const index = props => {
       Toast.show(result.error, 2000);
     }
   };
+
+ function getLastDailyWeight() {
+    let lastCurrentWeight = '0';
+    if (dailyWeights && dailyWeights.nodes && dailyWeights.nodes.length > 0) {
+     // for (let i = 0; i < dailyWeights.nodes.length; i++) {
+          lastCurrentWeight = dailyWeights.nodes[dailyWeights.nodes.length - 1].value
+      //}
+      return lastCurrentWeight //get last current weight
+    }
+    else {
+      return "0"
+    }
+  }
 
   const getMealComments = async () => {
     const result = await getClientsMealComments(customerId);
@@ -320,7 +334,7 @@ const index = props => {
               resizeMode={'cover'}
               style={style.imagesa}
               //source={{ uri: "https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80" }}
-              source={image == '' ? null : { uri: image }}
+              source={profile.profileImg == '' ? null : { uri: profile.profileImg }}
             />
             <View style={{ width: '73%' }}>
               <Text
@@ -820,7 +834,7 @@ const index = props => {
                           </Text>
                         </View>
                       </View>
-                      <View
+                      {/* <View
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
@@ -842,8 +856,8 @@ const index = props => {
                             Businessmen
                           </Text>
                         </View>
-                      </View>
-                      <View
+                      </View> */}
+                      {/* <View
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
@@ -869,7 +883,7 @@ const index = props => {
                             USA
                           </Text>
                         </View>
-                      </View>
+                      </View> */}
                       <View
                         style={{
                           flexDirection: 'row',
@@ -912,7 +926,7 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            +1 123 456 7890
+                            {profile.landlineNum}
                           </Text>
                         </View>
                       </View>
@@ -1034,7 +1048,8 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkBlack,
                               }}>
-                              {healthProfile.weight.currentWeight ? healthProfile.weight.currentWeight : '0'}
+                              {getLastDailyWeight()} kg
+                              {/* {healthProfile.weight.currentWeight ? healthProfile.weight.currentWeight : '0'} kg */}
                             </Text>
                             <Text
                               numberOfLines={1}
@@ -1065,7 +1080,7 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkBlack,
                               }}>
-                              {healthProfile.weight.targetWeight}
+                              {healthProfile.weight.targetWeight ? healthProfile.weight.targetWeight : '0'} kg
                             </Text>
                             <Text
                               numberOfLines={1}
@@ -1079,7 +1094,7 @@ const index = props => {
                           </View>
                         </View>
                       </View>
-                      <View
+                      {/* <View
                         style={{
                           flexDirection: 'row',
                           alignItems: 'center',
@@ -1102,7 +1117,7 @@ const index = props => {
                             kg
                           </Text>
                         </View>
-                      </View>
+                      </View> */}
                       <View
                         style={{
                           flexDirection: 'row',
@@ -1541,7 +1556,7 @@ const index = props => {
                         overflow: 'hidden',
                         zIndex: 10,
                       }}>
-                      <View
+                      {/* <View
                         style={{
                           paddingVertical: 15,
                           borderColor: CONFIGURATION.lightGray,
@@ -1599,7 +1614,7 @@ const index = props => {
                             </Text>
                           </TouchableOpacity>
                         </View>
-                      </View>
+                      </View> */}
                       <View
                         style={{
                           paddingVertical: 15,
@@ -1620,7 +1635,7 @@ const index = props => {
                               color: CONFIGURATION.TextDarkBlack,
                               marginLeft: 10,
                             }}>
-                            Allergies
+                            Allergies/Food Intolerance
                           </Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
@@ -1637,29 +1652,13 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkGray,
                               }}>
-                              Avocado
+                              {healthProfile.foodIntolerance}
                             </Text>
                           </TouchableOpacity>
-                          <TouchableOpacity
-                            style={{
-                              backgroundColor: CONFIGURATION.lightGray,
-                              paddingVertical: 7,
-                              paddingHorizontal: 10,
-                              marginLeft: 10,
-                            }}>
-                            <Text
-                              numberOfLines={1}
-                              style={{
-                                fontSize: 14,
-                                fontFamily: CONFIGURATION.TextBold,
-                                color: CONFIGURATION.TextDarkGray,
-                              }}>
-                              Garlic
-                            </Text>
-                          </TouchableOpacity>
+                        
                         </View>
 
-                        <Text
+                        {/* <Text
                           style={{
                             fontSize: 14,
                             marginTop: 10,
@@ -1668,9 +1667,9 @@ const index = props => {
                           }}>
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry
-                        </Text>
+                        </Text> */}
                       </View>
-                      <View
+                      {/* <View
                         style={{
                           paddingVertical: 15,
                           borderColor: CONFIGURATION.lightGray,
@@ -1738,7 +1737,7 @@ const index = props => {
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry
                         </Text>
-                      </View>
+                      </View> */}
                     </View>
                   ) : null}
                 </View>
@@ -1931,6 +1930,7 @@ const index = props => {
                           </Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                        {healthProfile.medicalCondition ? 
                           <TouchableOpacity
                             style={{
                               backgroundColor: CONFIGURATION.lightGray,
@@ -1944,12 +1944,15 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkGray,
                               }}>
-                              Heart Disease
+                              {healthProfile.medicalCondition}
                             </Text>
                           </TouchableOpacity>
+                          : null
+                        }
+                        
                         </View>
 
-                        <Text
+                        {/* <Text
                           style={{
                             fontSize: 14,
                             marginTop: 10,
@@ -1958,7 +1961,7 @@ const index = props => {
                           }}>
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry
-                        </Text>
+                        </Text> */}
                       </View>
                       <View
                         style={{
@@ -1990,10 +1993,9 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextRegular,
                             color: CONFIGURATION.TextDarkGray,
                           }}>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry
+                          {healthProfile.pregnancyHistory.observation}
                         </Text>
-                        <Text
+                        {/* <Text
                           numberOfLines={1}
                           style={{
                             fontSize: 16,
@@ -2012,7 +2014,7 @@ const index = props => {
                           }}>
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry
-                        </Text>
+                        </Text> */}
                       </View>
                     </View>
                   ) : null}
@@ -2265,6 +2267,7 @@ const index = props => {
                               paddingVertical: 7,
                               paddingHorizontal: 10,
                             }}>
+
                             <Text
                               numberOfLines={1}
                               style={{
@@ -2272,11 +2275,12 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkGray,
                               }}>
-                              {healthProfile.alcoholIntake.doYouDrink ? healthProfile.alcoholIntake.doYouDrink : ''}
+                              {healthProfile.alcoholIntake.doYouDrink === true ? 'YES' : 'NO'}
                             </Text>
+
                           </TouchableOpacity>
                         </View>
-
+{/* 
                         <Text
                           style={{
                             fontSize: 14,
@@ -2286,9 +2290,9 @@ const index = props => {
                           }}>
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry
-                        </Text>
+                        </Text> */}
                       </View>
-                      <View
+                      {/* <View
                         style={{
                           paddingVertical: 15,
                           borderColor: CONFIGURATION.lightGray,
@@ -2340,7 +2344,7 @@ const index = props => {
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry
                         </Text>
-                      </View>
+                      </View> */}
                       <View
                         style={{
                           paddingVertical: 15,
@@ -2365,6 +2369,7 @@ const index = props => {
                           </Text>
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                        {healthProfile.hoursOfSleep ?
                           <TouchableOpacity
                             style={{
                               backgroundColor: CONFIGURATION.lightGray,
@@ -2378,11 +2383,13 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkGray,
                               }}>
-                              {healthProfile.hoursOfSleep ? healthProfile.hoursOfSleep : ''} hours
+                             About {healthProfile.hoursOfSleep ? healthProfile.hoursOfSleep : ''} hours
                             </Text>
                           </TouchableOpacity>
+                          :
+                          null }
                         </View>
-
+{/* 
                         <Text
                           style={{
                             fontSize: 14,
@@ -2392,7 +2399,7 @@ const index = props => {
                           }}>
                           Lorem Ipsum is simply dummy text of the printing and
                           typesetting industry
-                        </Text>
+                        </Text> */}
                       </View>
                     </View>
                   ) : null}
