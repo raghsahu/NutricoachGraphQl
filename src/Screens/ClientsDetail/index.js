@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   View,
   Text,
@@ -22,7 +22,7 @@ import MassageBox from '../../Components/MessageBox';
 import Comments from '../../Components/Comments';
 import Notes from '../../Components/Notes';
 import Pogress from './../../Components/progressbar';
-import { identifier } from '@babel/types';
+import {identifier} from '@babel/types';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -36,14 +36,14 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
-import { LineChart, BarChart } from './../../Components/dist/index';
+import {LineChart, BarChart} from './../../Components/dist/index';
 import Toast from 'react-native-simple-toast';
 //CONTEXT
-import { APPContext } from '../../Context/AppProvider';
+import {APPContext} from '../../Context/AppProvider';
 import Moment from 'moment';
-import { VariablesInAllowedPositionRule } from 'graphql';
-import { fallbackHttpConfig } from '@apollo/client';
-import { ScreenStackHeaderRightView } from 'react-native-screens';
+import {VariablesInAllowedPositionRule} from 'graphql';
+import {fallbackHttpConfig} from '@apollo/client';
+import {ScreenStackHeaderRightView} from 'react-native-screens';
 
 const data = {
   labels: ['20', '21', '22', '23', '24', '25', '26'],
@@ -55,14 +55,14 @@ const data = {
   ],
 };
 const chartData = [
-  { label: 'Venezuela', value: '250' },
-  { label: 'Saudi', value: '260' },
-  { label: 'Canada', value: '180' },
-  { label: 'Iran', value: '140' },
-  { label: 'Russia', value: '115' },
-  { label: 'UAE', value: '100' },
-  { label: 'US', value: '30' },
-  { label: 'China', value: '30' },
+  {label: 'Venezuela', value: '250'},
+  {label: 'Saudi', value: '260'},
+  {label: 'Canada', value: '180'},
+  {label: 'Iran', value: '140'},
+  {label: 'Russia', value: '115'},
+  {label: 'UAE', value: '100'},
+  {label: 'US', value: '30'},
+  {label: 'China', value: '30'},
 ];
 //STEP 3 - Chart Configurations
 const chartConfigs = {
@@ -93,7 +93,7 @@ const chartConfig = {
   barPercentage: 0,
   useShadowColorFromDataset: false, // optional
 };
-const { height, width } = Dimensions.get('screen');
+const {height, width} = Dimensions.get('screen');
 
 const index = props => {
   const customerId = props.route.params.toUser;
@@ -106,11 +106,11 @@ const index = props => {
     getNotesListData,
     getExcersizeOfClient,
     getWaterInstack,
-    getDailyWaights
+    getDailyWaights,
   } = useContext(APPContext);
 
   const refRBSheet = useRef();
-  const refRBPopup = useRef()
+  const refRBPopup = useRef();
   const [selectedNames, setselectedNames] = useState('Meal of the day');
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -142,9 +142,9 @@ const index = props => {
   const [numberX, setnumberX] = useState([20, 21, 22, 23, 24, 25, 26]);
   const [values, setvalues] = useState([110, 140, 140, 105, 135, 130, 130]);
   const [clientData, setClientData] = useState('');
- 
+
   const [profile, setProfile] = useState({});
-   const [dailyWeights, setDailyWeights] = useState({});
+  const [dailyWeights, setDailyWeights] = useState({});
   const [healthProfile, setHealthProfile] = useState({});
   const [clientMealCommentsData, setClientMealCommentsData] = useState([]);
   const [notesData, setNotesData] = useState([]);
@@ -159,46 +159,45 @@ const index = props => {
   const [muscleMassPercentage, setmuscleMassPercentage] = useState('');
   const [isDate, setDatePicker] = useState(false);
 
-  const [Dates, setDates] = useState()
+  const [Dates, setDates] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  const [month, setmonth] = useState(moment(new Date()).format("MMMM, YYYY"))
-  const [addMonth, setaddMonth] = useState(0)
-  const [fixDate, setfixDate] = useState(moment().format('YYYY-MM-DD'))
-  const [currentDate, setCurrentDate] = useState(moment().format("DD/MM/YYYY"))
+  const [month, setmonth] = useState(moment(new Date()).format('MMMM, YYYY'));
+  const [addMonth, setaddMonth] = useState(0);
+  const [fixDate, setfixDate] = useState(moment().format('YYYY-MM-DD'));
+  const [currentDate, setCurrentDate] = useState(moment().format('DD/MM/YYYY'));
 
-  const [commentLoading, setCommentLoading] = useState(false)
-  const [isError, setError] = useState(false)
+  const [commentLoading, setCommentLoading] = useState(false);
+  const [isError, setError] = useState(false);
 
-  const [title, setTitle] = useState('')
-  const [commentArray, setCommentArray] = useState([])
-  const [waterData, setWaterData] = useState([])
-  const [weightData, setWeightData] = useState([])
+  const [title, setTitle] = useState('');
+  const [commentArray, setCommentArray] = useState([]);
+  const [waterData, setWaterData] = useState([]);
+  const [weightData, setWeightData] = useState([]);
 
   useEffect(() => {
-    var dateObj = moment(month, "MMMM, YYYY").daysInMonth()
-    setaddMonth(dateObj)
-    var dates = []
+    var dateObj = moment(month, 'MMMM, YYYY').daysInMonth();
+    setaddMonth(dateObj);
+    var dates = [];
     for (var i = 1; i <= dateObj; i++) {
-      dates.push(i)
+      dates.push(i);
     }
-    setDates(dates)
+    setDates(dates);
     console.log('====================================');
     console.log(dates);
     console.log('====================================');
-  }, [month])
+  }, [month]);
 
   useEffect(() => {
     // getClientData();
     if (selectedNames == 'Meal of the day') {
       getMealComments(fixDate);
     } else if (selectedNames == 'Exercise of the day') {
-      getExcersizeComment(fixDate)
+      getExcersizeComment(fixDate);
     } else if (selectedNames == 'Water Intake') {
-      getWaterInstackUser(fixDate)
+      getWaterInstackUser(fixDate);
     } else if (selectedNames == 'Weight') {
-      getWaights(fixDate)
+      getWaights(fixDate);
     }
-
   }, []);
 
   useEffect(() => {
@@ -219,7 +218,7 @@ const index = props => {
 
   const getClientData = async () => {
     const result = await getClientsDetails(customerId);
-    console.log("RESULT========>", JSON.stringify(result))
+    console.log('RESULT========>', JSON.stringify(result));
 
     if (result.status == true && result.data && result.data.data.me != null) {
       setTimeout(() => {
@@ -234,7 +233,7 @@ const index = props => {
         if (
           result.data.data.me.customer.healthProfile &&
           result.data.data.me.customer.healthProfile.latestBodyComposition !=
-          null
+            null
         ) {
           setbodyFatMassKg(
             result.data.data.me.customer.healthProfile.latestBodyComposition
@@ -259,107 +258,114 @@ const index = props => {
     }
   };
 
-
- function getLastDailyWeight() {
+  function getLastDailyWeight() {
     let lastCurrentWeight = '0';
     if (dailyWeights && dailyWeights.nodes && dailyWeights.nodes.length > 0) {
-     // for (let i = 0; i < dailyWeights.nodes.length; i++) {
-          lastCurrentWeight = dailyWeights.nodes[dailyWeights.nodes.length - 1].value
+      // for (let i = 0; i < dailyWeights.nodes.length; i++) {
+      lastCurrentWeight =
+        dailyWeights.nodes[dailyWeights.nodes.length - 1].value;
       //}
-      return lastCurrentWeight //get last current weight
-    }
-    else {
-      return "0"
-    }
-  }
-
-  const getMealComments = async () => {
-    const result = await getClientsMealComments(customerId);
-    console.log('mealdata ', JSON.stringify(result));
-    if (
-      result.status == true &&
-      result.data &&
-      result.data.data.me.customer.meals.nodes != null
-    ) {
-
-  const getWaights = async (date) => {
-    setCommentLoading(true)
-    const result = await getDailyWaights(customerId, date);
-    setCommentLoading(false)
-
-    if (result.status == true && result.data && result.data.data.me.customer.dailyWeights.nodes.length > 0) {
-
-      setTimeout(() => {
-        setCommentLoading(false)
-        setWeightData(result.data.data.me.customer.dailyWeights.nodes);
-        setError(false)
-      }, 300);
+      return lastCurrentWeight; //get last current weight
     } else {
-      setCommentLoading(false)
-      setWeightData([]);
-      Toast.show('No Data Found');
-      setError(true)
-    }
-  }
-
-  const getWaterInstackUser = async (date) => {
-    setCommentLoading(true)
-    const result = await getWaterInstack(customerId, date);
-    setCommentLoading(false)
-
-    console.log('WaterInstack====>', JSON.stringify(result))
-    if (result.status == true && result.data && result.data.data.me.customer.waterIntakes.nodes.length > 0) {
-      setTimeout(() => {
-        setCommentLoading(false)
-        setWaterData(result.data.data.me.customer.waterIntakes.nodes);
-        setError(false)
-      }, 300);
-    } else {
-      setCommentLoading(false)
-      setWaterData([]);
-      Toast.show('No Data Found');
-      setError(true)
-    }
-  }
-
-  const getMealComments = async (date) => {
-    setCommentLoading(true)
-    const result = await getClientsMealComments(customerId, date);
-    console.log('MEALDATAT====>', JSON.stringify(result))
-    if (result.status == true && result.data && result.data.data.me.customer.meals.nodes.length > 0) {
-      setTimeout(() => {
-        setCommentLoading(false)
-        setClientMealCommentsData(result.data.data.me.customer.meals.nodes);
-        setTitle(result.data.data.me.customer.meals.nodes[0].mealType)
-        setCommentArray(result.data.data.me.customer.meals.nodes[0].comments)
-        setError(false)
-      }, 300);
-    } else {
-      setCommentLoading(false)
-      setClientMealCommentsData([]);
-      Toast.show('No Data Found');
-      setError(true)
+      return '0';
     }
   };
 
-  const getExcersizeComment = async (date) => {
-    setCommentLoading(true)
-    const result = await getExcersizeOfClient(customerId, date);
-    setLoading(false)
-    if (result.status == true && result.data && result.data.data.me.customer.exercises.nodes.length > 0) {
+  const getWaights = async date => {
+    setCommentLoading(true);
+    const result = await getDailyWaights(customerId, date);
+    setCommentLoading(false);
+
+    if (
+      result.status == true &&
+      result.data &&
+      result.data.data.me.customer.dailyWeights.nodes.length > 0
+    ) {
       setTimeout(() => {
-        setCommentLoading(false)
-        setClientMealCommentsData(result.data.data.me.customer.exercises.nodes);
-        setCommentArray(result.data.data.me.customer.exercises.nodes[0].comments)
-        setError(false)
+        setCommentLoading(false);
+        setWeightData(result.data.data.me.customer.dailyWeights.nodes);
+        setError(false);
       }, 300);
     } else {
-      setCommentLoading(false)
+      setCommentLoading(false);
+      setWeightData([]);
+      Toast.show('No Data Found');
+      setError(true);
+    }
+  };
+
+  const getWaterInstackUser = async date => {
+    setCommentLoading(true);
+    const result = await getWaterInstack(customerId, date);
+    setCommentLoading(false);
+
+    console.log('WaterInstack====>', JSON.stringify(result));
+    if (
+      result.status == true &&
+      result.data &&
+      result.data.data.me.customer.waterIntakes.nodes.length > 0
+    ) {
+      setTimeout(() => {
+        setCommentLoading(false);
+        setWaterData(result.data.data.me.customer.waterIntakes.nodes);
+        setError(false);
+      }, 300);
+    } else {
+      setCommentLoading(false);
+      setWaterData([]);
+      Toast.show('No Data Found');
+      setError(true);
+    }
+  };
+
+  const getMealComments = async date => {
+    setCommentLoading(true);
+    const result = await getClientsMealComments(customerId, date);
+    console.log('MEALDATAT====>', JSON.stringify(result));
+    if (
+      result.status == true &&
+      result.data &&
+      result.data.data.me.customer.meals.nodes.length > 0
+    ) {
+      setTimeout(() => {
+        setCommentLoading(false);
+        setClientMealCommentsData(result.data.data.me.customer.meals.nodes);
+        setTitle(result.data.data.me.customer.meals.nodes[0].mealType);
+        setCommentArray(result.data.data.me.customer.meals.nodes[0].comments);
+        setError(false);
+      }, 300);
+    } else {
+      setCommentLoading(false);
       setClientMealCommentsData([]);
       Toast.show('No Data Found');
-      setError(true)
+      setError(true);
     }
-  }
+  };
+
+  const getExcersizeComment = async date => {
+    setCommentLoading(true);
+    const result = await getExcersizeOfClient(customerId, date);
+    setLoading(false);
+    if (
+      result.status == true &&
+      result.data &&
+      result.data.data.me.customer.exercises.nodes.length > 0
+    ) {
+      setTimeout(() => {
+        setCommentLoading(false);
+        setClientMealCommentsData(result.data.data.me.customer.exercises.nodes);
+        setCommentArray(
+          result.data.data.me.customer.exercises.nodes[0].comments,
+        );
+        setError(false);
+      }, 300);
+    } else {
+      setCommentLoading(false);
+      setClientMealCommentsData([]);
+      Toast.show('No Data Found');
+      setError(true);
+    }
+  };
 
   const getNotesList = async () => {
     const result = await getNotesListData(customerId);
@@ -447,7 +453,7 @@ const index = props => {
             />
           </TouchableOpacity>
           <Text style={style.titleText}>Clients detail</Text>
-          <View style={{ width: 35 }}></View>
+          <View style={{width: 35}}></View>
         </View>
       </LinearGradient>
       <View style={style.whiteView}>
@@ -457,9 +463,11 @@ const index = props => {
               resizeMode={'cover'}
               style={style.imagesa}
               //source={{ uri: "https://images.unsplash.com/photo-1612904372219-885abc44dfa8?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZlbWFsZSUyMG1vZGVsfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80" }}
-              source={profile.profileImg == '' ? null : { uri: profile.profileImg }}
+              source={
+                profile.profileImg == '' ? null : {uri: profile.profileImg}
+              }
             />
-            <View style={{ width: '73%' }}>
+            <View style={{width: '73%'}}>
               <Text
                 style={{
                   fontSize: 18,
@@ -526,7 +534,7 @@ const index = props => {
               }}>
               Workplace :{' '}
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -537,7 +545,7 @@ const index = props => {
               </Text>
               <Image
                 resizeMode={'contain'}
-                style={{ height: 10, width: 10, marginTop: 5, marginLeft: 10 }}
+                style={{height: 10, width: 10, marginTop: 5, marginLeft: 10}}
                 source={require('./../../assetss/down.png')}
               />
             </View>
@@ -558,7 +566,7 @@ const index = props => {
               }}>
               Last Activity :
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -585,7 +593,7 @@ const index = props => {
               }}>
               Progress :
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -613,7 +621,7 @@ const index = props => {
               }}>
               Phycial activity :
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -632,7 +640,7 @@ const index = props => {
               marginVertical: 10,
               justifyContent: 'space-between',
             }}>
-            {isGhost  ? (
+            {isGhost ? (
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -645,7 +653,7 @@ const index = props => {
                   paddingHorizontal: 15,
                 }}>
                 <Image
-                  style={{ height: 15, width: 15, marginRight: 10 }}
+                  style={{height: 15, width: 15, marginRight: 10}}
                   source={require('./../../assetss/invite.png')}
                 />
                 <Text
@@ -707,7 +715,7 @@ const index = props => {
                 onPress={() => {
                   setselected(0);
                 }}
-                style={{ alignItems: 'center' }}>
+                style={{alignItems: 'center'}}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -736,7 +744,7 @@ const index = props => {
                   setselected(1);
                   // getMealComments();
                 }}
-                style={{ alignItems: 'center' }}>
+                style={{alignItems: 'center'}}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -764,7 +772,7 @@ const index = props => {
                 onPress={() => {
                   setselected(2);
                 }}
-                style={{ alignItems: 'center' }}>
+                style={{alignItems: 'center'}}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -792,7 +800,7 @@ const index = props => {
                 onPress={() => {
                   setselected(3);
                 }}
-                style={{ alignItems: 'center' }}>
+                style={{alignItems: 'center'}}>
                 <Text
                   style={{
                     fontSize: 15,
@@ -818,7 +826,7 @@ const index = props => {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{ backgroundColor: CONFIGURATION.homeBG, flex: 1 }}>
+          <View style={{backgroundColor: CONFIGURATION.homeBG, flex: 1}}>
             {selected == 0 ? (
               <>
                 <View
@@ -843,7 +851,7 @@ const index = props => {
                       onPress={() => {
                         setopen1(!open1);
                       }}
-                      style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -878,7 +886,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{ height: 30, width: 30 }}
+                      style={{height: 30, width: 30}}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1101,7 +1109,7 @@ const index = props => {
                       onPress={() => {
                         setopen2(!open2);
                       }}
-                      style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1136,7 +1144,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{ height: 30, width: 30 }}
+                      style={{height: 30, width: 30}}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1160,10 +1168,10 @@ const index = props => {
                             width: '48%',
                           }}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/weight.png')}
                           />
-                          <View style={{ marginLeft: 10 }}>
+                          <View style={{marginLeft: 10}}>
                             <Text
                               numberOfLines={1}
                               style={{
@@ -1192,10 +1200,10 @@ const index = props => {
                             width: '48%',
                           }}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/weight.png')}
                           />
-                          <View style={{ marginHorizontal: 10 }}>
+                          <View style={{marginHorizontal: 10}}>
                             <Text
                               numberOfLines={1}
                               style={{
@@ -1203,7 +1211,10 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkBlack,
                               }}>
-                              {healthProfile.weight.targetWeight ? healthProfile.weight.targetWeight : '0'} kg
+                              {healthProfile.weight.targetWeight
+                                ? healthProfile.weight.targetWeight
+                                : '0'}{' '}
+                              kg
                             </Text>
                             <Text
                               numberOfLines={1}
@@ -1260,7 +1271,8 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            {healthProfile.height.feet}'{healthProfile.height.inches}
+                            {healthProfile.height.feet}'
+                            {healthProfile.height.inches}
                           </Text>
                         </View>
                       </View>
@@ -1460,7 +1472,7 @@ const index = props => {
                       onPress={() => {
                         setopen3(!open3);
                       }}
-                      style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1495,7 +1507,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{ height: 30, width: 30 }}
+                      style={{height: 30, width: 30}}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1594,7 +1606,10 @@ const index = props => {
                               fontFamily: CONFIGURATION.TextBold,
                               color: CONFIGURATION.TextDarkBlack,
                             }}>
-                            {muscleMassPercentage ? muscleMassPercentage * 100 : ''} %
+                            {muscleMassPercentage
+                              ? muscleMassPercentage * 100
+                              : ''}{' '}
+                            %
                           </Text>
                         </View>
                       </View>
@@ -1633,7 +1648,7 @@ const index = props => {
                       onPress={() => {
                         setopen4(!open4);
                       }}
-                      style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1668,7 +1683,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{ height: 30, width: 30 }}
+                      style={{height: 30, width: 30}}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1745,9 +1760,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/alss.png')}
                           />
                           <Text
@@ -1761,7 +1776,7 @@ const index = props => {
                             Allergies/Food Intolerance
                           </Text>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
                           <TouchableOpacity
                             style={{
                               backgroundColor: CONFIGURATION.lightGray,
@@ -1778,7 +1793,6 @@ const index = props => {
                               {healthProfile.foodIntolerance}
                             </Text>
                           </TouchableOpacity>
-                        
                         </View>
 
                         {/* <Text
@@ -1886,7 +1900,7 @@ const index = props => {
                       onPress={() => {
                         setopen5(!open5);
                       }}
-                      style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -1921,7 +1935,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{ height: 30, width: 30 }}
+                      style={{height: 30, width: 30}}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -1939,9 +1953,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/Preg.png')}
                           />
                           <Text
@@ -1974,8 +1988,10 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkGray,
                               }}>
-                              {healthProfile.pregnancyHistory.pregnancyCount ? healthProfile.pregnancyHistory.pregnancyCount : '0'} time
-                              pregnancy
+                              {healthProfile.pregnancyHistory.pregnancyCount
+                                ? healthProfile.pregnancyHistory.pregnancyCount
+                                : '0'}{' '}
+                              time pregnancy
                             </Text>
                           </TouchableOpacity>
                         </View>
@@ -1998,7 +2014,10 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkBlack,
                               }}>
-                              {healthProfile.pregnancyHistory.firstDayOfLactation}
+                              {
+                                healthProfile.pregnancyHistory
+                                  .firstDayOfLactation
+                              }
                             </Text>
                           </View>
                         </View>
@@ -2021,8 +2040,10 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkBlack,
                               }}>
-                              {healthProfile.pregnancyHistory.lactationDurationMonths
-                                ? healthProfile.pregnancyHistory.lactationDurationMonths
+                              {healthProfile.pregnancyHistory
+                                .lactationDurationMonths
+                                ? healthProfile.pregnancyHistory
+                                    .lactationDurationMonths
                                 : '0'}{' '}
                               Months
                             </Text>
@@ -2036,9 +2057,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/corona.png')}
                           />
                           <Text
@@ -2052,27 +2073,25 @@ const index = props => {
                             Ailments/ illnesses (if any)
                           </Text>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        {healthProfile.medicalCondition ? 
-                          <TouchableOpacity
-                            style={{
-                              backgroundColor: CONFIGURATION.lightGray,
-                              paddingVertical: 7,
-                              paddingHorizontal: 10,
-                            }}>
-                            <Text
-                              numberOfLines={1}
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                          {healthProfile.medicalCondition ? (
+                            <TouchableOpacity
                               style={{
-                                fontSize: 14,
-                                fontFamily: CONFIGURATION.TextBold,
-                                color: CONFIGURATION.TextDarkGray,
+                                backgroundColor: CONFIGURATION.lightGray,
+                                paddingVertical: 7,
+                                paddingHorizontal: 10,
                               }}>
-                              {healthProfile.medicalCondition}
-                            </Text>
-                          </TouchableOpacity>
-                          : null
-                        }
-                        
+                              <Text
+                                numberOfLines={1}
+                                style={{
+                                  fontSize: 14,
+                                  fontFamily: CONFIGURATION.TextBold,
+                                  color: CONFIGURATION.TextDarkGray,
+                                }}>
+                                {healthProfile.medicalCondition}
+                              </Text>
+                            </TouchableOpacity>
+                          ) : null}
                         </View>
 
                         {/* <Text
@@ -2093,9 +2112,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/corona.png')}
                           />
                           <Text
@@ -2164,7 +2183,7 @@ const index = props => {
                       onPress={() => {
                         setopen6(!open6);
                       }}
-                      style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -2199,7 +2218,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{ height: 30, width: 30 }}
+                      style={{height: 30, width: 30}}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -2217,9 +2236,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/user.png')}
                           />
                           <Text
@@ -2264,9 +2283,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/tree.png')}
                           />
                           <Text
@@ -2311,9 +2330,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/boll.png')}
                           />
                           <Text
@@ -2334,7 +2353,9 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextRegular,
                             color: CONFIGURATION.TextDarkGray,
                           }}>
-                          {healthProfile.sports.description ? healthProfile.sports.description : ''}
+                          {healthProfile.sports.description
+                            ? healthProfile.sports.description
+                            : ''}
                         </Text>
                         <View
                           style={{
@@ -2355,7 +2376,9 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkBlack,
                               }}>
-                              {healthProfile.sports.frequency ? healthProfile.sports.frequency : ''}
+                              {healthProfile.sports.frequency
+                                ? healthProfile.sports.frequency
+                                : ''}
                             </Text>
                           </View>
                         </View>
@@ -2367,9 +2390,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/walk.png')}
                           />
                           <Text
@@ -2383,14 +2406,13 @@ const index = props => {
                             Do you drink alcohol?
                           </Text>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
                           <TouchableOpacity
                             style={{
                               backgroundColor: CONFIGURATION.lightGray,
                               paddingVertical: 7,
                               paddingHorizontal: 10,
                             }}>
-
                             <Text
                               numberOfLines={1}
                               style={{
@@ -2398,12 +2420,13 @@ const index = props => {
                                 fontFamily: CONFIGURATION.TextBold,
                                 color: CONFIGURATION.TextDarkGray,
                               }}>
-                              {healthProfile.alcoholIntake.doYouDrink === true ? 'YES' : 'NO'}
+                              {healthProfile.alcoholIntake.doYouDrink === true
+                                ? 'YES'
+                                : 'NO'}
                             </Text>
-
                           </TouchableOpacity>
                         </View>
-{/* 
+                        {/* 
                         <Text
                           style={{
                             fontSize: 14,
@@ -2475,9 +2498,9 @@ const index = props => {
                           borderBottomWidth: 1,
                         }}>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Image
-                            style={{ height: 35, width: 35 }}
+                            style={{height: 35, width: 35}}
                             source={require('./../../assetss/bed.png')}
                           />
                           <Text
@@ -2491,28 +2514,31 @@ const index = props => {
                             Sleep pattern
                           </Text>
                         </View>
-                        <View style={{ flexDirection: 'row', marginTop: 10 }}>
-                        {healthProfile.hoursOfSleep ?
-                          <TouchableOpacity
-                            style={{
-                              backgroundColor: CONFIGURATION.lightGray,
-                              paddingVertical: 7,
-                              paddingHorizontal: 10,
-                            }}>
-                            <Text
-                              numberOfLines={1}
+                        <View style={{flexDirection: 'row', marginTop: 10}}>
+                          {healthProfile.hoursOfSleep ? (
+                            <TouchableOpacity
                               style={{
-                                fontSize: 14,
-                                fontFamily: CONFIGURATION.TextBold,
-                                color: CONFIGURATION.TextDarkGray,
+                                backgroundColor: CONFIGURATION.lightGray,
+                                paddingVertical: 7,
+                                paddingHorizontal: 10,
                               }}>
-                             About {healthProfile.hoursOfSleep ? healthProfile.hoursOfSleep : ''} hours
-                            </Text>
-                          </TouchableOpacity>
-                          :
-                          null }
+                              <Text
+                                numberOfLines={1}
+                                style={{
+                                  fontSize: 14,
+                                  fontFamily: CONFIGURATION.TextBold,
+                                  color: CONFIGURATION.TextDarkGray,
+                                }}>
+                                About{' '}
+                                {healthProfile.hoursOfSleep
+                                  ? healthProfile.hoursOfSleep
+                                  : ''}{' '}
+                                hours
+                              </Text>
+                            </TouchableOpacity>
+                          ) : null}
                         </View>
-{/* 
+                        {/* 
                         <Text
                           style={{
                             fontSize: 14,
@@ -2549,7 +2575,7 @@ const index = props => {
                       onPress={() => {
                         setopen7(!open7);
                       }}
-                      style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -2584,7 +2610,7 @@ const index = props => {
                     </TouchableOpacity>
                     <Image
                       resizeMode={'contain'}
-                      style={{ height: 30, width: 30 }}
+                      style={{height: 30, width: 30}}
                       source={require('./../../assetss/edit.png')}
                     />
                   </View>
@@ -2615,7 +2641,7 @@ const index = props => {
                             },
                           ]}>
                           <TextInput
-                            style={[style.textInput, { width: '85%' }]}
+                            style={[style.textInput, {width: '85%'}]}
                             placeholder="Select Date"
                             value={selectDate}
                             placeholderTextColor={
@@ -2641,7 +2667,7 @@ const index = props => {
                           <TextInput
                             style={[
                               style.textInput,
-                              { width: '90%', height: 100, textAlign: 'auto' },
+                              {width: '90%', height: 100, textAlign: 'auto'},
                             ]}
                             placeholder="Write Notes"
                             value={writeNotes}
@@ -2689,7 +2715,7 @@ const index = props => {
                         </TouchableOpacity>
                       </View>
 
-                      <View style={{ flex: 1.0 }}>
+                      <View style={{flex: 1.0}}>
                         <FlatList
                           data={
                             notesData && notesData.length > 0 ? notesData : null
@@ -2698,7 +2724,7 @@ const index = props => {
                           showsVerticalScrollIndicator={false}
                           extraData={notesData}
                           keyExtractor={(item, index) => item.id}
-                          renderItem={({ item, index }) => {
+                          renderItem={({item, index}) => {
                             return <Notes item={item} />;
                           }}
                         />
@@ -2717,67 +2743,125 @@ const index = props => {
                     paddingVertical: 10,
                     elevation: 2,
                   }}>
-
-                  <View style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginHorizontal: 20,
-                  }}>
-                    <TouchableOpacity onPress={() => {
-                      var monthS = moment(month, "MMMM, YYYY").subtract("month", 1).format("MMMM, YYYY")
-                      setmonth(monthS)
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      marginHorizontal: 20,
                     }}>
-                      <Icon2 name="chevron-left" size={25} color={CONFIGURATION.TextDarkBlack} />
+                    <TouchableOpacity
+                      onPress={() => {
+                        var monthS = moment(month, 'MMMM, YYYY')
+                          .subtract('month', 1)
+                          .format('MMMM, YYYY');
+                        setmonth(monthS);
+                      }}>
+                      <Icon2
+                        name="chevron-left"
+                        size={25}
+                        color={CONFIGURATION.TextDarkBlack}
+                      />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {
-                      props.onClick(month)
-                    }}>
-                      <Text style={{
-                        fontFamily: CONFIGURATION.TextBold,
-                        color: CONFIGURATION.TextDarkBlack,
-                        fontSize: 18
-                      }}>{month}</Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        props.onClick(month);
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: CONFIGURATION.TextBold,
+                          color: CONFIGURATION.TextDarkBlack,
+                          fontSize: 18,
+                        }}>
+                        {month}
+                      </Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => {
-                      var monthS = moment(month, "MMMM, YYYY").add("month", 1).format("MMMM, YYYY")
-                      setmonth(monthS)
-                    }}>
-                      <Icon2 name="chevron-right" size={25} color={CONFIGURATION.TextDarkBlack} />
+                    <TouchableOpacity
+                      onPress={() => {
+                        var monthS = moment(month, 'MMMM, YYYY')
+                          .add('month', 1)
+                          .format('MMMM, YYYY');
+                        setmonth(monthS);
+                      }}>
+                      <Icon2
+                        name="chevron-right"
+                        size={25}
+                        color={CONFIGURATION.TextDarkBlack}
+                      />
                     </TouchableOpacity>
                   </View>
                   <FlatList
                     data={Dates}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
-                    style={{ marginHorizontal: 20, marginVertical: 10 }}
-                    renderItem={({ item }) => {
+                    style={{marginHorizontal: 20, marginVertical: 10}}
+                    renderItem={({item}) => {
                       return (
-                        <TouchableOpacity onPress={() => {
-                          setfixDate(moment(item + " " + month).format('YYYY-MM-DD'));
-                          if (selectedNames == 'Meal of the day') {
-                            getMealComments(moment(item + " " + month).format('YYYY-MM-DD'))
-                          } else if (selectedNames == 'Exercise of the day') {
-                            getExcersizeComment(moment(item + " " + month).format('YYYY-MM-DD'))
-                          } else if (selectedNames == 'Water Intake') {
-                            getWaterInstackUser(moment(item + " " + month).format('YYYY-MM-DD'))
-                          } else if (selectedNames == 'Weight') {
-                            getWaights(moment(item + " " + month).format('YYYY-MM-DD'))
-                          }
-                        }} style={{
-                          height: 70,
-                          width: width / 6 - 13,
-                          backgroundColor: moment(item + " " + month).format('YYYY-MM-DD') == fixDate ? CONFIGURATION.btnColorGreen : CONFIGURATION.lightGray,
-                          marginHorizontal: 2,
-                          alignItems: "center",
-                          justifyContent: "center"
-                        }}>
-                          <Text style={{ fontFamily: CONFIGURATION.TextBold, fontSize: 16, color: moment(item + " " + month).format('YYYY-MM-DD') == fixDate ? CONFIGURATION.white : CONFIGURATION.TextDarkGray }}>{item}</Text>
-                          <Text style={{ fontFamily: CONFIGURATION.TextRegular, fontSize: 14, color: moment(item + " " + month).format('YYYY-MM-DD') == fixDate ? CONFIGURATION.white : CONFIGURATION.TextDarkGray }}>{moment(item + month).format("ddd")}</Text>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setfixDate(
+                              moment(item + ' ' + month).format('YYYY-MM-DD'),
+                            );
+                            if (selectedNames == 'Meal of the day') {
+                              getMealComments(
+                                moment(item + ' ' + month).format('YYYY-MM-DD'),
+                              );
+                            } else if (selectedNames == 'Exercise of the day') {
+                              getExcersizeComment(
+                                moment(item + ' ' + month).format('YYYY-MM-DD'),
+                              );
+                            } else if (selectedNames == 'Water Intake') {
+                              getWaterInstackUser(
+                                moment(item + ' ' + month).format('YYYY-MM-DD'),
+                              );
+                            } else if (selectedNames == 'Weight') {
+                              getWaights(
+                                moment(item + ' ' + month).format('YYYY-MM-DD'),
+                              );
+                            }
+                          }}
+                          style={{
+                            height: 70,
+                            width: width / 6 - 13,
+                            backgroundColor:
+                              moment(item + ' ' + month).format('YYYY-MM-DD') ==
+                              fixDate
+                                ? CONFIGURATION.btnColorGreen
+                                : CONFIGURATION.lightGray,
+                            marginHorizontal: 2,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          <Text
+                            style={{
+                              fontFamily: CONFIGURATION.TextBold,
+                              fontSize: 16,
+                              color:
+                                moment(item + ' ' + month).format(
+                                  'YYYY-MM-DD',
+                                ) == fixDate
+                                  ? CONFIGURATION.white
+                                  : CONFIGURATION.TextDarkGray,
+                            }}>
+                            {item}
+                          </Text>
+                          <Text
+                            style={{
+                              fontFamily: CONFIGURATION.TextRegular,
+                              fontSize: 14,
+                              color:
+                                moment(item + ' ' + month).format(
+                                  'YYYY-MM-DD',
+                                ) == fixDate
+                                  ? CONFIGURATION.white
+                                  : CONFIGURATION.TextDarkGray,
+                            }}>
+                            {moment(item + month).format('ddd')}
+                          </Text>
                         </TouchableOpacity>
-                      )
+                      );
                     }}
                     keyExtractor={item => item.id}
                   />
@@ -2802,7 +2886,7 @@ const index = props => {
                       alignItems: 'flex-start',
                       justifyContent: 'space-between',
                     }}>
-                    <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>
+                    <Text style={{fontFamily: CONFIGURATION.TextRegular}}>
                       {selectedNames}
                     </Text>
                     <Icon2
@@ -2816,24 +2900,32 @@ const index = props => {
                 {selectedNames == 'Meal of the day' ? (
                   <>
                     <View>
-                      {commentLoading ?
-                        <ActivityIndicator style={{ marginTop: 26, alignSelf: 'center', marginBottom: 100 }} size="small" color="#000" />
-                        :
+                      {commentLoading ? (
+                        <ActivityIndicator
+                          style={{
+                            marginTop: 26,
+                            alignSelf: 'center',
+                            marginBottom: 100,
+                          }}
+                          size="small"
+                          color="#000"
+                        />
+                      ) : (
                         <>
-                          {isError ?
-                            <View style={{ flex: 1.0, marginBottom: 56 }}>
+                          {isError ? (
+                            <View style={{flex: 1.0, marginBottom: 56}}>
                               <Text
                                 style={{
                                   fontFamily: CONFIGURATION.TextBold,
                                   marginHorizontal: 20,
                                   marginVertical: 20,
                                   fontSize: 15,
-                                  alignSelf: 'center'
+                                  alignSelf: 'center',
                                 }}>
                                 No Data Found
                               </Text>
                             </View>
-                            :
+                          ) : (
                             <>
                               <Text
                                 style={{
@@ -2853,7 +2945,8 @@ const index = props => {
                                   elevation: 2,
                                   marginBottom: 20,
                                 }}>
-                                <Text style={{ fontFamily: CONFIGURATION.TextBold }}>
+                                <Text
+                                  style={{fontFamily: CONFIGURATION.TextBold}}>
                                   Total Calories Consumed
                                 </Text>
                                 <View
@@ -2915,7 +3008,7 @@ const index = props => {
                               </View>
                               <TouchableOpacity
                                 onPress={() => {
-                                  refRBPopup.current.open()
+                                  refRBPopup.current.open();
                                 }}
                                 style={{
                                   width: width - 40,
@@ -2928,7 +3021,10 @@ const index = props => {
                                   elevation: 2,
                                   marginBottom: 20,
                                 }}>
-                                <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>
+                                <Text
+                                  style={{
+                                    fontFamily: CONFIGURATION.TextRegular,
+                                  }}>
                                   {title}
                                 </Text>
                                 <Icon2
@@ -3061,7 +3157,7 @@ const index = props => {
                                       <Image
                                         resizeMode={'contain'}
                                         source={require('./../../assetss/breakfast.png')}
-                                        style={{ height: 40, width: 40 }}
+                                        style={{height: 40, width: 40}}
                                       />
                                       <View
                                         style={{
@@ -3080,8 +3176,10 @@ const index = props => {
                                           <Text
                                             style={{
                                               fontSize: 16,
-                                              fontFamily: CONFIGURATION.TextBold,
-                                              color: CONFIGURATION.TextDarkBlack,
+                                              fontFamily:
+                                                CONFIGURATION.TextBold,
+                                              color:
+                                                CONFIGURATION.TextDarkBlack,
                                             }}>
                                             Breakfast
                                           </Text>
@@ -3111,7 +3209,8 @@ const index = props => {
                                         </TouchableOpacity>
                                         <Text
                                           style={{
-                                            fontFamily: CONFIGURATION.TextRegular,
+                                            fontFamily:
+                                              CONFIGURATION.TextRegular,
                                             color: CONFIGURATION.TextDarkGray,
                                             fontSize: 12,
                                           }}>
@@ -3137,16 +3236,19 @@ const index = props => {
                                         <View
                                           style={{
                                             paddingVertical: 15,
-                                            borderColor: CONFIGURATION.lightGray,
+                                            borderColor:
+                                              CONFIGURATION.lightGray,
                                             borderBottomWidth: 1,
                                           }}>
                                           <Text
                                             style={{
-                                              fontFamily: CONFIGURATION.TextRegular,
+                                              fontFamily:
+                                                CONFIGURATION.TextRegular,
                                               color: CONFIGURATION.TextDarkGray,
                                             }}>
-                                            Lorem Ipsum is simply dummy text of the
-                                            printing and typesetting industry.
+                                            Lorem Ipsum is simply dummy text of
+                                            the printing and typesetting
+                                            industry.
                                           </Text>
                                           <View
                                             style={{
@@ -3157,7 +3259,7 @@ const index = props => {
                                             <Image
                                               resizeMode={'contain'}
                                               source={require('./../../assetss/masala.png')}
-                                              style={{ height: 40, width: 40 }}
+                                              style={{height: 40, width: 40}}
                                             />
                                             <View
                                               style={{
@@ -3173,16 +3275,20 @@ const index = props => {
                                                 <Text
                                                   style={{
                                                     fontSize: 16,
-                                                    fontFamily: CONFIGURATION.TextBold,
-                                                    color: CONFIGURATION.TextDarkBlack,
+                                                    fontFamily:
+                                                      CONFIGURATION.TextBold,
+                                                    color:
+                                                      CONFIGURATION.TextDarkBlack,
                                                   }}>
                                                   Masala fish curry
                                                 </Text>
                                               </View>
                                               <Text
                                                 style={{
-                                                  fontFamily: CONFIGURATION.TextRegular,
-                                                  color: CONFIGURATION.TextDarkGray,
+                                                  fontFamily:
+                                                    CONFIGURATION.TextRegular,
+                                                  color:
+                                                    CONFIGURATION.TextDarkGray,
                                                   fontSize: 12,
                                                 }}>
                                                 320 cals I 1 Standard serving
@@ -3190,7 +3296,8 @@ const index = props => {
                                             </View>
                                             <TouchableOpacity
                                               style={{
-                                                backgroundColor: CONFIGURATION.lightGray,
+                                                backgroundColor:
+                                                  CONFIGURATION.lightGray,
                                                 paddingHorizontal: 10,
                                                 paddingVertical: 5,
                                                 borderRadius: 5,
@@ -3198,8 +3305,10 @@ const index = props => {
                                               <Text
                                                 style={{
                                                   fontSize: 12,
-                                                  fontFamily: CONFIGURATION.TextRegular,
-                                                  color: CONFIGURATION.TextDarkGray,
+                                                  fontFamily:
+                                                    CONFIGURATION.TextRegular,
+                                                  color:
+                                                    CONFIGURATION.TextDarkGray,
                                                 }}>
                                                 Info
                                               </Text>
@@ -3248,7 +3357,7 @@ const index = props => {
                                           <Image
                                             resizeMode={'contain'}
                                             source={require('./../../assetss/banana.png')}
-                                            style={{ height: 40, width: 40 }}
+                                            style={{height: 40, width: 40}}
                                           />
                                           <View
                                             style={{
@@ -3264,16 +3373,20 @@ const index = props => {
                                               <Text
                                                 style={{
                                                   fontSize: 16,
-                                                  fontFamily: CONFIGURATION.TextBold,
-                                                  color: CONFIGURATION.TextDarkBlack,
+                                                  fontFamily:
+                                                    CONFIGURATION.TextBold,
+                                                  color:
+                                                    CONFIGURATION.TextDarkBlack,
                                                 }}>
                                                 Banana
                                               </Text>
                                             </View>
                                             <Text
                                               style={{
-                                                fontFamily: CONFIGURATION.TextRegular,
-                                                color: CONFIGURATION.TextDarkGray,
+                                                fontFamily:
+                                                  CONFIGURATION.TextRegular,
+                                                color:
+                                                  CONFIGURATION.TextDarkGray,
                                                 fontSize: 12,
                                               }}>
                                               240 cals I 1 Standard serving
@@ -3289,7 +3402,8 @@ const index = props => {
                                           <View
                                             style={{
                                               width: '50%',
-                                              backgroundColor: CONFIGURATION.lightGray,
+                                              backgroundColor:
+                                                CONFIGURATION.lightGray,
                                               height: 80,
                                               flexDirection: 'row',
                                               alignItems: 'center',
@@ -3298,21 +3412,25 @@ const index = props => {
                                             <Image
                                               resizeMode={'cover'}
                                               source={require('./../../assetss/orenge.png')}
-                                              style={{ height: 50, width: 50 }}
+                                              style={{height: 50, width: 50}}
                                             />
-                                            <View style={{ marginRight: 10 }}>
+                                            <View style={{marginRight: 10}}>
                                               <Text
                                                 style={{
                                                   fontSize: 16,
-                                                  fontFamily: CONFIGURATION.TextBold,
-                                                  color: CONFIGURATION.TextDarkBlack,
+                                                  fontFamily:
+                                                    CONFIGURATION.TextBold,
+                                                  color:
+                                                    CONFIGURATION.TextDarkBlack,
                                                 }}>
                                                 Good
                                               </Text>
                                               <Text
                                                 style={{
-                                                  fontFamily: CONFIGURATION.TextRegular,
-                                                  color: CONFIGURATION.TextDarkGray,
+                                                  fontFamily:
+                                                    CONFIGURATION.TextRegular,
+                                                  color:
+                                                    CONFIGURATION.TextDarkGray,
                                                   fontSize: 12,
                                                 }}>
                                                 Client rate
@@ -3321,7 +3439,8 @@ const index = props => {
                                           </View>
                                           <TouchableOpacity
                                             style={{
-                                              borderColor: CONFIGURATION.primaryGreen,
+                                              borderColor:
+                                                CONFIGURATION.primaryGreen,
                                               borderWidth: 1,
                                               width: '45%',
                                               height: 50,
@@ -3331,8 +3450,10 @@ const index = props => {
                                             }}>
                                             <Text
                                               style={{
-                                                fontFamily: CONFIGURATION.TextBold,
-                                                color: CONFIGURATION.primaryGreen,
+                                                fontFamily:
+                                                  CONFIGURATION.TextBold,
+                                                color:
+                                                  CONFIGURATION.primaryGreen,
                                               }}>
                                               Rate Meal
                                             </Text>
@@ -3344,8 +3465,8 @@ const index = props => {
                                 ) : null}
                                 {mealDay == 1 ? (
                                   <>
-                                    {commentArray && commentArray.length > 0 ?
-                                      <View style={{ paddingVertical: 15 }}>
+                                    {commentArray && commentArray.length > 0 ? (
+                                      <View style={{paddingVertical: 15}}>
                                         <View
                                           style={{
                                             flexDirection: 'row',
@@ -3355,14 +3476,17 @@ const index = props => {
                                           <Text
                                             style={{
                                               fontSize: 18,
-                                              fontFamily: CONFIGURATION.TextBold,
-                                              color: CONFIGURATION.TextDarkBlack,
+                                              fontFamily:
+                                                CONFIGURATION.TextBold,
+                                              color:
+                                                CONFIGURATION.TextDarkBlack,
                                             }}>
                                             Comments
                                           </Text>
                                           <TouchableOpacity
                                             style={{
-                                              borderColor: CONFIGURATION.primaryGreen,
+                                              borderColor:
+                                                CONFIGURATION.primaryGreen,
                                               borderWidth: 1,
                                               width: '45%',
                                               height: 45,
@@ -3372,23 +3496,30 @@ const index = props => {
                                             }}>
                                             <Text
                                               style={{
-                                                fontFamily: CONFIGURATION.TextBold,
-                                                color: CONFIGURATION.primaryGreen,
+                                                fontFamily:
+                                                  CONFIGURATION.TextBold,
+                                                color:
+                                                  CONFIGURATION.primaryGreen,
                                               }}>
                                               Comment
                                             </Text>
                                           </TouchableOpacity>
                                         </View>
 
-                                        <View style={{ flex: 1.0 }}>
+                                        <View style={{flex: 1.0}}>
                                           {commentArray.map((data, index) => {
-                                            console.log('DATA========>', JSON.stringify(data))
+                                            console.log(
+                                              'DATA========>',
+                                              JSON.stringify(data),
+                                            );
                                             return (
                                               <View
                                                 style={{
                                                   flexDirection: 'row',
-                                                  justifyContent: 'space-between',
-                                                  borderColor: CONFIGURATION.lightGray,
+                                                  justifyContent:
+                                                    'space-between',
+                                                  borderColor:
+                                                    CONFIGURATION.lightGray,
                                                   borderBottomWidth: 1,
                                                   paddingVertical: 20,
                                                 }}>
@@ -3399,37 +3530,48 @@ const index = props => {
                                                     borderRadius: 60 / 2,
                                                   }}
                                                   source={{
-                                                    uri: data.author.profile.profileImg,
+                                                    uri: data.author.profile
+                                                      .profileImg,
                                                   }}
                                                 />
-                                                <View style={{ width: '77%' }}>
+                                                <View style={{width: '77%'}}>
                                                   <View
                                                     style={{
                                                       flexDirection: 'row',
                                                       alignItems: 'center',
-                                                      justifyContent: 'space-between',
+                                                      justifyContent:
+                                                        'space-between',
                                                     }}>
                                                     <Text
                                                       style={{
-                                                        fontFamily: CONFIGURATION.TextBold,
+                                                        fontFamily:
+                                                          CONFIGURATION.TextBold,
                                                         fontSize: 18,
-                                                        color: CONFIGURATION.TextDarkBlack,
+                                                        color:
+                                                          CONFIGURATION.TextDarkBlack,
                                                       }}>
-                                                      {data.author.profile.fullName}
+                                                      {
+                                                        data.author.profile
+                                                          .fullName
+                                                      }
                                                     </Text>
                                                     <Text
                                                       style={{
-                                                        fontFamily: CONFIGURATION.TextRegular,
+                                                        fontFamily:
+                                                          CONFIGURATION.TextRegular,
                                                         fontSize: 12,
-                                                        color: CONFIGURATION.TextDarkGray,
+                                                        color:
+                                                          CONFIGURATION.TextDarkGray,
                                                       }}>
                                                       12:20 PM
                                                     </Text>
                                                   </View>
                                                   <Text
                                                     style={{
-                                                      fontFamily: CONFIGURATION.TextRegular,
-                                                      color: CONFIGURATION.TextDarkGray,
+                                                      fontFamily:
+                                                        CONFIGURATION.TextRegular,
+                                                      color:
+                                                        CONFIGURATION.TextDarkGray,
                                                       marginVertical: 5,
                                                     }}>
                                                     {data.body}
@@ -3441,13 +3583,18 @@ const index = props => {
                                                       marginTop: 10,
                                                     }}>
                                                     <Image
-                                                      style={{ height: 20, width: 20 }}
+                                                      style={{
+                                                        height: 20,
+                                                        width: 20,
+                                                      }}
                                                       source={require('./../../assetss/replay.png')}
                                                     />
                                                     <Text
                                                       style={{
-                                                        fontFamily: CONFIGURATION.TextBold,
-                                                        color: CONFIGURATION.TextDarkBlack,
+                                                        fontFamily:
+                                                          CONFIGURATION.TextBold,
+                                                        color:
+                                                          CONFIGURATION.TextDarkBlack,
                                                         fontSize: 12,
                                                       }}>
                                                       {' '}
@@ -3456,29 +3603,28 @@ const index = props => {
                                                   </TouchableOpacity>
                                                 </View>
                                               </View>
-                                            )
+                                            );
                                           })}
                                         </View>
                                       </View>
-                                      :
-                                      <View style={{ flex: 1.0 }}>
+                                    ) : (
+                                      <View style={{flex: 1.0}}>
                                         <Text
                                           style={{
                                             fontSize: 16,
-                                            fontFamily: CONFIGURATION.TextRegular,
+                                            fontFamily:
+                                              CONFIGURATION.TextRegular,
                                             color: CONFIGURATION.TextDarkBlack,
-                                            alignSelf: 'center'
+                                            alignSelf: 'center',
                                           }}>
                                           Comments Not Availble
                                         </Text>
                                       </View>
-                                    }
-
+                                    )}
                                   </>
-
                                 ) : null}
                                 {mealDay == 2 ? (
-                                  <View style={{ paddingVertical: 15 }}>
+                                  <View style={{paddingVertical: 15}}>
                                     <View
                                       style={{
                                         flexDirection: 'row',
@@ -3514,7 +3660,7 @@ const index = props => {
                                         <Image
                                           resizeMode={'contain'}
                                           source={require('./../../assetss/masala.png')}
-                                          style={{ height: 40, width: 40 }}
+                                          style={{height: 40, width: 40}}
                                         />
                                         <View
                                           style={{
@@ -3530,15 +3676,18 @@ const index = props => {
                                             <Text
                                               style={{
                                                 fontSize: 16,
-                                                fontFamily: CONFIGURATION.TextBold,
-                                                color: CONFIGURATION.TextDarkBlack,
+                                                fontFamily:
+                                                  CONFIGURATION.TextBold,
+                                                color:
+                                                  CONFIGURATION.TextDarkBlack,
                                               }}>
                                               Masala fish curry
                                             </Text>
                                           </View>
                                           <Text
                                             style={{
-                                              fontFamily: CONFIGURATION.TextRegular,
+                                              fontFamily:
+                                                CONFIGURATION.TextRegular,
                                               color: CONFIGURATION.TextDarkGray,
                                               fontSize: 12,
                                             }}>
@@ -3547,7 +3696,8 @@ const index = props => {
                                         </View>
                                         <TouchableOpacity
                                           style={{
-                                            backgroundColor: CONFIGURATION.lightGray,
+                                            backgroundColor:
+                                              CONFIGURATION.lightGray,
                                             paddingHorizontal: 10,
                                             paddingVertical: 5,
                                             borderRadius: 5,
@@ -3555,7 +3705,8 @@ const index = props => {
                                           <Text
                                             style={{
                                               fontSize: 12,
-                                              fontFamily: CONFIGURATION.TextRegular,
+                                              fontFamily:
+                                                CONFIGURATION.TextRegular,
                                               color: CONFIGURATION.TextDarkGray,
                                             }}>
                                             Info
@@ -3580,7 +3731,7 @@ const index = props => {
                                         <Image
                                           resizeMode={'contain'}
                                           source={require('./../../assetss/banana.png')}
-                                          style={{ height: 40, width: 40 }}
+                                          style={{height: 40, width: 40}}
                                         />
                                         <View
                                           style={{
@@ -3596,15 +3747,18 @@ const index = props => {
                                             <Text
                                               style={{
                                                 fontSize: 16,
-                                                fontFamily: CONFIGURATION.TextBold,
-                                                color: CONFIGURATION.TextDarkBlack,
+                                                fontFamily:
+                                                  CONFIGURATION.TextBold,
+                                                color:
+                                                  CONFIGURATION.TextDarkBlack,
                                               }}>
                                               Banana
                                             </Text>
                                           </View>
                                           <Text
                                             style={{
-                                              fontFamily: CONFIGURATION.TextRegular,
+                                              fontFamily:
+                                                CONFIGURATION.TextRegular,
                                               color: CONFIGURATION.TextDarkGray,
                                               fontSize: 12,
                                             }}>
@@ -3617,33 +3771,40 @@ const index = props => {
                                 ) : null}
                               </View>
                             </>
-                          }
+                          )}
                         </>
-
-                      }
+                      )}
                     </View>
                   </>
                 ) : null}
                 {selectedNames == 'Exercise of the day' ? (
                   <>
-                    {commentLoading ?
-                      <ActivityIndicator style={{ marginTop: 26, alignSelf: 'center', marginBottom: 100 }} size="small" color="#000" />
-                      :
+                    {commentLoading ? (
+                      <ActivityIndicator
+                        style={{
+                          marginTop: 26,
+                          alignSelf: 'center',
+                          marginBottom: 100,
+                        }}
+                        size="small"
+                        color="#000"
+                      />
+                    ) : (
                       <>
-                        {isError ?
-                          <View style={{ flex: 1.0, marginBottom: 56 }}>
+                        {isError ? (
+                          <View style={{flex: 1.0, marginBottom: 56}}>
                             <Text
                               style={{
                                 fontFamily: CONFIGURATION.TextBold,
                                 marginHorizontal: 20,
                                 marginVertical: 20,
                                 fontSize: 15,
-                                alignSelf: 'center'
+                                alignSelf: 'center',
                               }}>
                               No Data Found
                             </Text>
                           </View>
-                          :
+                        ) : (
                           <View>
                             <Text
                               style={{
@@ -3759,103 +3920,127 @@ const index = props => {
 
                             {mealDay2 == 1 ? (
                               <>
-                                <View style={{ paddingVertical: 15 }}>
-                                  <View style={{ flex: 1.0 }}>
-                                    {clientMealCommentsData[0].comments && clientMealCommentsData[0].comments.length > 0 ?
+                                <View style={{paddingVertical: 15}}>
+                                  <View style={{flex: 1.0}}>
+                                    {clientMealCommentsData[0].comments &&
+                                    clientMealCommentsData[0].comments.length >
+                                      0 ? (
                                       <>
-                                        {clientMealCommentsData[0].comments.map((data, index) => {
-                                          console.log('DATA========>', JSON.stringify(data))
-                                          return (
-                                            <View
-                                              style={{
-                                                flexDirection: 'row',
-                                                justifyContent: 'space-between',
-                                                borderColor: CONFIGURATION.lightGray,
-                                                borderBottomWidth: 1,
-                                                paddingVertical: 20,
-                                              }}>
-                                              <Image
+                                        {clientMealCommentsData[0].comments.map(
+                                          (data, index) => {
+                                            console.log(
+                                              'DATA========>',
+                                              JSON.stringify(data),
+                                            );
+                                            return (
+                                              <View
                                                 style={{
-                                                  height: 60,
-                                                  width: 60,
-                                                  borderRadius: 60 / 2,
-                                                }}
-                                                source={{
-                                                  uri: data.author.profile.profileImg,
-                                                }}
-                                              />
-                                              <View style={{ width: '77%' }}>
-                                                <View
+                                                  flexDirection: 'row',
+                                                  justifyContent:
+                                                    'space-between',
+                                                  borderColor:
+                                                    CONFIGURATION.lightGray,
+                                                  borderBottomWidth: 1,
+                                                  paddingVertical: 20,
+                                                }}>
+                                                <Image
                                                   style={{
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'space-between',
-                                                  }}>
+                                                    height: 60,
+                                                    width: 60,
+                                                    borderRadius: 60 / 2,
+                                                  }}
+                                                  source={{
+                                                    uri: data.author.profile
+                                                      .profileImg,
+                                                  }}
+                                                />
+                                                <View style={{width: '77%'}}>
+                                                  <View
+                                                    style={{
+                                                      flexDirection: 'row',
+                                                      alignItems: 'center',
+                                                      justifyContent:
+                                                        'space-between',
+                                                    }}>
+                                                    <Text
+                                                      style={{
+                                                        fontFamily:
+                                                          CONFIGURATION.TextBold,
+                                                        fontSize: 18,
+                                                        color:
+                                                          CONFIGURATION.TextDarkBlack,
+                                                      }}>
+                                                      {
+                                                        data.author.profile
+                                                          .fullName
+                                                      }
+                                                    </Text>
+                                                    <Text
+                                                      style={{
+                                                        fontFamily:
+                                                          CONFIGURATION.TextRegular,
+                                                        fontSize: 12,
+                                                        color:
+                                                          CONFIGURATION.TextDarkGray,
+                                                      }}>
+                                                      12:20 PM
+                                                    </Text>
+                                                  </View>
                                                   <Text
                                                     style={{
-                                                      fontFamily: CONFIGURATION.TextBold,
-                                                      fontSize: 18,
-                                                      color: CONFIGURATION.TextDarkBlack,
+                                                      fontFamily:
+                                                        CONFIGURATION.TextRegular,
+                                                      color:
+                                                        CONFIGURATION.TextDarkGray,
+                                                      marginVertical: 5,
                                                     }}>
-                                                    {data.author.profile.fullName}
+                                                    {data.body}
                                                   </Text>
-                                                  <Text
+                                                  <TouchableOpacity
                                                     style={{
-                                                      fontFamily: CONFIGURATION.TextRegular,
-                                                      fontSize: 12,
-                                                      color: CONFIGURATION.TextDarkGray,
+                                                      flexDirection: 'row',
+                                                      alignItems: 'center',
+                                                      marginTop: 10,
                                                     }}>
-                                                    12:20 PM
-                                                  </Text>
+                                                    <Image
+                                                      style={{
+                                                        height: 20,
+                                                        width: 20,
+                                                      }}
+                                                      source={require('./../../assetss/replay.png')}
+                                                    />
+                                                    <Text
+                                                      style={{
+                                                        fontFamily:
+                                                          CONFIGURATION.TextBold,
+                                                        color:
+                                                          CONFIGURATION.TextDarkBlack,
+                                                        fontSize: 12,
+                                                      }}>
+                                                      {' '}
+                                                      Reply
+                                                    </Text>
+                                                  </TouchableOpacity>
                                                 </View>
-                                                <Text
-                                                  style={{
-                                                    fontFamily: CONFIGURATION.TextRegular,
-                                                    color: CONFIGURATION.TextDarkGray,
-                                                    marginVertical: 5,
-                                                  }}>
-                                                  {data.body}
-                                                </Text>
-                                                <TouchableOpacity
-                                                  style={{
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                    marginTop: 10,
-                                                  }}>
-                                                  <Image
-                                                    style={{ height: 20, width: 20 }}
-                                                    source={require('./../../assetss/replay.png')}
-                                                  />
-                                                  <Text
-                                                    style={{
-                                                      fontFamily: CONFIGURATION.TextBold,
-                                                      color: CONFIGURATION.TextDarkBlack,
-                                                      fontSize: 12,
-                                                    }}>
-                                                    {' '}
-                                                    Reply
-                                                  </Text>
-                                                </TouchableOpacity>
                                               </View>
-                                            </View>
-                                          )
-                                        })}
+                                            );
+                                          },
+                                        )}
                                       </>
-                                      :
-                                      <View style={{ flex: 1.0 }}>
+                                    ) : (
+                                      <View style={{flex: 1.0}}>
                                         <Text
                                           style={{
                                             fontSize: 16,
-                                            fontFamily: CONFIGURATION.TextRegular,
+                                            fontFamily:
+                                              CONFIGURATION.TextRegular,
                                             color: CONFIGURATION.TextDarkBlack,
-                                            alignSelf: 'center'
+                                            alignSelf: 'center',
                                           }}>
                                           Comments Not Availble
                                         </Text>
                                       </View>
-
-                                    }
-
+                                    )}
                                   </View>
                                 </View>
                               </>
@@ -3882,7 +4067,7 @@ const index = props => {
                                     <Image
                                       resizeMode={'contain'}
                                       source={require('./../../assetss/mens.png')}
-                                      style={{ height: 60, width: 60 }}
+                                      style={{height: 60, width: 60}}
                                     />
                                     <View
                                       style={{
@@ -3956,19 +4141,21 @@ const index = props => {
                                         overflow: 'hidden',
                                         zIndex: 10,
                                       }}>
-                                      <View style={{ paddingVertical: 15 }}>
+                                      <View style={{paddingVertical: 15}}>
                                         <Text
                                           style={{
-                                            fontFamily: CONFIGURATION.TextRegular,
+                                            fontFamily:
+                                              CONFIGURATION.TextRegular,
                                             color: CONFIGURATION.TextDarkGray,
                                           }}>
-                                          Lorem Ipsum is simply dummy text of the
-                                          printing and typesetting industry.
+                                          Lorem Ipsum is simply dummy text of
+                                          the printing and typesetting industry.
                                         </Text>
                                         <View
                                           style={{
                                             width: '100%',
-                                            backgroundColor: CONFIGURATION.lightGray,
+                                            backgroundColor:
+                                              CONFIGURATION.lightGray,
                                             paddingTop: 20,
                                             paddingHorizontal: 20,
                                             marginVertical: 20,
@@ -3985,14 +4172,16 @@ const index = props => {
                                                 width: '50%',
                                               }}>
                                               <Image
-                                                style={{ height: 40, width: 40 }}
+                                                style={{height: 40, width: 40}}
                                                 source={require('./../../assetss/Reps.png')}
                                               />
-                                              <View style={{ marginLeft: 10 }}>
+                                              <View style={{marginLeft: 10}}>
                                                 <Text
                                                   style={{
-                                                    fontFamily: CONFIGURATION.TextBold,
-                                                    color: CONFIGURATION.TextDarkBlack,
+                                                    fontFamily:
+                                                      CONFIGURATION.TextBold,
+                                                    color:
+                                                      CONFIGURATION.TextDarkBlack,
                                                     fontSize: 18,
                                                   }}>
                                                   12
@@ -4001,7 +4190,8 @@ const index = props => {
                                                   style={{
                                                     fontFamily:
                                                       CONFIGURATION.TextRegular,
-                                                    color: CONFIGURATION.TextDarkGray,
+                                                    color:
+                                                      CONFIGURATION.TextDarkGray,
                                                     fontSize: 14,
                                                   }}>
                                                   Reps
@@ -4015,14 +4205,16 @@ const index = props => {
                                                 width: '50%',
                                               }}>
                                               <Image
-                                                style={{ height: 40, width: 40 }}
+                                                style={{height: 40, width: 40}}
                                                 source={require('./../../assetss/Sets.png')}
                                               />
-                                              <View style={{ marginLeft: 10 }}>
+                                              <View style={{marginLeft: 10}}>
                                                 <Text
                                                   style={{
-                                                    fontFamily: CONFIGURATION.TextBold,
-                                                    color: CONFIGURATION.TextDarkBlack,
+                                                    fontFamily:
+                                                      CONFIGURATION.TextBold,
+                                                    color:
+                                                      CONFIGURATION.TextDarkBlack,
                                                     fontSize: 18,
                                                   }}>
                                                   10
@@ -4031,7 +4223,8 @@ const index = props => {
                                                   style={{
                                                     fontFamily:
                                                       CONFIGURATION.TextRegular,
-                                                    color: CONFIGURATION.TextDarkGray,
+                                                    color:
+                                                      CONFIGURATION.TextDarkGray,
                                                     fontSize: 14,
                                                   }}>
                                                   Sets
@@ -4051,14 +4244,16 @@ const index = props => {
                                                 width: '50%',
                                               }}>
                                               <Image
-                                                style={{ height: 40, width: 40 }}
+                                                style={{height: 40, width: 40}}
                                                 source={require('./../../assetss/Duration.png')}
                                               />
-                                              <View style={{ marginLeft: 10 }}>
+                                              <View style={{marginLeft: 10}}>
                                                 <Text
                                                   style={{
-                                                    fontFamily: CONFIGURATION.TextBold,
-                                                    color: CONFIGURATION.TextDarkBlack,
+                                                    fontFamily:
+                                                      CONFIGURATION.TextBold,
+                                                    color:
+                                                      CONFIGURATION.TextDarkBlack,
                                                     fontSize: 18,
                                                   }}>
                                                   10 Min
@@ -4067,7 +4262,8 @@ const index = props => {
                                                   style={{
                                                     fontFamily:
                                                       CONFIGURATION.TextRegular,
-                                                    color: CONFIGURATION.TextDarkGray,
+                                                    color:
+                                                      CONFIGURATION.TextDarkGray,
                                                     fontSize: 14,
                                                   }}>
                                                   Duration
@@ -4081,14 +4277,16 @@ const index = props => {
                                                 width: '50%',
                                               }}>
                                               <Image
-                                                style={{ height: 40, width: 40 }}
+                                                style={{height: 40, width: 40}}
                                                 source={require('./../../assetss/Distance.png')}
                                               />
-                                              <View style={{ marginLeft: 10 }}>
+                                              <View style={{marginLeft: 10}}>
                                                 <Text
                                                   style={{
-                                                    fontFamily: CONFIGURATION.TextBold,
-                                                    color: CONFIGURATION.TextDarkBlack,
+                                                    fontFamily:
+                                                      CONFIGURATION.TextBold,
+                                                    color:
+                                                      CONFIGURATION.TextDarkBlack,
                                                     fontSize: 18,
                                                   }}>
                                                   01 Km
@@ -4097,7 +4295,8 @@ const index = props => {
                                                   style={{
                                                     fontFamily:
                                                       CONFIGURATION.TextRegular,
-                                                    color: CONFIGURATION.TextDarkGray,
+                                                    color:
+                                                      CONFIGURATION.TextDarkGray,
                                                     fontSize: 14,
                                                   }}>
                                                   Distance
@@ -4117,14 +4316,16 @@ const index = props => {
                                                 width: '50%',
                                               }}>
                                               <Image
-                                                style={{ height: 40, width: 40 }}
+                                                style={{height: 40, width: 40}}
                                                 source={require('./../../assetss/Speed.png')}
                                               />
-                                              <View style={{ marginLeft: 10 }}>
+                                              <View style={{marginLeft: 10}}>
                                                 <Text
                                                   style={{
-                                                    fontFamily: CONFIGURATION.TextBold,
-                                                    color: CONFIGURATION.TextDarkBlack,
+                                                    fontFamily:
+                                                      CONFIGURATION.TextBold,
+                                                    color:
+                                                      CONFIGURATION.TextDarkBlack,
                                                     fontSize: 18,
                                                   }}>
                                                   120
@@ -4133,7 +4334,8 @@ const index = props => {
                                                   style={{
                                                     fontFamily:
                                                       CONFIGURATION.TextRegular,
-                                                    color: CONFIGURATION.TextDarkGray,
+                                                    color:
+                                                      CONFIGURATION.TextDarkGray,
                                                     fontSize: 14,
                                                   }}>
                                                   Speed
@@ -4147,14 +4349,16 @@ const index = props => {
                                                 width: '50%',
                                               }}>
                                               <Image
-                                                style={{ height: 40, width: 40 }}
+                                                style={{height: 40, width: 40}}
                                                 source={require('./../../assetss/Sets.png')}
                                               />
-                                              <View style={{ marginLeft: 10 }}>
+                                              <View style={{marginLeft: 10}}>
                                                 <Text
                                                   style={{
-                                                    fontFamily: CONFIGURATION.TextBold,
-                                                    color: CONFIGURATION.TextDarkBlack,
+                                                    fontFamily:
+                                                      CONFIGURATION.TextBold,
+                                                    color:
+                                                      CONFIGURATION.TextDarkBlack,
                                                     fontSize: 18,
                                                   }}>
                                                   750 Cal
@@ -4164,7 +4368,8 @@ const index = props => {
                                                   style={{
                                                     fontFamily:
                                                       CONFIGURATION.TextRegular,
-                                                    color: CONFIGURATION.TextDarkGray,
+                                                    color:
+                                                      CONFIGURATION.TextDarkGray,
                                                     fontSize: 14,
                                                     width: '90%',
                                                   }}>
@@ -4198,7 +4403,7 @@ const index = props => {
                                     <Image
                                       resizeMode={'contain'}
                                       source={require('./../../assetss/mens.png')}
-                                      style={{ height: 60, width: 60 }}
+                                      style={{height: 60, width: 60}}
                                     />
                                     <View
                                       style={{
@@ -4288,7 +4493,7 @@ const index = props => {
                                     <Image
                                       resizeMode={'contain'}
                                       source={require('./../../assetss/mens.png')}
-                                      style={{ height: 50, width: 50 }}
+                                      style={{height: 50, width: 50}}
                                     />
                                     <View
                                       style={{
@@ -4347,7 +4552,7 @@ const index = props => {
                                     <Image
                                       resizeMode={'contain'}
                                       source={require('./../../assetss/mens.png')}
-                                      style={{ height: 50, width: 50 }}
+                                      style={{height: 50, width: 50}}
                                     />
                                     <View
                                       style={{
@@ -4391,473 +4596,39 @@ const index = props => {
                               </>
                             ) : null}
                           </View>
-                        }
+                        )}
                       </>
-                    }
+                    )}
                   </>
                 ) : null}
                 {selectedNames == 'Water Intake' ? (
                   <>
-                    {commentLoading ?
-                      <ActivityIndicator style={{ marginTop: 26, alignSelf: 'center', marginBottom: 100 }} size="small" color="#000" />
-                      :
+                    {commentLoading ? (
+                      <ActivityIndicator
+                        style={{
+                          marginTop: 26,
+                          alignSelf: 'center',
+                          marginBottom: 100,
+                        }}
+                        size="small"
+                        color="#000"
+                      />
+                    ) : (
                       <>
-                        {
-                          isError ?
-                            <View style={{ flex: 1.0, marginBottom: 56 }}>
-                              <Text
-                                style={{
-                                  fontFamily: CONFIGURATION.TextBold,
-                                  marginHorizontal: 20,
-                                  marginVertical: 20,
-                                  fontSize: 15,
-                                  alignSelf: 'center'
-                                }}>
-                                No Data Found
-                              </Text>
-                            </View>
-                            :
-                            <>
-                              <Text
-                                style={{
-                                  fontFamily: CONFIGURATION.TextBold,
-                                  marginHorizontal: 20,
-                                  marginVertical: 20,
-                                  fontSize: 24,
-                                }}>
-                                Water Intake
-                              </Text>
-                              <View
-                                style={{
-                                  width: width - 40,
-                                  marginHorizontal: 20,
-                                  paddingHorizontal: 20,
-                                  backgroundColor: CONFIGURATION.white,
-                                  elevation: 2,
-                                  marginBottom: 20,
-                                }}>
-                                <View
-                                  style={{
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    paddingVertical: 20,
-                                    borderColor: CONFIGURATION.lightGray,
-                                    borderBottomWidth: 1,
-                                  }}>
-                                  <Image
-                                    resizeMode={'contain'}
-                                    source={require('./../../assetss/water.png')}
-                                    style={{ height: 150, width: 150 }}
-                                  />
-                                  <View style={{ position: 'absolute' }}>
-                                    <Text
-                                      style={{
-                                        fontFamily: CONFIGURATION.TextBold,
-                                        fontSize: 20,
-                                      }}>
-                                      1500ml/
-                                    </Text>
-                                    <Text
-                                      style={{
-                                        fontFamily: CONFIGURATION.TextRegular,
-                                        fontSize: 14,
-                                        textAlign: 'center',
-                                      }}>
-                                      2500ml
-                                    </Text>
-                                  </View>
-                                </View>
-                                <Text
-                                  style={{
-                                    fontSize: 16,
-                                    fontFamily: CONFIGURATION.TextBold,
-                                    marginTop: 10,
-                                  }}>
-                                  Today’s log
-                                </Text>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                  }}>
-                                  <View
-                                    style={{
-                                      height: 50,
-                                      width: 50,
-                                      borderRadius: 50 / 2,
-                                      backgroundColor: '#2D87BB10',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                    }}>
-                                    <Image
-                                      resizeMode={'contain'}
-                                      source={require('./../../assetss/Group.png')}
-                                      style={{ height: 25, width: 25 }}
-                                    />
-                                  </View>
-                                  <View
-                                    style={{
-                                      justifyContent: 'center',
-                                      paddingVertical: 20,
-                                      width: '63%',
-                                    }}>
-                                    <View
-                                      style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                      }}>
-                                      <Text
-                                        style={{
-                                          fontSize: 16,
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                        }}>
-                                        240ml Taken
-                                      </Text>
-                                    </View>
-                                    <Text
-                                      style={{
-                                        fontFamily: CONFIGURATION.TextRegular,
-                                        color: CONFIGURATION.TextDarkGray,
-                                        fontSize: 12,
-                                      }}>
-                                      12:00 Pm
-                                    </Text>
-                                  </View>
-                                  <Image
-                                    resizeMode={'contain'}
-                                    source={require('./../../assetss/more.png')}
-                                    style={{ height: 30, width: 30 }}
-                                  />
-                                </View>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                  }}>
-                                  <View
-                                    style={{
-                                      height: 50,
-                                      width: 50,
-                                      borderRadius: 50 / 2,
-                                      backgroundColor: '#2D87BB10',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                    }}>
-                                    <Image
-                                      resizeMode={'contain'}
-                                      source={require('./../../assetss/Group.png')}
-                                      style={{ height: 25, width: 25 }}
-                                    />
-                                  </View>
-                                  <View
-                                    style={{
-                                      justifyContent: 'center',
-                                      paddingVertical: 20,
-                                      width: '63%',
-                                    }}>
-                                    <View
-                                      style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                      }}>
-                                      <Text
-                                        style={{
-                                          fontSize: 16,
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                        }}>
-                                        300ml Taken
-                                      </Text>
-                                    </View>
-                                    <Text
-                                      style={{
-                                        fontFamily: CONFIGURATION.TextRegular,
-                                        color: CONFIGURATION.TextDarkGray,
-                                        fontSize: 12,
-                                      }}>
-                                      01:00 Pm
-                                    </Text>
-                                  </View>
-                                  <Image
-                                    resizeMode={'contain'}
-                                    source={require('./../../assetss/more.png')}
-                                    style={{ height: 30, width: 30 }}
-                                  />
-                                </View>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                  }}>
-                                  <View
-                                    style={{
-                                      height: 50,
-                                      width: 50,
-                                      borderRadius: 50 / 2,
-                                      backgroundColor: '#2D87BB10',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                    }}>
-                                    <Image
-                                      resizeMode={'contain'}
-                                      source={require('./../../assetss/Group.png')}
-                                      style={{ height: 25, width: 25 }}
-                                    />
-                                  </View>
-                                  <View
-                                    style={{
-                                      justifyContent: 'center',
-                                      paddingVertical: 20,
-                                      width: '63%',
-                                    }}>
-                                    <View
-                                      style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                      }}>
-                                      <Text
-                                        style={{
-                                          fontSize: 16,
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: CONFIGURATION.TextDarkBlack,
-                                        }}>
-                                        500ml Taken
-                                      </Text>
-                                    </View>
-                                    <Text
-                                      style={{
-                                        fontFamily: CONFIGURATION.TextRegular,
-                                        color: CONFIGURATION.TextDarkGray,
-                                        fontSize: 12,
-                                      }}>
-                                      01:00 Pm
-                                    </Text>
-                                  </View>
-                                  <Image
-                                    resizeMode={'contain'}
-                                    source={require('./../../assetss/more.png')}
-                                    style={{ height: 30, width: 30 }}
-                                  />
-                                </View>
-                              </View>
-                              <View
-                                style={{
-                                  width: width - 40,
-                                  marginHorizontal: 20,
-                                  paddingHorizontal: 20,
-                                  backgroundColor: CONFIGURATION.white,
-                                  elevation: 2,
-                                  marginBottom: 20,
-                                  paddingVertical: 20,
-                                }}>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                  }}>
-                                  <View>
-                                    <View
-                                      style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                      }}>
-                                      <Text
-                                        style={{
-                                          fontSize: 16,
-                                          fontFamily: CONFIGURATION.TextBold,
-                                        }}>
-                                        Dec 2020
-                                      </Text>
-                                      <Image
-                                        resizeMode={'contain'}
-                                        style={{
-                                          height: 10,
-                                          width: 10,
-                                          marginTop: 0,
-                                          marginLeft: 10,
-                                        }}
-                                        source={require('./../../assetss/up.png')}
-                                      />
-                                    </View>
-                                    <Text
-                                      style={{
-                                        fontFamily: CONFIGURATION.TextRegular,
-                                        color: CONFIGURATION.TextDarkGray,
-                                        fontSize: 12,
-                                        marginTop: 5,
-                                      }}>
-                                      20 Dec - 26 Dec
-                                    </Text>
-                                  </View>
-                                  <View
-                                    style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text
-                                      style={{
-                                        fontFamily: CONFIGURATION.TextRegular,
-                                        color: CONFIGURATION.TextDarkGray,
-                                      }}>
-                                      My Goal
-                                    </Text>
-                                    <View
-                                      style={{
-                                        backgroundColor: '#18A3FA10',
-                                        paddingVertical: 5,
-                                        paddingHorizontal: 10,
-                                        borderRadius: 5,
-                                        marginLeft: 5,
-                                      }}>
-                                      <Text
-                                        style={{
-                                          fontFamily: CONFIGURATION.TextBold,
-                                          color: '#18A3FA',
-                                        }}>
-                                        3500ml
-                                      </Text>
-                                    </View>
-                                  </View>
-                                </View>
-                                <ScrollView
-                                  showsHorizontalScrollIndicator={false}
-                                  horizontal={true}
-                                  style={{ width: '100%' }}>
-                                  <View
-                                    style={{
-                                      height: 150,
-                                      width: '100%',
-                                      marginTop: 40,
-                                      marginBottom: 40,
-                                    }}>
-                                    <View
-                                      style={{
-                                        width: '100%',
-                                        flexDirection: 'column',
-                                        position: 'absolute',
-                                        left: 0,
-                                        bottom: -9,
-                                        zIndex: -20,
-                                        height: '120%',
-                                        justifyContent: 'space-between',
-                                        overflow: 'hidden',
-                                      }}>
-                                      {number.map((item, index) => {
-                                        // console.log((item).toString().length);
-                                        var ilen = item.toString().length;
-                                        return (
-                                          <View
-                                            key={'y' + index}
-                                            style={{
-                                              flexDirection: 'row',
-                                              alignItems: 'center',
-                                            }}>
-                                            <Text
-                                              style={{
-                                                marginRight: 10,
-                                                fontSize: 14,
-                                                color: CONFIGURATION.TextDarkGray,
-                                                textAlign: 'center',
-                                                width: '10%',
-                                                fontFamily: CONFIGURATION.TextRegular,
-                                              }}>
-                                              {item}
-                                            </Text>
-                                            <Text
-                                              numberOfLines={1}
-                                              style={{
-                                                color: '#D6D9DC60',
-                                                fontSize: 20,
-                                                textAlignVertical: 'center',
-                                                lineHeight: 30,
-                                              }}>
-                                              {
-                                                '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -'
-                                              }
-                                            </Text>
-                                          </View>
-                                        );
-                                      })}
-                                    </View>
-                                    <View style={{ flexDirection: 'row', marginLeft: 20 }}>
-                                      {numberX.map((item, index) => {
-                                        // console.log(item);
-                                        // var ra = _.random(colorArray.length-1);
-                                        //var ra = 9;
-                                        //var val = values[index];
-                                        // console.log(values[index]);
-                                        return (
-                                          <View
-                                            key={'bar' + index}
-                                            style={{
-                                              marginLeft: index == 0 ? 40 : 20,
-                                              marginHorizontal: 20,
-                                              alignSelf: 'flex-end',
-                                            }}>
-                                            <View
-                                              style={{
-                                                justifyContent: 'flex-end',
-                                                height: '100%',
-                                              }}>
-                                              <View
-                                                style={{
-                                                  height: values[index],
-                                                  width: 7,
-                                                  borderRadius: 5,
-                                                  backgroundColor: '#62D9FF',
-                                                  marginLeft: 4,
-                                                  bottom: 5,
-                                                }}
-                                              />
-                                            </View>
-                                            <View style={{ marginTop: 10 }}>
-                                              <Text
-                                                style={{
-                                                  fontSize: 12,
-                                                  color: CONFIGURATION.TextDarkGray,
-                                                  fontFamily: CONFIGURATION.TextRegular,
-                                                }}>
-                                                {item}
-                                              </Text>
-                                            </View>
-                                          </View>
-                                        );
-                                      })}
-                                    </View>
-                                  </View>
-                                </ScrollView>
-                              </View>
-                            </>
-                        }
-
-                      </>
-                    }
-
-                  </>
-                ) : null}
-
-                {selectedNames == 'Weight' ? (
-                  <>
-                    {commentLoading ?
-                      <ActivityIndicator style={{ marginTop: 26, alignSelf: 'center', marginBottom: 100 }} size="small" color="#000" />
-                      :
-                      <>
-                        {isError ?
-                          <View style={{ flex: 1.0, marginBottom: 56 }}>
+                        {isError ? (
+                          <View style={{flex: 1.0, marginBottom: 56}}>
                             <Text
                               style={{
                                 fontFamily: CONFIGURATION.TextBold,
                                 marginHorizontal: 20,
                                 marginVertical: 20,
                                 fontSize: 15,
-                                alignSelf: 'center'
+                                alignSelf: 'center',
                               }}>
                               No Data Found
                             </Text>
                           </View>
-                          :
+                        ) : (
                           <>
                             <Text
                               style={{
@@ -4866,7 +4637,7 @@ const index = props => {
                                 marginVertical: 20,
                                 fontSize: 24,
                               }}>
-                              Weight
+                              Water Intake
                             </Text>
                             <View
                               style={{
@@ -4879,110 +4650,33 @@ const index = props => {
                               }}>
                               <View
                                 style={{
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
                                   paddingVertical: 20,
                                   borderColor: CONFIGURATION.lightGray,
                                   borderBottomWidth: 1,
                                 }}>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                  }}>
-                                  <Image
-                                    source={require('./../../assetss/scale_1.png')}
-                                    style={{ height: 50, width: 50 }}
-                                  />
-                                  <Text
-                                    style={{
-                                      fontFamily: CONFIGURATION.TextBold,
-                                      fontSize: 20,
-                                      width: '60%',
-                                    }}>
-                                    Currrent Weight
-                                  </Text>
+                                <Image
+                                  resizeMode={'contain'}
+                                  source={require('./../../assetss/water.png')}
+                                  style={{height: 150, width: 150}}
+                                />
+                                <View style={{position: 'absolute'}}>
                                   <Text
                                     style={{
                                       fontFamily: CONFIGURATION.TextBold,
                                       fontSize: 20,
                                     }}>
-                                    58kg
+                                    1500ml/
                                   </Text>
-                                </View>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    marginTop: 20,
-                                    width: width - 80,
-                                  }}>
                                   <Text
-                                    numberOfLines={1}
-                                    style={[
-                                      style.textx,
-                                      { fontFamily: CONFIGURATION.TextBold },
-                                    ]}>
-                                    Initial Weight
-                                  </Text>
-                                  <View style={style.textV}>
-                                    <Text
-                                      numberOfLines={1}
-                                      style={{
-                                        fontSize: 14,
-                                        fontFamily: CONFIGURATION.TextBold,
-                                        color: CONFIGURATION.TextDarkGray,
-                                      }}>
-                                      Goal Weight
-                                    </Text>
-                                  </View>
-                                </View>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    marginVertical: 10,
-                                    width: width - 80,
-                                  }}>
-                                  <Text
-                                    numberOfLines={1}
-                                    style={[
-                                      style.textx,
-                                      { fontFamily: CONFIGURATION.TextBold },
-                                    ]}>
-                                    65 Kg
-                                  </Text>
-                                  <View style={style.textV}>
-                                    <Text
-                                      numberOfLines={1}
-                                      style={{
-                                        fontSize: 14,
-                                        fontFamily: CONFIGURATION.TextBold,
-                                        color: CONFIGURATION.TextDarkGray,
-                                      }}>
-                                      55 Kg
-                                    </Text>
-                                  </View>
-                                </View>
-                                <View
-                                  style={{
-                                    height: 5,
-                                    width: '100%',
-                                    backgroundColor: CONFIGURATION.lightGray,
-                                    borderRadius: 50,
-                                    overflow: 'hidden',
-                                    marginBottom: 10,
-                                    marginTop: 5,
-                                  }}>
-                                  <View
                                     style={{
-                                      height: 5,
-                                      width: '70%',
-                                      backgroundColor: CONFIGURATION.lightYellow,
-                                      borderRadius: 50,
-                                      overflow: 'hidden',
-                                    }}></View>
+                                      fontFamily: CONFIGURATION.TextRegular,
+                                      fontSize: 14,
+                                      textAlign: 'center',
+                                    }}>
+                                    2500ml
+                                  </Text>
                                 </View>
                               </View>
                               <Text
@@ -4991,7 +4685,7 @@ const index = props => {
                                   fontFamily: CONFIGURATION.TextBold,
                                   marginTop: 10,
                                 }}>
-                                Past log
+                                Today’s log
                               </Text>
                               <View
                                 style={{
@@ -5004,14 +4698,14 @@ const index = props => {
                                     height: 50,
                                     width: 50,
                                     borderRadius: 50 / 2,
-                                    backgroundColor: CONFIGURATION.lightOrenge,
+                                    backgroundColor: '#2D87BB10',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                   }}>
                                   <Image
                                     resizeMode={'contain'}
-                                    source={require('./../../assetss/scale.png')}
-                                    style={{ height: 25, width: 25 }}
+                                    source={require('./../../assetss/Group.png')}
+                                    style={{height: 25, width: 25}}
                                   />
                                 </View>
                                 <View
@@ -5046,7 +4740,7 @@ const index = props => {
                                 <Image
                                   resizeMode={'contain'}
                                   source={require('./../../assetss/more.png')}
-                                  style={{ height: 30, width: 30 }}
+                                  style={{height: 30, width: 30}}
                                 />
                               </View>
                               <View
@@ -5060,14 +4754,14 @@ const index = props => {
                                     height: 50,
                                     width: 50,
                                     borderRadius: 50 / 2,
-                                    backgroundColor: CONFIGURATION.lightOrenge,
+                                    backgroundColor: '#2D87BB10',
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                   }}>
                                   <Image
                                     resizeMode={'contain'}
-                                    source={require('./../../assetss/scale.png')}
-                                    style={{ height: 25, width: 25 }}
+                                    source={require('./../../assetss/Group.png')}
+                                    style={{height: 25, width: 25}}
                                   />
                                 </View>
                                 <View
@@ -5087,7 +4781,7 @@ const index = props => {
                                         fontFamily: CONFIGURATION.TextBold,
                                         color: CONFIGURATION.TextDarkBlack,
                                       }}>
-                                      240ml Taken
+                                      300ml Taken
                                     </Text>
                                   </View>
                                   <Text
@@ -5096,13 +4790,69 @@ const index = props => {
                                       color: CONFIGURATION.TextDarkGray,
                                       fontSize: 12,
                                     }}>
-                                    12:00 Pm
+                                    01:00 Pm
                                   </Text>
                                 </View>
                                 <Image
                                   resizeMode={'contain'}
                                   source={require('./../../assetss/more.png')}
-                                  style={{ height: 30, width: 30 }}
+                                  style={{height: 30, width: 30}}
+                                />
+                              </View>
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                }}>
+                                <View
+                                  style={{
+                                    height: 50,
+                                    width: 50,
+                                    borderRadius: 50 / 2,
+                                    backgroundColor: '#2D87BB10',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}>
+                                  <Image
+                                    resizeMode={'contain'}
+                                    source={require('./../../assetss/Group.png')}
+                                    style={{height: 25, width: 25}}
+                                  />
+                                </View>
+                                <View
+                                  style={{
+                                    justifyContent: 'center',
+                                    paddingVertical: 20,
+                                    width: '63%',
+                                  }}>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 16,
+                                        fontFamily: CONFIGURATION.TextBold,
+                                        color: CONFIGURATION.TextDarkBlack,
+                                      }}>
+                                      500ml Taken
+                                    </Text>
+                                  </View>
+                                  <Text
+                                    style={{
+                                      fontFamily: CONFIGURATION.TextRegular,
+                                      color: CONFIGURATION.TextDarkGray,
+                                      fontSize: 12,
+                                    }}>
+                                    01:00 Pm
+                                  </Text>
+                                </View>
+                                <Image
+                                  resizeMode={'contain'}
+                                  source={require('./../../assetss/more.png')}
+                                  style={{height: 30, width: 30}}
                                 />
                               </View>
                             </View>
@@ -5157,7 +4907,10 @@ const index = props => {
                                   </Text>
                                 </View>
                                 <View
-                                  style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                  }}>
                                   <Text
                                     style={{
                                       fontFamily: CONFIGURATION.TextRegular,
@@ -5167,7 +4920,487 @@ const index = props => {
                                   </Text>
                                   <View
                                     style={{
-                                      backgroundColor: CONFIGURATION.lightOrenge,
+                                      backgroundColor: '#18A3FA10',
+                                      paddingVertical: 5,
+                                      paddingHorizontal: 10,
+                                      borderRadius: 5,
+                                      marginLeft: 5,
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontFamily: CONFIGURATION.TextBold,
+                                        color: '#18A3FA',
+                                      }}>
+                                      3500ml
+                                    </Text>
+                                  </View>
+                                </View>
+                              </View>
+                              <ScrollView
+                                showsHorizontalScrollIndicator={false}
+                                horizontal={true}
+                                style={{width: '100%'}}>
+                                <View
+                                  style={{
+                                    height: 150,
+                                    width: '100%',
+                                    marginTop: 40,
+                                    marginBottom: 40,
+                                  }}>
+                                  <View
+                                    style={{
+                                      width: '100%',
+                                      flexDirection: 'column',
+                                      position: 'absolute',
+                                      left: 0,
+                                      bottom: -9,
+                                      zIndex: -20,
+                                      height: '120%',
+                                      justifyContent: 'space-between',
+                                      overflow: 'hidden',
+                                    }}>
+                                    {number.map((item, index) => {
+                                      // console.log((item).toString().length);
+                                      var ilen = item.toString().length;
+                                      return (
+                                        <View
+                                          key={'y' + index}
+                                          style={{
+                                            flexDirection: 'row',
+                                            alignItems: 'center',
+                                          }}>
+                                          <Text
+                                            style={{
+                                              marginRight: 10,
+                                              fontSize: 14,
+                                              color: CONFIGURATION.TextDarkGray,
+                                              textAlign: 'center',
+                                              width: '10%',
+                                              fontFamily:
+                                                CONFIGURATION.TextRegular,
+                                            }}>
+                                            {item}
+                                          </Text>
+                                          <Text
+                                            numberOfLines={1}
+                                            style={{
+                                              color: '#D6D9DC60',
+                                              fontSize: 20,
+                                              textAlignVertical: 'center',
+                                              lineHeight: 30,
+                                            }}>
+                                            {
+                                              '- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -'
+                                            }
+                                          </Text>
+                                        </View>
+                                      );
+                                    })}
+                                  </View>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      marginLeft: 20,
+                                    }}>
+                                    {numberX.map((item, index) => {
+                                      // console.log(item);
+                                      // var ra = _.random(colorArray.length-1);
+                                      //var ra = 9;
+                                      //var val = values[index];
+                                      // console.log(values[index]);
+                                      return (
+                                        <View
+                                          key={'bar' + index}
+                                          style={{
+                                            marginLeft: index == 0 ? 40 : 20,
+                                            marginHorizontal: 20,
+                                            alignSelf: 'flex-end',
+                                          }}>
+                                          <View
+                                            style={{
+                                              justifyContent: 'flex-end',
+                                              height: '100%',
+                                            }}>
+                                            <View
+                                              style={{
+                                                height: values[index],
+                                                width: 7,
+                                                borderRadius: 5,
+                                                backgroundColor: '#62D9FF',
+                                                marginLeft: 4,
+                                                bottom: 5,
+                                              }}
+                                            />
+                                          </View>
+                                          <View style={{marginTop: 10}}>
+                                            <Text
+                                              style={{
+                                                fontSize: 12,
+                                                color:
+                                                  CONFIGURATION.TextDarkGray,
+                                                fontFamily:
+                                                  CONFIGURATION.TextRegular,
+                                              }}>
+                                              {item}
+                                            </Text>
+                                          </View>
+                                        </View>
+                                      );
+                                    })}
+                                  </View>
+                                </View>
+                              </ScrollView>
+                            </View>
+                          </>
+                        )}
+                      </>
+                    )}
+                  </>
+                ) : null}
+
+                {selectedNames == 'Weight' ? (
+                  <>
+                    {commentLoading ? (
+                      <ActivityIndicator
+                        style={{
+                          marginTop: 26,
+                          alignSelf: 'center',
+                          marginBottom: 100,
+                        }}
+                        size="small"
+                        color="#000"
+                      />
+                    ) : (
+                      <>
+                        {isError ? (
+                          <View style={{flex: 1.0, marginBottom: 56}}>
+                            <Text
+                              style={{
+                                fontFamily: CONFIGURATION.TextBold,
+                                marginHorizontal: 20,
+                                marginVertical: 20,
+                                fontSize: 15,
+                                alignSelf: 'center',
+                              }}>
+                              No Data Found
+                            </Text>
+                          </View>
+                        ) : (
+                          <>
+                            <Text
+                              style={{
+                                fontFamily: CONFIGURATION.TextBold,
+                                marginHorizontal: 20,
+                                marginVertical: 20,
+                                fontSize: 24,
+                              }}>
+                              Weight
+                            </Text>
+                            <View
+                              style={{
+                                width: width - 40,
+                                marginHorizontal: 20,
+                                paddingHorizontal: 20,
+                                backgroundColor: CONFIGURATION.white,
+                                elevation: 2,
+                                marginBottom: 20,
+                              }}>
+                              <View
+                                style={{
+                                  paddingVertical: 20,
+                                  borderColor: CONFIGURATION.lightGray,
+                                  borderBottomWidth: 1,
+                                }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                  }}>
+                                  <Image
+                                    source={require('./../../assetss/scale_1.png')}
+                                    style={{height: 50, width: 50}}
+                                  />
+                                  <Text
+                                    style={{
+                                      fontFamily: CONFIGURATION.TextBold,
+                                      fontSize: 20,
+                                      width: '60%',
+                                    }}>
+                                    Currrent Weight
+                                  </Text>
+                                  <Text
+                                    style={{
+                                      fontFamily: CONFIGURATION.TextBold,
+                                      fontSize: 20,
+                                    }}>
+                                    58kg
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    marginTop: 20,
+                                    width: width - 80,
+                                  }}>
+                                  <Text
+                                    numberOfLines={1}
+                                    style={[
+                                      style.textx,
+                                      {fontFamily: CONFIGURATION.TextBold},
+                                    ]}>
+                                    Initial Weight
+                                  </Text>
+                                  <View style={style.textV}>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={{
+                                        fontSize: 14,
+                                        fontFamily: CONFIGURATION.TextBold,
+                                        color: CONFIGURATION.TextDarkGray,
+                                      }}>
+                                      Goal Weight
+                                    </Text>
+                                  </View>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    marginVertical: 10,
+                                    width: width - 80,
+                                  }}>
+                                  <Text
+                                    numberOfLines={1}
+                                    style={[
+                                      style.textx,
+                                      {fontFamily: CONFIGURATION.TextBold},
+                                    ]}>
+                                    65 Kg
+                                  </Text>
+                                  <View style={style.textV}>
+                                    <Text
+                                      numberOfLines={1}
+                                      style={{
+                                        fontSize: 14,
+                                        fontFamily: CONFIGURATION.TextBold,
+                                        color: CONFIGURATION.TextDarkGray,
+                                      }}>
+                                      55 Kg
+                                    </Text>
+                                  </View>
+                                </View>
+                                <View
+                                  style={{
+                                    height: 5,
+                                    width: '100%',
+                                    backgroundColor: CONFIGURATION.lightGray,
+                                    borderRadius: 50,
+                                    overflow: 'hidden',
+                                    marginBottom: 10,
+                                    marginTop: 5,
+                                  }}>
+                                  <View
+                                    style={{
+                                      height: 5,
+                                      width: '70%',
+                                      backgroundColor:
+                                        CONFIGURATION.lightYellow,
+                                      borderRadius: 50,
+                                      overflow: 'hidden',
+                                    }}></View>
+                                </View>
+                              </View>
+                              <Text
+                                style={{
+                                  fontSize: 16,
+                                  fontFamily: CONFIGURATION.TextBold,
+                                  marginTop: 10,
+                                }}>
+                                Past log
+                              </Text>
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                }}>
+                                <View
+                                  style={{
+                                    height: 50,
+                                    width: 50,
+                                    borderRadius: 50 / 2,
+                                    backgroundColor: CONFIGURATION.lightOrenge,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}>
+                                  <Image
+                                    resizeMode={'contain'}
+                                    source={require('./../../assetss/scale.png')}
+                                    style={{height: 25, width: 25}}
+                                  />
+                                </View>
+                                <View
+                                  style={{
+                                    justifyContent: 'center',
+                                    paddingVertical: 20,
+                                    width: '63%',
+                                  }}>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 16,
+                                        fontFamily: CONFIGURATION.TextBold,
+                                        color: CONFIGURATION.TextDarkBlack,
+                                      }}>
+                                      240ml Taken
+                                    </Text>
+                                  </View>
+                                  <Text
+                                    style={{
+                                      fontFamily: CONFIGURATION.TextRegular,
+                                      color: CONFIGURATION.TextDarkGray,
+                                      fontSize: 12,
+                                    }}>
+                                    12:00 Pm
+                                  </Text>
+                                </View>
+                                <Image
+                                  resizeMode={'contain'}
+                                  source={require('./../../assetss/more.png')}
+                                  style={{height: 30, width: 30}}
+                                />
+                              </View>
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                }}>
+                                <View
+                                  style={{
+                                    height: 50,
+                                    width: 50,
+                                    borderRadius: 50 / 2,
+                                    backgroundColor: CONFIGURATION.lightOrenge,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                  }}>
+                                  <Image
+                                    resizeMode={'contain'}
+                                    source={require('./../../assetss/scale.png')}
+                                    style={{height: 25, width: 25}}
+                                  />
+                                </View>
+                                <View
+                                  style={{
+                                    justifyContent: 'center',
+                                    paddingVertical: 20,
+                                    width: '63%',
+                                  }}>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 16,
+                                        fontFamily: CONFIGURATION.TextBold,
+                                        color: CONFIGURATION.TextDarkBlack,
+                                      }}>
+                                      240ml Taken
+                                    </Text>
+                                  </View>
+                                  <Text
+                                    style={{
+                                      fontFamily: CONFIGURATION.TextRegular,
+                                      color: CONFIGURATION.TextDarkGray,
+                                      fontSize: 12,
+                                    }}>
+                                    12:00 Pm
+                                  </Text>
+                                </View>
+                                <Image
+                                  resizeMode={'contain'}
+                                  source={require('./../../assetss/more.png')}
+                                  style={{height: 30, width: 30}}
+                                />
+                              </View>
+                            </View>
+                            <View
+                              style={{
+                                width: width - 40,
+                                marginHorizontal: 20,
+                                paddingHorizontal: 20,
+                                backgroundColor: CONFIGURATION.white,
+                                elevation: 2,
+                                marginBottom: 20,
+                                paddingVertical: 20,
+                              }}>
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center',
+                                }}>
+                                <View>
+                                  <View
+                                    style={{
+                                      flexDirection: 'row',
+                                      alignItems: 'center',
+                                    }}>
+                                    <Text
+                                      style={{
+                                        fontSize: 16,
+                                        fontFamily: CONFIGURATION.TextBold,
+                                      }}>
+                                      Dec 2020
+                                    </Text>
+                                    <Image
+                                      resizeMode={'contain'}
+                                      style={{
+                                        height: 10,
+                                        width: 10,
+                                        marginTop: 0,
+                                        marginLeft: 10,
+                                      }}
+                                      source={require('./../../assetss/up.png')}
+                                    />
+                                  </View>
+                                  <Text
+                                    style={{
+                                      fontFamily: CONFIGURATION.TextRegular,
+                                      color: CONFIGURATION.TextDarkGray,
+                                      fontSize: 12,
+                                      marginTop: 5,
+                                    }}>
+                                    20 Dec - 26 Dec
+                                  </Text>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                  }}>
+                                  <Text
+                                    style={{
+                                      fontFamily: CONFIGURATION.TextRegular,
+                                      color: CONFIGURATION.TextDarkGray,
+                                    }}>
+                                    My Goal
+                                  </Text>
+                                  <View
+                                    style={{
+                                      backgroundColor:
+                                        CONFIGURATION.lightOrenge,
                                       paddingVertical: 5,
                                       paddingHorizontal: 10,
                                       borderRadius: 5,
@@ -5183,7 +5416,7 @@ const index = props => {
                                   </View>
                                 </View>
                               </View>
-                              <View style={{ width: width - 80, marginTop: 20 }}>
+                              <View style={{width: width - 80, marginTop: 20}}>
                                 <ScrollView
                                   horizontal={true}
                                   showsHorizontalScrollIndicator={false}>
@@ -5202,9 +5435,10 @@ const index = props => {
                                 </ScrollView>
                               </View>
                             </View>
-                          </>}
+                          </>
+                        )}
                       </>
-                    }
+                    )}
                   </>
                 ) : null}
               </>
@@ -5241,14 +5475,14 @@ const index = props => {
               borderRadius: 5,
               marginTop: 10,
             }}>
-            <Text style={{ fontFamily: CONFIGURATION.TextBold }}>
+            <Text style={{fontFamily: CONFIGURATION.TextBold}}>
               Meal of the day
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               setselectedNames('Exercise of the day');
-              getExcersizeComment(moment().format('YYYY-MM-DD'))
+              getExcersizeComment(moment().format('YYYY-MM-DD'));
               refRBSheet.current.close();
             }}
             style={{
@@ -5260,14 +5494,14 @@ const index = props => {
               borderRadius: 5,
               marginTop: 10,
             }}>
-            <Text style={{ fontFamily: CONFIGURATION.TextBold }}>
+            <Text style={{fontFamily: CONFIGURATION.TextBold}}>
               Exercise of the day
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               setselectedNames('Water Intake');
-              getWaterInstackUser(moment().format('YYYY-MM-DD'))
+              getWaterInstackUser(moment().format('YYYY-MM-DD'));
               refRBSheet.current.close();
             }}
             style={{
@@ -5279,14 +5513,14 @@ const index = props => {
               borderRadius: 5,
               marginTop: 10,
             }}>
-            <Text style={{ fontFamily: CONFIGURATION.TextBold }}>
+            <Text style={{fontFamily: CONFIGURATION.TextBold}}>
               Water Intake
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               setselectedNames('Weight');
-              getWaights(moment().format('YYYY-MM-DD'))
+              getWaights(moment().format('YYYY-MM-DD'));
               refRBSheet.current.close();
             }}
             style={{
@@ -5298,7 +5532,7 @@ const index = props => {
               borderRadius: 5,
               marginTop: 10,
             }}>
-            <Text style={{ fontFamily: CONFIGURATION.TextBold }}>Weight</Text>
+            <Text style={{fontFamily: CONFIGURATION.TextBold}}>Weight</Text>
           </TouchableOpacity>
         </ScrollView>
       </RBSheet>
@@ -5321,12 +5555,12 @@ const index = props => {
             showsVerticalScrollIndicator={false}
             extraData={notesData}
             keyExtractor={(item, index) => item.id}
-            renderItem={({ item, index }) => {
+            renderItem={({item, index}) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    setTitle(item.mealType)
-                    setCommentArray(item.comments)
+                    setTitle(item.mealType);
+                    setCommentArray(item.comments);
                     refRBPopup.current.close();
                   }}
                   style={{
@@ -5338,9 +5572,11 @@ const index = props => {
                     borderRadius: 5,
                     marginTop: 10,
                   }}>
-                  <Text style={{ fontFamily: CONFIGURATION.TextBold }}>{item.mealType}</Text>
+                  <Text style={{fontFamily: CONFIGURATION.TextBold}}>
+                    {item.mealType}
+                  </Text>
                 </TouchableOpacity>
-              )
+              );
             }}
           />
         </View>
