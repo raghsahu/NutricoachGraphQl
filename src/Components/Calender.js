@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Dimensions, ImageBackground, Image, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, Dimensions, ImageBackground, Image, TouchableOpacity, FlatList, Alert } from 'react-native'
 import CONFIGURATION from './Config'
 import Icon from 'react-native-vector-icons/Entypo'
 import { ScrollView } from 'react-native-gesture-handler'
 import moment from 'moment'
 const { height, width } = Dimensions.get("screen")
 
-const Chat = (props) => {
+const Calender = (props) => {
 
     const [Dates, setDates] = useState()
     const [modalVisible, setModalVisible] = useState(false);
     const [month, setmonth] = useState(moment(new Date()).format("MMMM, YYYY"))
     const [addMonth, setaddMonth] = useState(0)
     const [fixDate, setfixDate] = useState("")
+    
     useEffect(() => {
         var dateObj = moment(month, "MMMM, YYYY").daysInMonth()
         setaddMonth(dateObj)
@@ -35,15 +36,14 @@ const Chat = (props) => {
                 marginHorizontal: 20,
             }}>
                 <TouchableOpacity onPress={() => {
-
                     var monthS = moment(month, "MMMM, YYYY").subtract("month", 1).format("MMMM, YYYY")
-                    setmonth(monthS)
+                    setmonth(monthS)      
                 }}>
                     <Icon name="chevron-left" size={25} color={CONFIGURATION.TextDarkBlack} />
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=>{
-                    props.onClick(month)
+                    props.onClick(month)                    
                 }}>
                 <Text style={{
                     fontFamily: CONFIGURATION.TextBold,
@@ -87,4 +87,4 @@ const Chat = (props) => {
     )
 }
 
-export default Chat
+export default Calender
