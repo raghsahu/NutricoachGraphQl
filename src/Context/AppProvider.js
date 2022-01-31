@@ -6,6 +6,7 @@ import { AuthContext } from './AuthProvider';
 //PACKAGES
 import axios from 'axios';
 import { useQuery, gql } from '@apollo/client';
+import { Alert } from 'react-native';
 
 export const APPContext = createContext();
 
@@ -470,8 +471,124 @@ export const APPProvider = props => {
     return await request('get', graphqlQuery);
   };
 
+  const getDailyWaights = async (customerId, date) => {
+    const graphqlQuery = {
+      query: `{
+              me {
+                ... on Coach {
+                  customer(id: "${customerId}" ),
+                  {
+                    dailyWeights(where: {
+                    date:"${date}"
+                    customerId: "${customerId}"
+                  })
+                    {
+                    nodes{
+                      id
+                      value
+                      date
+                      createdAt
+                      updatedAt
+                      customerId
+                      bmi
+                      hip
+                      waist
+                    }
+                  }
+                }
+              }
+            }
+          }`,
+    };
+    return await request('get', graphqlQuery);
+  }
 
-  const getClientsMealComments = async customerId => {
+  const getWaterInstack = async (customerId, date) => {
+
+    const graphqlQuery = {
+      query: `{
+              me {
+                ... on Coach {
+                  customer(id: "${customerId}" ),
+                  {
+                    waterIntakes(where: {
+                    date:"${date}"
+                    customerId: "${customerId}"
+                  })
+                    {
+                    nodes{
+                      id
+                      amount
+                      goal
+                      date
+                      createdAt
+                      updatedAt
+                      customerId
+                      time
+                      count
+                      logs{
+                        logAmount
+                        logTime
+                        createdAt
+                        updatedAt
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }`,
+    };
+    return await request('get', graphqlQuery);
+
+  }
+
+  const getExcersizeOfClient = async (customerId, date) => {
+    const graphqlQuery = {
+      query: `{
+              me {
+                ... on Coach {
+                  customer(id: "${customerId}" ),
+                  {
+                    exercises(where: {
+                    date:"${date}"
+                    customerId: "${customerId}"
+                  })
+                    {
+                    nodes{
+                      id
+                      type
+                      description
+                      date
+                      commentCount
+                      fields
+                      duration
+                      comments{
+                        id
+                        body
+                        updatedAt
+                        author{
+                          profile{
+                            fullName
+                            profileImg
+                            dateOfBirth
+                            mobileNum
+                          }
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }`,
+    };
+    return await request('get', graphqlQuery);
+  }
+
+
+  const getClientsMealComments = async (customerId, date) => {
     const graphqlQuery = {
       query: `{
               me {
@@ -479,6 +596,7 @@ export const APPProvider = props => {
                   customer(id: "${customerId}" ),
                   {
                    meals(where: {
+                    date:"${date}"
                     customerId: "${customerId}"
                   })
                     {
@@ -488,6 +606,20 @@ export const APPProvider = props => {
                       mealType
                       rating
                       commentCount
+                      comments{
+                        id
+                        body
+                        updatedAt
+                        author{
+                          profile{
+                            fullName
+                            profileImg
+                            dateOfBirth
+                            mobileNum
+                          }
+                          id
+                        }
+                      }
                     }
                   }
                 }
@@ -733,6 +865,9 @@ export const APPProvider = props => {
         getNotesListData,
         createNewClient,
         inviteClientEmail,
+        getExcersizeOfClient,
+        getWaterInstack,
+        getDailyWaights
       }}>
       {props.children}
     </APPContext.Provider>
