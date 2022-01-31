@@ -143,7 +143,7 @@ export const APPProvider = props => {
         id: id,
       },
     };
-       return await request('post', graphqlQuery);
+    return await request('post', graphqlQuery);
   }
 
   async function getStrugglingClients() {
@@ -461,7 +461,7 @@ export const APPProvider = props => {
     return await request('get', graphqlQuery);
   };
 
-  
+
   const getClientsMealComments = async customerId => {
     const graphqlQuery = {
       query: `{
@@ -509,7 +509,7 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
-   const getNotesListData = async customerId => {
+  const getNotesListData = async customerId => {
     const graphqlQuery = {
       query: `query allCustomerRemark($customerId: ID!) {
                 allCustomerRemark(customerId: $customerId){
@@ -525,7 +525,7 @@ export const APPProvider = props => {
         customerId: customerId,
       },
     };
-       return await request('post', graphqlQuery);
+    return await request('post', graphqlQuery);
   };
 
   const createNewClient = async (firstname, lastname, email, selectDate, gender, mobile) => {
@@ -575,7 +575,7 @@ export const APPProvider = props => {
         input: {
           clientId: customerId,
           email: email,
-          
+
         },
       },
     };
