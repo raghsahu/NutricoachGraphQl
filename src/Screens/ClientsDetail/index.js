@@ -144,7 +144,7 @@ const index = props => {
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
   const [lastActivity, setlastActivity] = useState('');
-  const [isGhost, setisGhost] = useState(false);
+  const [isGhost, setisGhost] = useState(true);
   const [heightFeet, setHeightFeet] = useState('');
   const [heightInches, setHeightInches] = useState('');
   const [currentWeight, setCurrentWeight] = useState('');
@@ -183,7 +183,7 @@ const index = props => {
   useEffect(() => {
     getClientData();
     getNotesList();
-    pregnancyHistory.pregnancyCount
+    
   }, []);
 
   const handleConfirm = date => {
@@ -587,7 +587,7 @@ const index = props => {
               marginVertical: 10,
               justifyContent: 'space-between',
             }}>
-            {isGhost != true ? (
+            {isGhost  ? (
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
