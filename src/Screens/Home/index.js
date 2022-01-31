@@ -44,7 +44,7 @@ const index = (props) => {
                 let id = obj.data.logInCoach.id;
                 if (id != null) {
                     setId(id)
-                     fetchProfile()
+                    fetchProfile()
                 }
             } else {
             }
@@ -53,37 +53,38 @@ const index = (props) => {
 
     useEffect(() => {
         getStrugglingClientData()
-       
+
         return () => { }
     }, [])
 
     async function getStrugglingClientData() {
         const result = await getStrugglingClients()
         setStrugglingClientLoading(false)
+        console.log('Result=====>', JSON.stringify(result))
         if (result && result.data && result.data.data && result.data.data.me) {
             setStrugglingClient(result.data.data.me.strugglingClients)
-         
-           setNewUserCount(result.data.data.me.businessMetrics.newUsersCount)
-           setpendingInvitesCount(result.data.data.me.businessMetrics.pendingInvitesCount)
-           setendingClientsCount(result.data.data.me.businessMetrics.endingClientsCount)
-        
+
+            setNewUserCount(result.data.data.me.businessMetrics.newUsersCount)
+            setpendingInvitesCount(result.data.data.me.businessMetrics.pendingInvitesCount)
+            setendingClientsCount(result.data.data.me.businessMetrics.endingClientsCount)
+
         }
     }
 
 
     async function fetchProfile() {
         const result = await getUserProfile(id)
-         if (result && result.data && result.data.data.user != null) {
-      setTimeout(() => {
-        let full_name = result.data.data.user.profile.fullName;
-        setFullName(full_name)
+        if (result && result.data && result.data.data.user != null) {
+            setTimeout(() => {
+                let full_name = result.data.data.user.profile.fullName;
+                setFullName(full_name)
 
-        setImage(result.data.data.user.profile.profileImg)
+                setImage(result.data.data.user.profile.profileImg)
 
-      }, 100);
-    } else {
-      //Toast.show(result.error, 2000);
-    }
+            }, 100);
+        } else {
+            //Toast.show(result.error, 2000);
+        }
     }
 
     return (
@@ -223,16 +224,16 @@ const index = (props) => {
                             <>
                                 {strugglingClient.map((data, index) => {
                                     return (
-                                        <TodayAppoinment 
-                                         click={() => {
-                                            props.navigation.navigate('ClientsDetail',
-                                                {
-                                                toUser: data.id,
-                                                
-                                                });
+                                        <TodayAppoinment
+                                            click={() => {
+                                                props.navigation.navigate('ClientsDetail',
+                                                    {
+                                                        toUser: data.id,
+
+                                                    });
                                             }}
-                                        key={index}
-                                         item={data} />
+                                            key={index}
+                                            item={data} />
                                     )
                                 })}
                             </>
