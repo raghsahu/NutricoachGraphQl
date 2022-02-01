@@ -120,7 +120,9 @@ const index = props => {
 
         {isLoading ? (
           <View style={{ height: 100, justifyContent: 'center'}}>
-            <ActivityIndicator style={{ alignSelf: 'center' }} />
+            <ActivityIndicator 
+            color={'#000'}
+            style={{ alignSelf: 'center' }} />
           </View>
         ) : (
           <View style={{ flex: 1.0, marginTop: 35 }}>

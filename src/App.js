@@ -134,17 +134,7 @@ function HomeTab() {
             }
           }}
         />
-        {/* <Tab.Screen
-        name="Schedule"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, size }) => {
-            return (
-              <Image style={{height:25 ,width:25,tintColor:color}} resizeMode={"contain"} source={require("./assetss/Schedule.png")}/>
-            )
-          }
-        }}
-      /> */}
+     
         <Tab.Screen
           name="Clients"
           component={Clients}

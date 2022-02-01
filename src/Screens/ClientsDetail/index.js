@@ -188,7 +188,6 @@ const index = props => {
   }, [month]);
 
   useEffect(() => {
-    // getClientData();
     if (selectedNames == 'Meal of the day') {
       getMealComments(fixDate);
     } else if (selectedNames == 'Exercise of the day') {
@@ -203,7 +202,7 @@ const index = props => {
   useEffect(() => {
     getClientData();
     getNotesList();
-    //getMealComments();
+   
   }, []);
 
   const handleConfirm = date => {
@@ -218,7 +217,7 @@ const index = props => {
 
   const getClientData = async () => {
     const result = await getClientsDetails(customerId);
-    console.log('RESULT========>', JSON.stringify(result));
+    console.log('RESULT_CLIENTDATA========>', JSON.stringify(result));
 
     if (result.status == true && result.data && result.data.data.me != null) {
       setTimeout(() => {
@@ -261,10 +260,8 @@ const index = props => {
   function getLastDailyWeight() {
     let lastCurrentWeight = '0';
     if (dailyWeights && dailyWeights.nodes && dailyWeights.nodes.length > 0) {
-      // for (let i = 0; i < dailyWeights.nodes.length; i++) {
       lastCurrentWeight =
         dailyWeights.nodes[dailyWeights.nodes.length - 1].value;
-      //}
       return lastCurrentWeight; //get last current weight
     } else {
       return '0';
@@ -289,7 +286,7 @@ const index = props => {
     } else {
       setCommentLoading(false);
       setWeightData([]);
-      Toast.show('No Data Found');
+     // Toast.show('No Data Found');
       setError(true);
     }
   };
@@ -313,7 +310,7 @@ const index = props => {
     } else {
       setCommentLoading(false);
       setWaterData([]);
-      Toast.show('No Data Found');
+     // Toast.show('No Data Found');
       setError(true);
     }
   };
@@ -337,7 +334,7 @@ const index = props => {
     } else {
       setCommentLoading(false);
       setClientMealCommentsData([]);
-      Toast.show('No Data Found');
+     // Toast.show('No Data Found');
       setError(true);
     }
   };
@@ -362,7 +359,7 @@ const index = props => {
     } else {
       setCommentLoading(false);
       setClientMealCommentsData([]);
-      Toast.show('No Data Found');
+     // Toast.show('No Data Found');
       setError(true);
     }
   };

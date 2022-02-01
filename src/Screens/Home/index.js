@@ -218,7 +218,9 @@ const index = (props) => {
                         <Text style={[style.dateText, { marginHorizontal: 20, marginTop: 10, }]}>Struggling Clients</Text>
                         {isStrugglingClientLoading ?
                             <View style={{ height: 100, justifyContent: 'center' }}>
-                                <ActivityIndicator style={{ alignSelf: 'center' }} />
+                                <ActivityIndicator 
+                                color={'#000'}
+                                style={{ alignSelf: 'center' }} />
                             </View>
                             :
                             <>
