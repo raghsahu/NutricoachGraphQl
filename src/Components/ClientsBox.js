@@ -13,10 +13,11 @@ const ClientsBox = (props) => {
     }, [])
 
     function getPlans() {
+         let lastCurrentPlan = 'No plan';
         if (item && item.plans && item.plans.length > 0) {
-            const array = item.plans.map((item) => item.name)
-            // return array.join(',')
-            return array[0] //display only current meal plan.
+            lastCurrentPlan = item.plans[item.plans.length - 1].name;
+           // const array = item.plans.map((item) => item.name)
+            return lastCurrentPlan; //display only current meal plan means in the array last position item .
         }
         else {
             return "No plan"

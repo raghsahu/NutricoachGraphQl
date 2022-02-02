@@ -13,8 +13,6 @@ import {
   Alert,
   ActivityIndicator,
   SegmentedControlIOSComponent,
-  Modal,
-  StyleSheet,
 } from 'react-native';
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
@@ -684,12 +682,10 @@ const index = props => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: 40,
-                  width: "60%",
                   borderColor: CONFIGURATION.blueBorder,
                   borderWidth: 1,
                   borderRadius: 50,
-                  paddingHorizontal: 10,
-                  marginRight: 5,
+                  paddingHorizontal: 15,
                 }}
                  onPress={() => {
                   toggleModalVisibility()
@@ -705,7 +701,7 @@ const index = props => {
                     color: CONFIGURATION.blueBorder,
                     fontSize: 14,
                   }}>
-                 Resend invite to download app
+                  Invite to download app
                 </Text>
               </TouchableOpacity>
             ) : null}
@@ -716,11 +712,9 @@ const index = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: 40,
-                width: "40%",
                 backgroundColor: CONFIGURATION.primaryGreen,
                 borderRadius: 50,
                 paddingHorizontal: 25,
-
               }}
               onPress={() => {
                 props.navigation.navigate('ChatView', {
@@ -740,7 +734,6 @@ const index = props => {
               </Text>
             </TouchableOpacity>
           </View>
-          
           <View
             style={{
               backgroundColor: CONFIGURATION.white,

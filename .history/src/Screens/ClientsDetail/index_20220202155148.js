@@ -684,11 +684,11 @@ const index = props => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: 40,
-                  width: "60%",
+                  width: "70%",
                   borderColor: CONFIGURATION.blueBorder,
                   borderWidth: 1,
                   borderRadius: 50,
-                  paddingHorizontal: 10,
+                  paddingHorizontal: 15,
                   marginRight: 5,
                 }}
                  onPress={() => {
@@ -716,7 +716,7 @@ const index = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: 40,
-                width: "40%",
+                width: "30%",
                 backgroundColor: CONFIGURATION.primaryGreen,
                 borderRadius: 50,
                 paddingHorizontal: 25,

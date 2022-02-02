@@ -688,7 +688,7 @@ const index = props => {
                   borderColor: CONFIGURATION.blueBorder,
                   borderWidth: 1,
                   borderRadius: 50,
-                  paddingHorizontal: 10,
+                  paddingHorizontal: 5,
                   marginRight: 5,
                 }}
                  onPress={() => {

@@ -13,8 +13,6 @@ import {
   Alert,
   ActivityIndicator,
   SegmentedControlIOSComponent,
-  Modal,
-  StyleSheet,
 } from 'react-native';
 import CONFIGURATION from '../../Components/Config';
 import GeneralStatusBar from './../../Components/GeneralStatusBar';
@@ -168,6 +166,7 @@ const index = props => {
   const [isDate, setDatePicker] = useState(false);
 
   const [Dates, setDates] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
   const [month, setmonth] = useState(moment(new Date()).format('MMMM, YYYY'));
   const [addMonth, setaddMonth] = useState(0);
   const [fixDate, setfixDate] = useState(moment().format('YYYY-MM-DD'));
@@ -435,10 +434,6 @@ const index = props => {
     return Moment(localDate).format('MM-DD-yyyy hh:mm a');
   }
 
- // Open and close modal upon button clicks.
-    const toggleModalVisibility = () => {
-        setModalVisible(!isModalVisible);
-    };
   // SendInviteLink
   const SendInviteLink = async () => {
     const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -684,12 +679,10 @@ const index = props => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: 40,
-                  width: "60%",
                   borderColor: CONFIGURATION.blueBorder,
                   borderWidth: 1,
                   borderRadius: 50,
-                  paddingHorizontal: 10,
-                  marginRight: 5,
+                  paddingHorizontal: 15,
                 }}
                  onPress={() => {
                   toggleModalVisibility()
@@ -705,7 +698,7 @@ const index = props => {
                     color: CONFIGURATION.blueBorder,
                     fontSize: 14,
                   }}>
-                 Resend invite to download app
+                  Invite to download app
                 </Text>
               </TouchableOpacity>
             ) : null}
@@ -716,11 +709,9 @@ const index = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: 40,
-                width: "40%",
                 backgroundColor: CONFIGURATION.primaryGreen,
                 borderRadius: 50,
                 paddingHorizontal: 25,
-
               }}
               onPress={() => {
                 props.navigation.navigate('ChatView', {
@@ -740,7 +731,6 @@ const index = props => {
               </Text>
             </TouchableOpacity>
           </View>
-          
           <View
             style={{
               backgroundColor: CONFIGURATION.white,

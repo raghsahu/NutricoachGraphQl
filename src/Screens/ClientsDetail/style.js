@@ -74,12 +74,12 @@ export default StyleSheet.create({
      fontSize: 14,
      fontFamily: CONFIGURATION.TextRegular,
       color: CONFIGURATION.TextDarkGray,
-      width:"50%"
+      width:"70%"
     },
     textV:{
     flexDirection: "row",
      alignItems: "center",
-     width:"50%",
+     width:"30%",
      justifyContent:"flex-end"
     },
     InputBox:{
