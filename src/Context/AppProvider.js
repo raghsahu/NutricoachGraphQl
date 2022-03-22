@@ -604,7 +604,10 @@ export const APPProvider = props => {
                       id
                       description
                       mealType
+                      imgPath
                       rating
+                      coachRating
+                      consumptionTime
                       commentCount
                       comments{
                         id
@@ -669,7 +672,7 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
-  const createNewClient = async (firstname, lastname, email, selectDate, gender, mobile) => {
+  const createNewClient = async (firstname, lastname, email, selectDate, gender, mobile, isSelected) => {
     const graphqlQuery = {
       query: `mutation createClient($input: CreateClientInput!) {
                 createClient(input: $input){
@@ -690,7 +693,7 @@ export const APPProvider = props => {
           dateOfBirth: selectDate,
           gender: gender,
           mobileNum: null,
-          sendInvite: true,
+          sendInvite: isSelected,
         },
       },
     };

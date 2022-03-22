@@ -25,8 +25,8 @@ const index = (props) => {
 
     const [show, setshow] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [email, setEmail] = useState('Schuster.Adrian@yahoo.com')
-    const [password, setPassword] = useState('123456')
+    const [email, setEmail] = useState('sq1@uncoverbugs.com')
+    const [password, setPassword] = useState('123456Aa')
 
     const onPressLogin = async () => {
         if (!email) {

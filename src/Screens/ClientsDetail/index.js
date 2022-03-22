@@ -3192,6 +3192,10 @@ const index = props => {
                                 }}>
                                 {mealDay == 0 ? (
                                   <>
+                                  {clientMealCommentsData &&
+                                    clientMealCommentsData.length >
+                                      0 ? (
+                                        <View style={{flex: 1.0}}>
                                     <View
                                       style={{
                                         flexDirection: 'row',
@@ -3227,7 +3231,7 @@ const index = props => {
                                               color:
                                                 CONFIGURATION.TextDarkBlack,
                                             }}>
-                                            Breakfast
+                                            {clientMealCommentsData[0].mealType}
                                           </Text>
                                           {open8 ? (
                                             <Image
@@ -3253,7 +3257,7 @@ const index = props => {
                                             />
                                           )}
                                         </TouchableOpacity>
-                                        <Text
+                                        {/* <Text
                                           style={{
                                             fontFamily:
                                               CONFIGURATION.TextRegular,
@@ -3261,7 +3265,7 @@ const index = props => {
                                             fontSize: 12,
                                           }}>
                                           Calorie consumed/goal : 200/400
-                                        </Text>
+                                        </Text> */}
                                       </View>
                                       <Text
                                         style={{
@@ -3269,7 +3273,7 @@ const index = props => {
                                           fontFamily: CONFIGURATION.TextRegular,
                                           color: CONFIGURATION.TextDarkGray,
                                         }}>
-                                        09:00 AM
+                                        {clientMealCommentsData[0].consumptionTime}
                                       </Text>
                                     </View>
                                     {open8 ? (
@@ -3281,22 +3285,33 @@ const index = props => {
                                         }}>
                                         <View
                                           style={{
-                                            paddingVertical: 15,
+                                            paddingVertical: 10,
                                             borderColor:
                                               CONFIGURATION.lightGray,
                                             borderBottomWidth: 1,
                                           }}>
+
+                                          <Image
+                                             source={{
+                                                    uri: clientMealCommentsData[0].imgPath}}
+                                              style={{
+                                                height: 100,
+                                                width: 200,
+                                                borderRadius: 5,
+                                               // marginRight: 10,
+                                              }}
+                                            />
+
                                           <Text
                                             style={{
                                               fontFamily:
                                                 CONFIGURATION.TextRegular,
                                               color: CONFIGURATION.TextDarkGray,
+                                              marginTop: 10,
                                             }}>
-                                            Lorem Ipsum is simply dummy text of
-                                            the printing and typesetting
-                                            industry.
+                                            {clientMealCommentsData[0].description}
                                           </Text>
-                                          <View
+                                          {/* <View
                                             style={{
                                               flexDirection: 'row',
                                               alignItems: 'center',
@@ -3359,8 +3374,8 @@ const index = props => {
                                                 Info
                                               </Text>
                                             </TouchableOpacity>
-                                          </View>
-                                          <View
+                                          </View> */}
+                                          {/* <View
                                             style={{
                                               flexDirection: 'row',
                                               marginBottom: 10,
@@ -3392,9 +3407,9 @@ const index = props => {
                                                 marginRight: 10,
                                               }}
                                             />
-                                          </View>
+                                          </View> */}
                                         </View>
-                                        <View
+                                        {/* <View
                                           style={{
                                             flexDirection: 'row',
                                             alignItems: 'center',
@@ -3438,7 +3453,7 @@ const index = props => {
                                               240 cals I 1 Standard serving
                                             </Text>
                                           </View>
-                                        </View>
+                                        </View> */}
                                         <View
                                           style={{
                                             flexDirection: 'row',
@@ -3469,7 +3484,7 @@ const index = props => {
                                                   color:
                                                     CONFIGURATION.TextDarkBlack,
                                                 }}>
-                                                Good
+                                                Very Good
                                               </Text>
                                               <Text
                                                 style={{
@@ -3507,6 +3522,24 @@ const index = props => {
                                         </View>
                                       </View>
                                     ) : null}
+
+                                    </View>
+                                    ) :               
+                                     <View style={{flex: 1.0}}>
+                                        <Text
+                                          style={{
+                                            fontSize: 16,
+                                            fontFamily:
+                                              CONFIGURATION.TextRegular,
+                                            color: CONFIGURATION.TextDarkBlack,
+                                            alignSelf: 'center',
+                                          }}>
+                                          Details Not Availble
+                                        </Text>
+                                      </View> 
+                                  }                  
+
+
                                   </>
                                 ) : null}
                                 {mealDay == 1 ? (
