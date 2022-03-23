@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef, useContext, createRef} from 'react';
 import {
   View,
   Text,
@@ -113,9 +113,9 @@ const index = props => {
     inviteClientEmail,
   } = useContext(APPContext);
 
-   // This is to manage Modal State
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [emailInputValue, setEmailInputValue] = useState("");
+  // This is to manage Modal State
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [emailInputValue, setEmailInputValue] = useState('');
 
   const refRBSheet = useRef();
   const refRBPopup = useRef();
@@ -181,6 +181,19 @@ const index = props => {
   const [waterData, setWaterData] = useState([]);
   const [weightData, setWeightData] = useState([]);
 
+  const flatListRef = useRef(null)
+
+  const onViewRef = useRef((viewableItems) => {
+  })
+  const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 })
+
+  useEffect(() => {
+    var date = new Date().getDate();
+    if (flatListRef.current) {
+        flatListRef.current.scrollToIndex({index: date-1}) // Scroll to current day 
+    }
+  }, [selected == 1]);
+
   useEffect(() => {
     var dateObj = moment(month, 'MMMM, YYYY').daysInMonth();
     setaddMonth(dateObj);
@@ -209,7 +222,6 @@ const index = props => {
   useEffect(() => {
     getClientData();
     getNotesList();
-   
   }, []);
 
   const handleConfirm = date => {
@@ -235,6 +247,8 @@ const index = props => {
         setProfile(result.data.data.me.customer.profile);
         setHealthProfile(result.data.data.me.customer.healthProfile);
         setDailyWeights(result.data.data.me.customer.dailyWeights);
+
+        // console.log('medical_history '+ result.data.data.me.customer.healthProfile.medicalHistory.diseases)
 
         if (
           result.data.data.me.customer.healthProfile &&
@@ -273,7 +287,7 @@ const index = props => {
     } else {
       return '0';
     }
-  };
+  }
 
   const getWaights = async date => {
     setCommentLoading(true);
@@ -293,7 +307,7 @@ const index = props => {
     } else {
       setCommentLoading(false);
       setWeightData([]);
-     // Toast.show('No Data Found');
+      // Toast.show('No Data Found');
       setError(true);
     }
   };
@@ -317,7 +331,7 @@ const index = props => {
     } else {
       setCommentLoading(false);
       setWaterData([]);
-     // Toast.show('No Data Found');
+      // Toast.show('No Data Found');
       setError(true);
     }
   };
@@ -341,7 +355,7 @@ const index = props => {
     } else {
       setCommentLoading(false);
       setClientMealCommentsData([]);
-     // Toast.show('No Data Found');
+      // Toast.show('No Data Found');
       setError(true);
     }
   };
@@ -366,7 +380,7 @@ const index = props => {
     } else {
       setCommentLoading(false);
       setClientMealCommentsData([]);
-     // Toast.show('No Data Found');
+      // Toast.show('No Data Found');
       setError(true);
     }
   };
@@ -435,35 +449,69 @@ const index = props => {
     return Moment(localDate).format('MM-DD-yyyy hh:mm a');
   }
 
- // Open and close modal upon button clicks.
-    const toggleModalVisibility = () => {
-        setModalVisible(!isModalVisible);
-    };
+  function get12HourTime(oldFormatTime) {
+    console.log("oldFormatTime: " + oldFormatTime);
+    var oldFormatTimeArray = oldFormatTime.split(":");
+
+    var HH = parseInt(oldFormatTimeArray[0]);
+    var min = oldFormatTimeArray[1];
+
+    var AMPM = HH >= 12 ? "PM" : "AM";
+    var hours;
+    if(HH == 0){
+      hours = HH + 12;
+    } else if (HH > 12) {
+      hours = HH - 12;
+    } else {
+      hours = HH;
+    }
+    var newFormatTime = hours + ":" + min + " " + AMPM;
+    console.log(newFormatTime);
+    return newFormatTime;
+  }
+
+  // Open and close modal upon button clicks.
+  const toggleModalVisibility = () => {
+    setModalVisible(!isModalVisible);
+  };
   // SendInviteLink
   const SendInviteLink = async () => {
-    const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const reg =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailInputValue.trim()) {
       Toast.show('Please enter email');
     } else if (reg.test(emailInputValue) == false) {
-            Toast.show('Please enter valid email', 5000)
+      Toast.show('Please enter valid email', 5000);
     } else {
       setLoading(true);
       const result = await inviteClientEmail(customerId, emailInputValue);
       setLoading(false);
       //  console.log("LoginUser", result)
-      if (result.data && result.data.data.inviteClient && result.data.data.inviteClient.client != null) {
+      if (
+        result.data &&
+        result.data.data.inviteClient &&
+        result.data.data.inviteClient.client != null
+      ) {
         setTimeout(() => {
-           toggleModalVisibility();
+          toggleModalVisibility();
           Toast.show('Client was sent an invite to use mobile app', 2000);
           setEmailInputValue('');
-
         }, 100);
       } else {
-         if (result.data && result.data.data.inviteClient && result.data.data.inviteClient.errors.length > 0) {
-         Toast.show( result.data.data.inviteClient.errors[0].path + ' ' + result.data.data.inviteClient.errors[0].message, 2000);
-         }else{
-            Toast.show('Something went wrong', 2000);
-         }
+        if (
+          result.data &&
+          result.data.data.inviteClient &&
+          result.data.data.inviteClient.errors.length > 0
+        ) {
+          Toast.show(
+            result.data.data.inviteClient.errors[0].path +
+              ' ' +
+              result.data.data.inviteClient.errors[0].message,
+            2000,
+          );
+        } else {
+          Toast.show('Something went wrong', 2000);
+        }
       }
     }
   };
@@ -684,17 +732,16 @@ const index = props => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: 40,
-                  width: "60%",
+                  width: '60%',
                   borderColor: CONFIGURATION.blueBorder,
                   borderWidth: 1,
                   borderRadius: 50,
                   paddingHorizontal: 10,
                   marginRight: 5,
                 }}
-                 onPress={() => {
-                  toggleModalVisibility()
-                 }}
-                >
+                onPress={() => {
+                  toggleModalVisibility();
+                }}>
                 <Image
                   style={{height: 15, width: 15, marginRight: 10}}
                   source={require('./../../assetss/invite.png')}
@@ -705,7 +752,7 @@ const index = props => {
                     color: CONFIGURATION.blueBorder,
                     fontSize: 14,
                   }}>
-                 Resend invite to download app
+                  Resend invite to download app
                 </Text>
               </TouchableOpacity>
             ) : null}
@@ -716,11 +763,10 @@ const index = props => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: 40,
-                width: "40%",
+                width: '40%',
                 backgroundColor: CONFIGURATION.primaryGreen,
                 borderRadius: 50,
                 paddingHorizontal: 25,
-
               }}
               onPress={() => {
                 props.navigation.navigate('ChatView', {
@@ -740,7 +786,7 @@ const index = props => {
               </Text>
             </TouchableOpacity>
           </View>
-          
+
           <View
             style={{
               backgroundColor: CONFIGURATION.white,
@@ -788,7 +834,7 @@ const index = props => {
               <TouchableOpacity
                 onPress={() => {
                   setselected(1);
-                  // getMealComments();
+                 
                 }}
                 style={{alignItems: 'center'}}>
                 <Text
@@ -1483,7 +1529,7 @@ const index = props => {
                           </Text>
                         </View>
                       </View>
-                      <Text
+                      {/* <Text
                         style={{
                           fontFamily: CONFIGURATION.TextBold,
                           color: CONFIGURATION.blueBorder,
@@ -1492,7 +1538,7 @@ const index = props => {
                           marginVertical: 15,
                         }}>
                         View measurement history
-                      </Text>
+                      </Text> */}
                     </View>
                   ) : null}
                 </View>
@@ -1659,7 +1705,7 @@ const index = props => {
                           </Text>
                         </View>
                       </View>
-                      <Text
+                      {/* <Text
                         style={{
                           fontFamily: CONFIGURATION.TextBold,
                           color: CONFIGURATION.blueBorder,
@@ -1668,7 +1714,7 @@ const index = props => {
                           marginVertical: 15,
                         }}>
                         View history
-                      </Text>
+                      </Text> */}
                     </View>
                   ) : null}
                 </View>
@@ -2119,37 +2165,63 @@ const index = props => {
                             Ailments/ illnesses (if any)
                           </Text>
                         </View>
-                        <View style={{flexDirection: 'row', marginTop: 10}}>
-                          {healthProfile.medicalCondition ? (
-                            <TouchableOpacity
-                              style={{
-                                backgroundColor: CONFIGURATION.lightGray,
-                                paddingVertical: 7,
-                                paddingHorizontal: 10,
-                              }}>
-                              <Text
-                                numberOfLines={1}
-                                style={{
-                                  fontSize: 14,
-                                  fontFamily: CONFIGURATION.TextBold,
-                                  color: CONFIGURATION.TextDarkGray,
-                                }}>
-                                {healthProfile.medicalCondition}
-                              </Text>
-                            </TouchableOpacity>
-                          ) : null}
+                        <View style={{marginTop: 10}}>
+                          {healthProfile.medicalHistory.diseases &&
+                          healthProfile.medicalHistory.diseases.length > 0
+                            ? healthProfile.medicalHistory.diseases.map(
+                                (data, index) => {
+                                  return (
+                                    <View
+                                      style={{
+                                        backgroundColor:
+                                          CONFIGURATION.lightGray,
+                                        paddingVertical: 7,
+                                        paddingHorizontal: 10,
+                                        margin: 5,
+                                      }}>
+                                      <Text
+                                        numberOfLines={1}
+                                        style={{
+                                          fontSize: 14,
+                                          fontFamily: CONFIGURATION.TextBold,
+                                          color: CONFIGURATION.TextDarkGray,
+                                        }}>
+                                        {data}
+                                      </Text>
+                                    </View>
+                                  );
+                                },
+                              )
+                            : null}
                         </View>
-
-                        {/* <Text
+                        <Text
                           style={{
                             fontSize: 14,
                             marginTop: 10,
                             fontFamily: CONFIGURATION.TextRegular,
                             color: CONFIGURATION.TextDarkGray,
                           }}>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry
-                        </Text> */}
+                          {healthProfile.medicalHistory.notes}
+                        </Text>
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            fontSize: 16,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.black,
+                            marginVertical: 10,
+                          }}>
+                          Medications
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 0,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          {healthProfile.medicalHistory.medications}
+                        </Text>
                       </View>
                       <View
                         style={{
@@ -2181,9 +2253,28 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextRegular,
                             color: CONFIGURATION.TextDarkGray,
                           }}>
-                          {healthProfile.pregnancyHistory.observation}
+                          {healthProfile.otherMedicalInfo}
                         </Text>
-                        {/* <Text
+                        <Text
+                          numberOfLines={1}
+                          style={{
+                            fontSize: 16,
+                            fontFamily: CONFIGURATION.TextBold,
+                            color: CONFIGURATION.TextDarkBlack,
+                            marginVertical: 10,
+                          }}>
+                          Personal History
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            marginTop: 0,
+                            fontFamily: CONFIGURATION.TextRegular,
+                            color: CONFIGURATION.TextDarkGray,
+                          }}>
+                          {healthProfile.personalHistory}
+                        </Text>
+                        <Text
                           numberOfLines={1}
                           style={{
                             fontSize: 16,
@@ -2200,9 +2291,8 @@ const index = props => {
                             fontFamily: CONFIGURATION.TextRegular,
                             color: CONFIGURATION.TextDarkGray,
                           }}>
-                          Lorem Ipsum is simply dummy text of the printing and
-                          typesetting industry
-                        </Text> */}
+                          {healthProfile.familyHistory}
+                        </Text>
                       </View>
                     </View>
                   ) : null}
@@ -2839,14 +2929,21 @@ const index = props => {
                     </TouchableOpacity>
                   </View>
                   <FlatList
+                   ref={flatListRef} // add ref
+                    getItemLayout={(data, index) => (
+                      {length: width / 6 - 13, offset: (width / 6 - 13) * index, index}
+                    )}
                     data={Dates}
                     horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    style={{marginHorizontal: 20, marginVertical: 10}}
+                    showsHorizontalScrollIndicator={false}              
+                    style={{marginHorizontal: 20, marginVertical: 10}}  
+                    onViewableItemsChanged={onViewRef.current}
+                    viewabilityConfig={viewConfigRef.current}
                     renderItem={({item}) => {
                       return (
                         <TouchableOpacity
                           onPress={() => {
+                           // console.log('date_item '+ Dates)
                             setfixDate(
                               moment(item + ' ' + month).format('YYYY-MM-DD'),
                             );
@@ -3192,72 +3289,75 @@ const index = props => {
                                 }}>
                                 {mealDay == 0 ? (
                                   <>
-                                  {clientMealCommentsData &&
-                                    clientMealCommentsData.length >
-                                      0 ? (
-                                        <View style={{flex: 1.0}}>
-                                    <View
-                                      style={{
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
-                                        borderColor: CONFIGURATION.lightGray,
-                                        borderBottomWidth: 1,
-                                      }}>
-                                      <Image
-                                        resizeMode={'contain'}
-                                        source={require('./../../assetss/breakfast.png')}
-                                        style={{height: 40, width: 40}}
-                                      />
-                                      <View
-                                        style={{
-                                          justifyContent: 'center',
-                                          paddingVertical: 20,
-                                          width: '63%',
-                                        }}>
-                                        <TouchableOpacity
-                                          onPress={() => {
-                                            setopen8(!open8);
-                                          }}
+                                    {clientMealCommentsData &&
+                                    clientMealCommentsData.length > 0 ? (
+                                      <View style={{flex: 1.0}}>
+                                        <View
                                           style={{
                                             flexDirection: 'row',
                                             alignItems: 'center',
+                                            justifyContent: 'space-between',
+                                            borderColor:
+                                              CONFIGURATION.lightGray,
+                                            borderBottomWidth: 1,
                                           }}>
-                                          <Text
+                                          <Image
+                                            resizeMode={'contain'}
+                                            source={require('./../../assetss/breakfast.png')}
+                                            style={{height: 40, width: 40}}
+                                          />
+                                          <View
                                             style={{
-                                              fontSize: 16,
-                                              fontFamily:
-                                                CONFIGURATION.TextBold,
-                                              color:
-                                                CONFIGURATION.TextDarkBlack,
+                                              justifyContent: 'center',
+                                              paddingVertical: 20,
+                                              width: '63%',
                                             }}>
-                                            {clientMealCommentsData[0].mealType}
-                                          </Text>
-                                          {open8 ? (
-                                            <Image
-                                              resizeMode={'contain'}
-                                              style={{
-                                                height: 10,
-                                                width: 10,
-                                                marginTop: 5,
-                                                marginLeft: 10,
+                                            <TouchableOpacity
+                                              onPress={() => {
+                                                setopen8(!open8);
                                               }}
-                                              source={require('./../../assetss/up.png')}
-                                            />
-                                          ) : (
-                                            <Image
-                                              resizeMode={'contain'}
                                               style={{
-                                                height: 10,
-                                                width: 10,
-                                                marginTop: 5,
-                                                marginLeft: 10,
-                                              }}
-                                              source={require('./../../assetss/down.png')}
-                                            />
-                                          )}
-                                        </TouchableOpacity>
-                                        {/* <Text
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                              }}>
+                                              <Text
+                                                style={{
+                                                  fontSize: 16,
+                                                  fontFamily:
+                                                    CONFIGURATION.TextBold,
+                                                  color:
+                                                    CONFIGURATION.TextDarkBlack,
+                                                }}>
+                                                {
+                                                  clientMealCommentsData[0]
+                                                    .mealType
+                                                }
+                                              </Text>
+                                              {open8 ? (
+                                                <Image
+                                                  resizeMode={'contain'}
+                                                  style={{
+                                                    height: 10,
+                                                    width: 10,
+                                                    marginTop: 5,
+                                                    marginLeft: 10,
+                                                  }}
+                                                  source={require('./../../assetss/up.png')}
+                                                />
+                                              ) : (
+                                                <Image
+                                                  resizeMode={'contain'}
+                                                  style={{
+                                                    height: 10,
+                                                    width: 10,
+                                                    marginTop: 5,
+                                                    marginLeft: 10,
+                                                  }}
+                                                  source={require('./../../assetss/down.png')}
+                                                />
+                                              )}
+                                            </TouchableOpacity>
+                                            {/* <Text
                                           style={{
                                             fontFamily:
                                               CONFIGURATION.TextRegular,
@@ -3266,52 +3366,63 @@ const index = props => {
                                           }}>
                                           Calorie consumed/goal : 200/400
                                         </Text> */}
-                                      </View>
-                                      <Text
-                                        style={{
-                                          fontSize: 12,
-                                          fontFamily: CONFIGURATION.TextRegular,
-                                          color: CONFIGURATION.TextDarkGray,
-                                        }}>
-                                        {clientMealCommentsData[0].consumptionTime}
-                                      </Text>
-                                    </View>
-                                    {open8 ? (
-                                      <View
-                                        style={{
-                                          backgroundColor: CONFIGURATION.white,
-                                          overflow: 'hidden',
-                                          zIndex: 10,
-                                        }}>
-                                        <View
-                                          style={{
-                                            paddingVertical: 10,
-                                            borderColor:
-                                              CONFIGURATION.lightGray,
-                                            borderBottomWidth: 1,
-                                          }}>
-
-                                          <Image
-                                             source={{
-                                                    uri: clientMealCommentsData[0].imgPath}}
-                                              style={{
-                                                height: 100,
-                                                width: 200,
-                                                borderRadius: 5,
-                                               // marginRight: 10,
-                                              }}
-                                            />
-
+                                          </View>
                                           <Text
                                             style={{
+                                              fontSize: 12,
                                               fontFamily:
                                                 CONFIGURATION.TextRegular,
                                               color: CONFIGURATION.TextDarkGray,
-                                              marginTop: 10,
                                             }}>
-                                            {clientMealCommentsData[0].description}
+                                            {
+                                              clientMealCommentsData[0]
+                                                .consumptionTime ? get12HourTime(clientMealCommentsData[0]
+                                                .consumptionTime) : ''
+                                            }
                                           </Text>
-                                          {/* <View
+                                        </View>
+                                        {open8 ? (
+                                          <View
+                                            style={{
+                                              backgroundColor:
+                                                CONFIGURATION.white,
+                                              overflow: 'hidden',
+                                              zIndex: 10,
+                                            }}>
+                                            <View
+                                              style={{
+                                                paddingVertical: 10,
+                                                borderColor:
+                                                  CONFIGURATION.lightGray,
+                                                borderBottomWidth: 1,
+                                              }}>
+                                              <Image
+                                                source={{
+                                                  uri: clientMealCommentsData[0]
+                                                    .imgPath,
+                                                }}
+                                                style={{
+                                                  height: 100,
+                                                  width: 200,
+                                                  borderRadius: 5,
+                                                  // marginRight: 10,
+                                                }}
+                                              />
+
+                                              <Text
+                                                style={{
+                                                  fontFamily:
+                                                    CONFIGURATION.TextRegular,
+                                                  color:
+                                                    CONFIGURATION.TextDarkGray,
+                                                  marginTop: 10,
+                                                }}>
+                                                {
+                                                  clientMealCommentsData[0]
+                                                    .description
+                                                }
+                                              </Text>
+                                              {/* <View
                                             style={{
                                               flexDirection: 'row',
                                               alignItems: 'center',
@@ -3375,7 +3486,7 @@ const index = props => {
                                               </Text>
                                             </TouchableOpacity>
                                           </View> */}
-                                          {/* <View
+                                              {/* <View
                                             style={{
                                               flexDirection: 'row',
                                               marginBottom: 10,
@@ -3408,8 +3519,8 @@ const index = props => {
                                               }}
                                             />
                                           </View> */}
-                                        </View>
-                                        {/* <View
+                                            </View>
+                                            {/* <View
                                           style={{
                                             flexDirection: 'row',
                                             alignItems: 'center',
@@ -3454,78 +3565,80 @@ const index = props => {
                                             </Text>
                                           </View>
                                         </View> */}
-                                        <View
-                                          style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            justifyContent: 'space-between',
-                                          }}>
-                                          <View
-                                            style={{
-                                              width: '50%',
-                                              backgroundColor:
-                                                CONFIGURATION.lightGray,
-                                              height: 80,
-                                              flexDirection: 'row',
-                                              alignItems: 'center',
-                                              justifyContent: 'center',
-                                            }}>
-                                            <Image
-                                              resizeMode={'cover'}
-                                              source={require('./../../assetss/orenge.png')}
-                                              style={{height: 50, width: 50}}
-                                            />
-                                            <View style={{marginRight: 10}}>
-                                              <Text
+                                            <View
+                                              style={{
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                              }}>
+                                              <View
                                                 style={{
-                                                  fontSize: 16,
-                                                  fontFamily:
-                                                    CONFIGURATION.TextBold,
-                                                  color:
-                                                    CONFIGURATION.TextDarkBlack,
+                                                  width: '50%',
+                                                  backgroundColor:
+                                                    CONFIGURATION.lightGray,
+                                                  height: 80,
+                                                  flexDirection: 'row',
+                                                  alignItems: 'center',
+                                                  justifyContent: 'center',
                                                 }}>
-                                                Very Good
-                                              </Text>
-                                              <Text
+                                                <Image
+                                                  resizeMode={'cover'}
+                                                  source={require('./../../assetss/orenge.png')}
+                                                  style={{
+                                                    height: 50,
+                                                    width: 50,
+                                                  }}
+                                                />
+                                                <View style={{marginRight: 10}}>
+                                                  <Text
+                                                    style={{
+                                                      fontSize: 16,
+                                                      fontFamily:
+                                                        CONFIGURATION.TextBold,
+                                                      color:
+                                                        CONFIGURATION.TextDarkBlack,
+                                                    }}>
+                                                    Very Good
+                                                  </Text>
+                                                  <Text
+                                                    style={{
+                                                      fontFamily:
+                                                        CONFIGURATION.TextRegular,
+                                                      color:
+                                                        CONFIGURATION.TextDarkGray,
+                                                      fontSize: 12,
+                                                    }}>
+                                                    Client rate
+                                                  </Text>
+                                                </View>
+                                              </View>
+                                              <TouchableOpacity
                                                 style={{
-                                                  fontFamily:
-                                                    CONFIGURATION.TextRegular,
-                                                  color:
-                                                    CONFIGURATION.TextDarkGray,
-                                                  fontSize: 12,
+                                                  borderColor:
+                                                    CONFIGURATION.primaryGreen,
+                                                  borderWidth: 1,
+                                                  width: '45%',
+                                                  height: 50,
+                                                  borderRadius: 50,
+                                                  alignItems: 'center',
+                                                  justifyContent: 'center',
                                                 }}>
-                                                Client rate
-                                              </Text>
+                                                <Text
+                                                  style={{
+                                                    fontFamily:
+                                                      CONFIGURATION.TextBold,
+                                                    color:
+                                                      CONFIGURATION.primaryGreen,
+                                                  }}>
+                                                  Rate Meal
+                                                </Text>
+                                              </TouchableOpacity>
                                             </View>
                                           </View>
-                                          <TouchableOpacity
-                                            style={{
-                                              borderColor:
-                                                CONFIGURATION.primaryGreen,
-                                              borderWidth: 1,
-                                              width: '45%',
-                                              height: 50,
-                                              borderRadius: 50,
-                                              alignItems: 'center',
-                                              justifyContent: 'center',
-                                            }}>
-                                            <Text
-                                              style={{
-                                                fontFamily:
-                                                  CONFIGURATION.TextBold,
-                                                color:
-                                                  CONFIGURATION.primaryGreen,
-                                              }}>
-                                              Rate Meal
-                                            </Text>
-                                          </TouchableOpacity>
-                                        </View>
+                                        ) : null}
                                       </View>
-                                    ) : null}
-
-                                    </View>
-                                    ) :               
-                                     <View style={{flex: 1.0}}>
+                                    ) : (
+                                      <View style={{flex: 1.0}}>
                                         <Text
                                           style={{
                                             fontSize: 16,
@@ -3536,10 +3649,8 @@ const index = props => {
                                           }}>
                                           Details Not Availble
                                         </Text>
-                                      </View> 
-                                  }                  
-
-
+                                      </View>
+                                    )}
                                   </>
                                 ) : null}
                                 {mealDay == 1 ? (
@@ -5521,6 +5632,7 @@ const index = props => {
                   </>
                 ) : null}
               </>
+
             ) : null}
           </View>
         </ScrollView>
@@ -5661,115 +5773,116 @@ const index = props => {
         </View>
       </RBSheet>
       {/** This is our modal component containing textinput and a button */}
-            <Modal animationType="slide" 
-                   transparent visible={isModalVisible} 
-                   presentationStyle="overFullScreen" 
-                   onDismiss={toggleModalVisibility}>
-                <View style={styles.viewWrapper}>
+      <Modal
+        animationType="slide"
+        transparent
+        visible={isModalVisible}
+        presentationStyle="overFullScreen"
+        onDismiss={toggleModalVisibility}>
+        <View style={styles.viewWrapper}>
+          <View style={styles.modalView}>
+            <TouchableOpacity
+              style={{
+                alignSelf: 'flex-end',
+                alignItems: 'center',
+              }}
+              onPress={() => {
+                toggleModalVisibility();
+              }}>
+              <Image
+                resizeMode={'contain'}
+                style={{height: 30, width: 30, marginRight: 10}}
+                source={require('./../../assetss/closes.png')}
+                tintColor={CONFIGURATION.TextDarkGray}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 16,
+                marginBottom: 20,
+                marginLeft: 10,
+                marginRight: 10,
+                fontFamily: CONFIGURATION.TextBold,
+                color: CONFIGURATION.TextDarkBlack,
+              }}>
+              Invite your client to use the mobile app
+            </Text>
+            <TextInput
+              placeholder="Email"
+              value={emailInputValue}
+              style={styles.textInput}
+              onChangeText={value => setEmailInputValue(value)}
+            />
 
-                    <View style={styles.modalView}>
-                    <TouchableOpacity
-                          style={{
-                            alignSelf: 'flex-end',                          
-                            alignItems: 'center',                           
-                          }}
-                          onPress={() => {                          
-                             toggleModalVisibility();
-                          }}>
-                          <Image
-                            resizeMode={'contain'}
-                            style={{height: 30, width: 30, marginRight: 10,}}
-                            source={require('./../../assetss/closes.png')}
-                            tintColor={CONFIGURATION.TextDarkGray}
-                          />
-                       </TouchableOpacity>   
-                     <Text
-                        style={{
-                          fontSize: 16,
-                          marginBottom: 20,
-                          marginLeft:10, 
-                          marginRight: 10,
-                          fontFamily: CONFIGURATION.TextBold,
-                          color: CONFIGURATION.TextDarkBlack,
-                        }}>
-                        Invite your client to use the mobile app
-                      </Text>
-                        <TextInput placeholder="Email" 
-                                   value={emailInputValue} style={styles.textInput} 
-                                   onChangeText={(value) => setEmailInputValue(value)} />
-
-                         <TouchableOpacity
-                          style={{
-                            alignSelf: 'center',
-                            height: 50,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: '40%',
-                            backgroundColor: CONFIGURATION.primaryGreen,
-                            marginVertical: 15,
-                            borderRadius: 50,
-                          }}
-                          onPress={() => {
-
-                            SendInviteLink();
-                          }}>
-                          <Text
-                            style={{
-                              fontSize: 16,
-                              fontFamily: CONFIGURATION.TextBold,
-                              color: CONFIGURATION.white,
-                            }}>
-                            Send
-                          </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>
-
+            <TouchableOpacity
+              style={{
+                alignSelf: 'center',
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '40%',
+                backgroundColor: CONFIGURATION.primaryGreen,
+                marginVertical: 15,
+                borderRadius: 50,
+              }}
+              onPress={() => {
+                SendInviteLink();
+              }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontFamily: CONFIGURATION.TextBold,
+                  color: CONFIGURATION.white,
+                }}>
+                Send
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
 // These are user defined styles
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#fff",
-    },
-    viewWrapper: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.2)",
-    },
-    modalView: {
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        elevation: 5,
-        transform: [{ translateX: -(width * 0.4) }, 
-                    { translateY: -90 }],
-        height: 250,
-        width: width * 0.85,
-        backgroundColor: "#fff",
-        borderRadius: 7,
-    },
-    textInput: {
-        width: "80%",
-        borderRadius: 5,
-        paddingVertical: 8,
-        paddingHorizontal: 16,
-        borderColor: "rgba(0, 0, 0, 0.2)",
-        borderWidth: 1,
-        marginBottom: 8,
-    },
-     btnView:{
-      width: 100,
-    },
+  screen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  viewWrapper: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+  },
+  modalView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    elevation: 5,
+    transform: [{translateX: -(width * 0.4)}, {translateY: -90}],
+    height: 250,
+    width: width * 0.85,
+    backgroundColor: '#fff',
+    borderRadius: 7,
+  },
+  textInput: {
+    width: '80%',
+    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderColor: 'rgba(0, 0, 0, 0.2)',
+    borderWidth: 1,
+    marginBottom: 8,
+  },
+  btnView: {
+    width: 100,
+  },
 });
 
 export default index;

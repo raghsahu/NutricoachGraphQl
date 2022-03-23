@@ -1,21 +1,42 @@
-import React, { useContext } from 'react';
-import { View, Text, Dimensions, ImageBackground, Image, Alert } from 'react-native';
+import React, {useContext, useState} from 'react';
+import {
+  View,
+  Text,
+  Dimensions,
+  ImageBackground,
+  Image,
+  Linking,
+  Platform,
+  TouchableOpacity,
+  PermissionsAndroid,
+  Alert,
+} from 'react-native';
 
 //CONSTANT & CONFIG
-const { height, width } = Dimensions.get('screen');
+const {height, width} = Dimensions.get('screen');
 import CONFIGURATION from './Config';
+import ProgressView from '../Components/ProgressView';
 
 // PACKAGES
 import Moment from 'moment';
 import Icon from 'react-native-vector-icons/Ionicons';
+import SendIntentAndroid from 'react-native-send-intent';
+import RNFetchBlob from 'rn-fetch-blob';
 
 //CONTEXT
-import { AuthContext } from '../Context/AuthProvider';
+import {AuthContext} from '../Context/AuthProvider';
 
 const Chat = props => {
-  const { authDetails } = useContext(AuthContext);
+  const {authDetails} = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
-  let loginId = authDetails && authDetails.data && authDetails.data.logInCoach && authDetails.data.logInCoach.id ? authDetails.data.logInCoach.id : '';
+  let loginId =
+    authDetails &&
+    authDetails.data &&
+    authDetails.data.logInCoach &&
+    authDetails.data.logInCoach.id
+      ? authDetails.data.logInCoach.id
+      : '';
   const item = props.item;
 
   function getMessageTime() {
@@ -23,6 +44,97 @@ const Chat = props => {
     var localDate = new Date(item.createdAt);
     return Moment(localDate).format('DD MMM, yyyy hh:mm a');
   }
+
+  function playVideo(url) {
+    var fn = Platform.select({
+      android() {
+        SendIntentAndroid.openAppWithData(
+          /* "org.videolan.vlc" */ null,
+          url,
+          'video/*',
+        ).then(wasOpened => {});
+      },
+      default() {
+        Linking.openURL(url).catch(err => {});
+      },
+    });
+    fn();
+  }
+
+  const checkPermission = async (url) => {
+    // Function to check the platform
+    // If Platform is Android then check for permissions.
+
+    if (Platform.OS === 'ios') {
+      downloadFile(url);
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Storage Permission Required',
+            message:
+              'Application needs access to your storage to download File',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          // Start downloading
+          downloadFile(url);
+          console.log('Storage Permission Granted.');
+        } else {
+          // If permission denied then show alert
+          Alert.alert('Error', 'Storage Permission Not Granted');
+        }
+      } catch (err) {
+        // To handle permission related exception
+        console.log('++++' + err);
+      }
+    }
+  };
+
+  const downloadFile = (fileUrl) => {
+    setLoading(true)
+    // Get today's date to add the time suffix in filename
+    let date = new Date();
+    // File URL which we want to download
+    let FILE_URL = fileUrl;
+    // Function to get extention of the file url
+    let file_ext = getFileExtention(FILE_URL);
+
+    file_ext = '.' + file_ext[0];
+
+    // config: To get response by passing the downloading related options
+    // fs: Root directory path to download
+    const {config, fs} = RNFetchBlob;
+    let RootDir = fs.dirs.DownloadDir;
+    let options = {
+      fileCache: true,
+      addAndroidDownloads: {
+        path:
+          RootDir +
+          '/file_' +
+          Math.floor(date.getTime() + date.getSeconds() / 2) +
+          file_ext,
+        description: 'downloading file...',
+        notification: true,
+        // useDownloadManager works with Android only
+        useDownloadManager: true,
+      },
+    };
+    config(options)
+      .fetch('GET', FILE_URL)
+      .then(res => {
+        // Alert after successful downloading
+        setLoading(false)
+        console.log('res -> ', JSON.stringify(res));
+        alert('File Downloaded Successfully.');
+      });
+  };
+
+  const getFileExtention = fileUrl => {
+    // To get the file extension
+    return /[.]/.exec(fileUrl) ? /[^.]+$/.exec(fileUrl) : undefined;
+  };
 
   if (item.from.id != loginId) {
     if (item.attachments && item.attachments.length > 0) {
@@ -54,7 +166,7 @@ const Chat = props => {
                 }}>
                 <Image
                   resizeMode={'contain'}
-                  style={{ height: 40, width: 40 }}
+                  style={{height: 40, width: 40}}
                   source={require('./../assetss/PDF.png')}
                 />
                 <Text
@@ -65,6 +177,10 @@ const Chat = props => {
                   }}>
                   {item.attachments[0].original_filename}
                 </Text>
+                <TouchableOpacity
+                onPress={() => {
+                  checkPermission(item.attachments[0].url);
+                }}>
                 <View
                   style={{
                     height: 40,
@@ -75,10 +191,11 @@ const Chat = props => {
                     backgroundColor: CONFIGURATION.primaryGreen,
                   }}>
                   <Image
-                    style={{ height: 15, width: 15 }}
+                    style={{height: 15, width: 15}}
                     source={require('./../assetss/Download.png')}
                   />
                 </View>
+                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -87,7 +204,7 @@ const Chat = props => {
                   paddingHorizontal: 10,
                   paddingVertical: 5,
                 }}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{flexDirection: 'row'}}>
                   <Text
                     style={{
                       fontFamily: CONFIGURATION.TextRegular,
@@ -103,6 +220,9 @@ const Chat = props => {
                   color={CONFIGURATION.TextDarkGray}
                 />
               </View>
+              {loading ? 
+              <ProgressView></ProgressView>
+              : null }
             </View>
           );
         } else {
@@ -125,8 +245,10 @@ const Chat = props => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
-                imageStyle={{ borderRadius: 20 }}
-                source={{ uri: item.attachments[0].secure_url }}></ImageBackground>
+                imageStyle={{borderRadius: 20}}
+                source={{
+                  uri: item.attachments[0].secure_url,
+                }}></ImageBackground>
               <View
                 style={{
                   flexDirection: 'row',
@@ -145,8 +267,7 @@ const Chat = props => {
             </View>
           );
         }
-       } 
-      else if (item.attachments[0].resource_type == 'video') {
+      } else if (item.attachments[0].resource_type == 'video') {
         //VIDEO
         return (
           <View
@@ -170,24 +291,28 @@ const Chat = props => {
                 justifyContent: 'center',
                 backgroundColor: '#000000',
               }}
-              imageStyle={{ borderRadius: 20, opacity: 0.4 }}
-              source={{ uri: ' ' }}
-            >
-              <View
-                style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 40,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#ffffffc7',
+              imageStyle={{borderRadius: 20, opacity: 0.4}}
+              source={{uri: ' '}}>
+              <TouchableOpacity
+                onPress={() => {
+                  playVideo(item.attachments[0].url);
                 }}>
-                <Image
-                  style={{ height: 15, width: 15 }}
-                  source={require('./../assetss/paly.png')}
-                />
-              </View>
-              <View
+                <View
+                  style={{
+                    height: 40,
+                    width: 40,
+                    borderRadius: 40,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#ffffffc7',
+                  }}>
+                  <Image
+                    style={{height: 15, width: 15}}
+                    source={require('./../assetss/paly.png')}
+                  />
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={{
                   height: 40,
                   width: 40,
@@ -198,12 +323,15 @@ const Chat = props => {
                   position: 'absolute',
                   top: 10,
                   right: 10,
+                }}
+                onPress={() => {
+                  checkPermission(item.attachments[0].url);
                 }}>
                 <Image
-                  style={{ height: 15, width: 15 }}
+                  style={{height: 15, width: 15}}
                   source={require('./../assetss/Download.png')}
                 />
-              </View>
+              </TouchableOpacity>
               <Text
                 style={{
                   fontFamily: CONFIGURATION.TextBold,
@@ -231,6 +359,9 @@ const Chat = props => {
                 {getMessageTime()}
               </Text>
             </View>
+            {loading ? 
+              <ProgressView></ProgressView>
+              : null }
           </View>
         );
       } else if (item.attachments[0].resource_type == 'application/pdf') {
@@ -260,7 +391,7 @@ const Chat = props => {
               }}>
               <Image
                 resizeMode={'contain'}
-                style={{ height: 40, width: 40 }}
+                style={{height: 40, width: 40}}
                 source={require('./../assetss/PDF.png')}
               />
               <Text
@@ -271,6 +402,10 @@ const Chat = props => {
                 }}>
                 {item.attachments[0].original_filename}
               </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  checkPermission(item.attachments[0].url);
+                }}>
               <View
                 style={{
                   height: 40,
@@ -281,10 +416,11 @@ const Chat = props => {
                   backgroundColor: CONFIGURATION.primaryGreen,
                 }}>
                 <Image
-                  style={{ height: 15, width: 15 }}
+                  style={{height: 15, width: 15}}
                   source={require('./../assetss/Download.png')}
                 />
               </View>
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -293,7 +429,7 @@ const Chat = props => {
                 paddingHorizontal: 10,
                 paddingVertical: 5,
               }}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{flexDirection: 'row'}}>
                 <Text
                   style={{
                     fontFamily: CONFIGURATION.TextRegular,
@@ -309,6 +445,9 @@ const Chat = props => {
                 color={CONFIGURATION.TextDarkGray}
               />
             </View>
+            {loading ? 
+              <ProgressView></ProgressView>
+              : null }
           </View>
         );
       }
@@ -327,7 +466,7 @@ const Chat = props => {
           alignSelf: 'flex-start',
         }}>
         {item.body ? (
-          <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>
+          <Text style={{fontFamily: CONFIGURATION.TextRegular}}>
             {item.body}
           </Text>
         ) : null}
@@ -346,7 +485,7 @@ const Chat = props => {
             }}>
             {getMessageTime()}
           </Text>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <Icon
               name="checkmark-done"
               size={15}
@@ -364,15 +503,15 @@ const Chat = props => {
             <View
               style={{
                 width: width / 2 + 80,
-                backgroundColor: CONFIGURATION.lightGreen,             
+                backgroundColor: CONFIGURATION.lightGreen,
                 marginVertical: 10,
-                marginRight:20,
+                marginRight: 20,
                 borderTopRightRadius: 20,
                 borderBottomLeftRadius: 20,
                 borderBottomRightRadius: 20,
                 padding: 5,
                 overflow: 'hidden',
-                alignSelf:'flex-end'
+                alignSelf: 'flex-end',
               }}>
               <View
                 style={{
@@ -386,7 +525,7 @@ const Chat = props => {
                 }}>
                 <Image
                   resizeMode={'contain'}
-                  style={{ height: 40, width: 40 }}
+                  style={{height: 40, width: 40}}
                   source={require('./../assetss/PDF.png')}
                 />
                 <Text
@@ -397,6 +536,10 @@ const Chat = props => {
                   }}>
                   {item.attachments[0].original_filename}
                 </Text>
+                <TouchableOpacity
+                onPress={() => {
+                  checkPermission(item.attachments[0].url);
+                }}>
                 <View
                   style={{
                     height: 40,
@@ -407,10 +550,11 @@ const Chat = props => {
                     backgroundColor: CONFIGURATION.primaryGreen,
                   }}>
                   <Image
-                    style={{ height: 15, width: 15 }}
+                    style={{height: 15, width: 15}}
                     source={require('./../assetss/Download.png')}
                   />
                 </View>
+                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -419,7 +563,7 @@ const Chat = props => {
                   paddingHorizontal: 10,
                   paddingVertical: 5,
                 }}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{flexDirection: 'row'}}>
                   <Text
                     style={{
                       fontFamily: CONFIGURATION.TextRegular,
@@ -435,6 +579,9 @@ const Chat = props => {
                   color={CONFIGURATION.TextDarkGray}
                 />
               </View>
+              {loading ? 
+              <ProgressView></ProgressView>
+              : null }
             </View>
           );
         } else {
@@ -445,11 +592,10 @@ const Chat = props => {
                 backgroundColor: CONFIGURATION.messageBack,
                 marginVertical: 10,
                 borderRadius: 20,
-                marginRight:20,
+                marginRight: 20,
                 padding: 5,
                 overflow: 'hidden',
-                alignSelf:'flex-end'
-
+                alignSelf: 'flex-end',
               }}>
               <ImageBackground
                 style={{
@@ -458,10 +604,10 @@ const Chat = props => {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
-                imageStyle={{ borderRadius: 20 }}
-                source={{ uri: item.attachments[0].secure_url }}>
-
-              </ImageBackground>
+                imageStyle={{borderRadius: 20}}
+                source={{
+                  uri: item.attachments[0].secure_url,
+                }}></ImageBackground>
               <View
                 style={{
                   flexDirection: 'row',
@@ -480,7 +626,6 @@ const Chat = props => {
             </View>
           );
         }
-
       } else if (item.attachments[0].resource_type == 'video') {
         //VIDEO
         return (
@@ -492,10 +637,10 @@ const Chat = props => {
               borderTopRightRadius: 20,
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
-              marginRight:20,
+              marginRight: 20,
               padding: 5,
               overflow: 'hidden',
-              alignSelf:'flex-end'
+              alignSelf: 'flex-end',
             }}>
             <ImageBackground
               style={{
@@ -505,25 +650,29 @@ const Chat = props => {
                 justifyContent: 'center',
                 backgroundColor: '#000000',
               }}
-              imageStyle={{ borderRadius: 20, opacity: 0.4 }}
-              source={{ uri: ' ' }}
-            >
-
-              <View
-                style={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 40,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#ffffffc7',
+              imageStyle={{borderRadius: 20, opacity: 0.4}}
+              source={{uri: ' '}}>
+              <TouchableOpacity
+                onPress={() => {
+                  playVideo(item.attachments[0].url);
                 }}>
-                <Image
-                  style={{ height: 15, width: 15 }}
-                  source={require('./../assetss/paly.png')}
-                />
-              </View>
-              <View
+                <View
+                  style={{
+                    height: 40,
+                    width: 40,
+                    borderRadius: 40,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: '#ffffffc7',
+                  }}>
+                  <Image
+                    style={{height: 15, width: 15}}
+                    source={require('./../assetss/paly.png')}
+                  />
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
                 style={{
                   height: 40,
                   width: 40,
@@ -534,12 +683,15 @@ const Chat = props => {
                   position: 'absolute',
                   top: 10,
                   right: 10,
+                }}
+                onPress={() => {
+                  checkPermission(item.attachments[0].url);
                 }}>
                 <Image
-                  style={{ height: 15, width: 15 }}
+                  style={{height: 15, width: 15}}
                   source={require('./../assetss/Download.png')}
                 />
-              </View>
+              </TouchableOpacity>
               <Text
                 style={{
                   fontFamily: CONFIGURATION.TextBold,
@@ -567,6 +719,9 @@ const Chat = props => {
                 {getMessageTime()}
               </Text>
             </View>
+            {loading ? 
+              <ProgressView></ProgressView>
+              : null }
           </View>
         );
       } else if (item.attachments[0].resource_type == 'application/pdf') {
@@ -579,11 +734,10 @@ const Chat = props => {
               borderTopRightRadius: 20,
               borderBottomLeftRadius: 20,
               borderBottomRightRadius: 20,
-              marginRight:20,
+              marginRight: 20,
               padding: 5,
               overflow: 'hidden',
-              alignSelf:'flex-end'
-
+              alignSelf: 'flex-end',
             }}>
             <View
               style={{
@@ -597,7 +751,7 @@ const Chat = props => {
               }}>
               <Image
                 resizeMode={'contain'}
-                style={{ height: 40, width: 40 }}
+                style={{height: 40, width: 40}}
                 source={{
                   uri: 'https://miro.medium.com/max/653/1*sk2TA810bDbkU_nvoHK5pQ.png',
                 }}
@@ -610,6 +764,10 @@ const Chat = props => {
                 }}>
                 {item.attachments[0].original_filename}
               </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  checkPermission(item.attachments[0].url);
+                }}>
               <View
                 style={{
                   height: 40,
@@ -620,10 +778,11 @@ const Chat = props => {
                   backgroundColor: CONFIGURATION.primaryGreen,
                 }}>
                 <Image
-                  style={{ height: 15, width: 15 }}
+                  style={{height: 15, width: 15}}
                   source={require('./../assetss/Download.png')}
                 />
               </View>
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -632,7 +791,7 @@ const Chat = props => {
                 paddingHorizontal: 10,
                 paddingVertical: 5,
               }}>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{flexDirection: 'row'}}>
                 <Text
                   style={{
                     fontFamily: CONFIGURATION.TextRegular,
@@ -648,6 +807,9 @@ const Chat = props => {
                 color={CONFIGURATION.TextDarkGray}
               />
             </View>
+            {loading ? 
+              <ProgressView></ProgressView>
+              : null }
           </View>
         );
       }
@@ -660,15 +822,14 @@ const Chat = props => {
           backgroundColor: CONFIGURATION.messageBack,
           marginVertical: 10,
           borderTopLeftRadius: 20,
-          marginRight:20,
+          marginRight: 20,
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
           padding: 20,
-          alignSelf:'flex-end'
-
+          alignSelf: 'flex-end',
         }}>
         {item.body ? (
-          <Text style={{ fontFamily: CONFIGURATION.TextRegular }}>
+          <Text style={{fontFamily: CONFIGURATION.TextRegular}}>
             {item.body}
           </Text>
         ) : null}
@@ -688,7 +849,7 @@ const Chat = props => {
             }}>
             {getMessageTime()}
           </Text>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{flexDirection: 'row'}}>
             <Icon
               name="checkmark-done"
               size={15}

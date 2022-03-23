@@ -1,19 +1,19 @@
-import React, { createContext, useContext } from 'react';
+import React, {createContext, useContext} from 'react';
 
 //CONTEXT
-import { AuthContext } from './AuthProvider';
+import {AuthContext} from './AuthProvider';
 
 //PACKAGES
 import axios from 'axios';
-import { useQuery, gql } from '@apollo/client';
-import { Alert } from 'react-native';
+import {useQuery, gql} from '@apollo/client';
+import {Alert} from 'react-native';
 
 export const APPContext = createContext();
 
 export const APPProvider = props => {
   const baseURL = 'https://api-nightly.nutricoach.pro/graphql';
 
-  const { authDetails } = useContext(AuthContext);
+  const {authDetails} = useContext(AuthContext);
 
   const login = async (email, password) => {
     const graphqlQuery = {
@@ -145,7 +145,7 @@ export const APPProvider = props => {
       },
     };
     return await request('post', graphqlQuery);
-  }
+  };
 
   async function getStrugglingClients() {
     const graphqlQuery = {
@@ -432,6 +432,14 @@ export const APPProvider = props => {
                           muscleMassPercentage
                           }
                           medicalCondition
+                        medicalHistory {
+                          diseases           
+                          medications           
+                          notes
+                        } 
+                        personalHistory
+                        familyHistory    
+                        otherMedicalInfo
                   }
                 }
               }
@@ -501,10 +509,9 @@ export const APPProvider = props => {
           }`,
     };
     return await request('get', graphqlQuery);
-  }
+  };
 
   const getWaterInstack = async (customerId, date) => {
-
     const graphqlQuery = {
       query: `{
               me {
@@ -540,8 +547,7 @@ export const APPProvider = props => {
           }`,
     };
     return await request('get', graphqlQuery);
-
-  }
+  };
 
   const getExcersizeOfClient = async (customerId, date) => {
     const graphqlQuery = {
@@ -585,8 +591,7 @@ export const APPProvider = props => {
           }`,
     };
     return await request('get', graphqlQuery);
-  }
-
+  };
 
   const getClientsMealComments = async (customerId, date) => {
     const graphqlQuery = {
@@ -633,7 +638,6 @@ export const APPProvider = props => {
     return await request('get', graphqlQuery);
   };
 
-
   const AddNotes = async (customerId, date, notes) => {
     const graphqlQuery = {
       query: `mutation createRemark($input: AddRemarksInput!) {
@@ -672,7 +676,15 @@ export const APPProvider = props => {
     return await request('post', graphqlQuery);
   };
 
-  const createNewClient = async (firstname, lastname, email, selectDate, gender, mobile, isSelected) => {
+  const createNewClient = async (
+    firstname,
+    lastname,
+    email,
+    selectDate,
+    gender,
+    mobile,
+    isSelected,
+  ) => {
     const graphqlQuery = {
       query: `mutation createClient($input: CreateClientInput!) {
                 createClient(input: $input){
@@ -719,7 +731,6 @@ export const APPProvider = props => {
         input: {
           clientId: customerId,
           email: email,
-
         },
       },
     };
@@ -736,9 +747,9 @@ export const APPProvider = props => {
 
       let value =
         authDetails &&
-          authDetails.data &&
-          authDetails.data.logInCoach &&
-          authDetails.data.logInCoach.token
+        authDetails.data &&
+        authDetails.data.logInCoach &&
+        authDetails.data.logInCoach.token
           ? authDetails.data.logInCoach.token
           : '';
       console.log(value);
@@ -870,9 +881,9 @@ export const APPProvider = props => {
         inviteClientEmail,
         getExcersizeOfClient,
         getWaterInstack,
-        getDailyWaights
+        getDailyWaights,
       }}>
       {props.children}
     </APPContext.Provider>
   );
-}
+};
