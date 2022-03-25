@@ -7,9 +7,9 @@
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
-      android:icon="@drawable/nutricoach_icon"
+      android:icon="@mipmap/nutricoach"
       android:requestLegacyExternalStorage="true"
-      android:roundIcon="@drawable/nutricoach_icon"
+      android:roundIcon="@mipmap/nutricoach"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <activity
